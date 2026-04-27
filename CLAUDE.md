@@ -223,3 +223,4 @@ Untuk detail per feature, **selalu refer ke `/docs/PRD.md`**.
 
 - **2026-04-27:** Clarify Checkpoint 1 gating — ADR-001/002/005 wajib pre-Sprint 1; ADR-003 pre-Sprint 2 (butuh data bundle size); ADR-004 pre-Sprint 3 (butuh schema final). ADR-005 dijadikan wajib (bukan conditional). Owner approval untuk Sprint 1 mulai.
 - **2026-04-27 (later):** Fix F6/F10 mislabel — F6 = Bottleneck view (PRD line 116), F10 = Onboarding wizard. CLAUDE.md line 65 dan PRD line 801 sebelumnya keliru pakai F6 untuk onboarding. Affected: CLAUDE.md (1 line), PRD section 11 Sprint 4 (1 line fix + 1 line redundant deleted).
+- **2026-04-27 (later):** Owner approval explicit untuk Sprint 1 mulai. Checkpoint 1 cleared (ADR-001/002/005 Accepted; ADR-003/004 deferred sesuai gating). Baseline foundation: theme.css + globals.css + tailwind.config.ts di apps/web/. Belum ada Vite scaffolding.
