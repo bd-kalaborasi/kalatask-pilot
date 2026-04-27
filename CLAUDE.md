@@ -173,7 +173,7 @@ npm run dev
 | `/docs/adr/ADR-002-rls-strategy.md` | RLS policy plan per tabel | Implementasi Sprint 1 |
 | `/docs/adr/ADR-template.md` | Template untuk ADR baru | Tulis ADR-003, 004, 005 |
 | `/docs/sample-mom/` | Sample MoM real (10 file) | Testing prompt Cowork Sprint 5 |
-| `/supabase/seed/users.csv` | Daftar user pilot (nama Indonesia) | Seed data realistis |
+| `/supabase/seed/users.csv` | Fixture 8 dummy user (4 role, 2 team) | RLS pgTAP testing — BUKAN data real karyawan |
 | `/.env.example` | Template env var | Setup |
 
 **Kalau ada file yang missing di list di atas, STOP dan tanya owner.** Jangan invent data (especially `/docs/sample-mom/` dan `/supabase/seed/users.csv`).

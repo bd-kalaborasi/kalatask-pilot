@@ -1,0 +1,27 @@
+# Fixture: users untuk RLS pgTAP testing (KalaTask pilot)
+# Tujuan : Cover 4 role (admin/manager/member/viewer) + 2 team isolation
+# Bukan  : Data real karyawan. Murni fixture deterministik untuk test.
+# Generated: 2026-04-27
+# Refer  : .claude/skills/rls-tester, ADR-002 (RLS strategy)
+#
+# UUID convention untuk readability fixture:
+#   Team A: 00000000-0000-0000-0000-00000000aaaa
+#   Team B: 00000000-0000-0000-0000-00000000bbbb
+#   Users : 00000000-0000-0000-0000-000000000001..0008
+#
+# Distribution per team:
+#   Team A (4 user): 1 admin, 1 manager, 2 member
+#   Team B (4 user): 1 manager, 2 member, 1 viewer
+#
+# Note: PostgreSQL COPY default tidak skip baris dengan '#'. Untuk load
+# via psql \COPY, strip comment lines dulu (mis. via grep -v '^#').
+# Untuk pgTAP test biasanya pakai explicit INSERT, bukan COPY — comment OK.
+id,email,full_name,role,team_id
+00000000-0000-0000-0000-000000000001,budi@kalatask.test,Budi Santoso,admin,00000000-0000-0000-0000-00000000aaaa
+00000000-0000-0000-0000-000000000002,sari@kalatask.test,Sari Wijaya,manager,00000000-0000-0000-0000-00000000aaaa
+00000000-0000-0000-0000-000000000003,andi@kalatask.test,Andi Pratama,member,00000000-0000-0000-0000-00000000aaaa
+00000000-0000-0000-0000-000000000004,dewi@kalatask.test,Dewi Lestari,member,00000000-0000-0000-0000-00000000aaaa
+00000000-0000-0000-0000-000000000005,rangga@kalatask.test,Rangga Saputra,manager,00000000-0000-0000-0000-00000000bbbb
+00000000-0000-0000-0000-000000000006,indah@kalatask.test,Indah Permata,member,00000000-0000-0000-0000-00000000bbbb
+00000000-0000-0000-0000-000000000007,bayu@kalatask.test,Bayu Hermawan,member,00000000-0000-0000-0000-00000000bbbb
+00000000-0000-0000-0000-000000000008,maya@kalatask.test,Maya Anggraini,viewer,00000000-0000-0000-0000-00000000bbbb
