@@ -1,0 +1,189 @@
+/**
+ * KalaTask Design Tokens
+ * Source: docs/BRAND.md v1.0 (2026-04-27)
+ *
+ * Semua nilai di file ini di-source dari BRAND.md. Jangan tambah token baru
+ * di sini tanpa update BRAND.md dulu. Untuk perubahan, lihat skill
+ * `kalatask-brand-tokens` di .claude/skills/.
+ *
+ * File ini di-import di src/styles/globals.css.
+ */
+
+:root {
+  /* ============================================================
+   * 1. PRIMARY BRAND COLORS (BRAND.md §2.1)
+   * ============================================================ */
+  --kt-deep: #0060A0;
+  --kt-sky: #00A0E0;
+
+  /* ============================================================
+   * 2. BRAND DEEP — 9-step scale (BRAND.md §2.2)
+   * ============================================================ */
+  --kt-deep-50:  #EBF3F9;
+  --kt-deep-100: #D6E7F2;
+  --kt-deep-200: #A8CDE3;
+  --kt-deep-300: #7AB3D4;
+  --kt-deep-400: #4C99C5;
+  --kt-deep-500: #1A75B5;
+  --kt-deep-600: #0060A0; /* alias --kt-deep */
+  --kt-deep-700: #004A7A;
+  --kt-deep-800: #003355;
+
+  /* ============================================================
+   * 3. BRAND SKY — 9-step scale (BRAND.md §2.2)
+   * ============================================================ */
+  --kt-sky-50:  #EBF8FD;
+  --kt-sky-100: #D6F0FA;
+  --kt-sky-200: #A8E1F5;
+  --kt-sky-300: #7AD1F0;
+  --kt-sky-400: #4CC2EB;
+  --kt-sky-500: #33B5E8;
+  --kt-sky-600: #00A0E0; /* alias --kt-sky */
+  --kt-sky-700: #0088C8;
+  --kt-sky-800: #0066A0;
+
+  /* ============================================================
+   * 4. STATUS COLORS (BRAND.md §2.3, PRD F1/F3/F4)
+   * ============================================================ */
+  --kt-status-todo:        #A1A1AA; /* zinc-400 */
+  --kt-status-todo-bg:     #F4F4F5; /* zinc-100 */
+  --kt-status-progress:    #00A0E0; /* brand sky — task aktif = warna brand */
+  --kt-status-progress-bg: #D6F0FA; /* brand sky-100 */
+  --kt-status-review:      #F59E0B; /* amber-500 */
+  --kt-status-review-bg:   #FEF3C7; /* amber-100 */
+  --kt-status-done:        #16A34A; /* green-600 */
+  --kt-status-done-bg:     #DCFCE7; /* green-100 */
+  --kt-status-blocked:     #EF4444; /* red-500 */
+  --kt-status-blocked-bg:  #FEE2E2; /* red-100 */
+
+  /* ============================================================
+   * 5. NOTIFICATION TIER COLORS (BRAND.md §6.3, PRD F7)
+   * ============================================================ */
+  --kt-notif-normal:   #00A0E0; /* sky — informatif netral */
+  --kt-notif-warning:  #F59E0B; /* amber — friendly reminder */
+  --kt-notif-urgent:   #F97316; /* orange-500 — tegas tapi tidak panik */
+  --kt-notif-critical: #DC2626; /* red-600 — direct, action-oriented */
+
+  /* ============================================================
+   * 6. SOURCE INDICATOR COLORS (BRAND.md §9.4, PRD F9/F15)
+   * ============================================================ */
+  --kt-source-manual:  #71717A; /* zinc-500 */
+  --kt-source-cowork:  #00A0E0; /* sky — auto dari MoM */
+  --kt-source-csv:     #8B5CF6; /* violet-500 — bulk import */
+
+  /* ============================================================
+   * 7. NEUTRAL TEXT TOKENS (semantic, untuk konsistensi)
+   * ============================================================ */
+  --kt-text:        #18181B; /* zinc-900 — body default */
+  --kt-text-muted:  #71717A; /* zinc-500 — secondary, meta */
+  --kt-text-subtle: #A1A1AA; /* zinc-400 — placeholder, disabled */
+  --kt-text-inverse: #FAFAFA; /* zinc-50 — di atas dark bg */
+
+  /* ============================================================
+   * 8. SURFACE / BACKGROUND TOKENS (semantic)
+   * ============================================================ */
+  --kt-bg:        #FAFAFA; /* zinc-50 — app background */
+  --kt-surface:   #FFFFFF; /* card, modal */
+  --kt-border:    #E4E4E7; /* zinc-200 */
+  --kt-border-strong: #D4D4D8; /* zinc-300 — focus ring, divider */
+
+  /* ============================================================
+   * 9. TYPOGRAPHY (BRAND.md §3)
+   * ============================================================ */
+  --kt-font-sans: 'Inter', 'Helvetica Neue', Arial, system-ui, sans-serif;
+  --kt-font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  /* Type scale — px values (Tailwind defaults sudah cover, ini eksplisit
+     untuk usage di luar class utility, mis. inline style atau SVG) */
+  --kt-text-xs:   12px;
+  --kt-text-sm:   14px;
+  --kt-text-base: 16px;
+  --kt-text-lg:   18px;
+  --kt-text-xl:   20px;
+  --kt-text-2xl:  24px;
+  --kt-text-3xl:  30px;
+  --kt-text-4xl:  36px;
+
+  /* ============================================================
+   * 10. SPACING SCALE (BRAND.md §8.1, 4px-based)
+   * ============================================================ */
+  --kt-space-1:  4px;
+  --kt-space-2:  8px;
+  --kt-space-3:  12px;
+  --kt-space-4:  16px;
+  --kt-space-6:  24px;
+  --kt-space-8:  32px;
+  --kt-space-12: 48px;
+  --kt-space-16: 64px;
+
+  /* ============================================================
+   * 11. BORDER RADIUS (BRAND.md §8.2)
+   * ============================================================ */
+  --kt-radius-sm:   4px;
+  --kt-radius-md:   8px;   /* button, input, card */
+  --kt-radius-lg:   12px;  /* modal, dialog */
+  --kt-radius-full: 9999px; /* badge, pill, avatar */
+
+  /* ============================================================
+   * 12. CONTAINER WIDTHS (BRAND.md §8.3)
+   * ============================================================ */
+  --kt-container-app:       1280px;
+  --kt-container-dashboard: 1440px;
+  --kt-container-reading:   720px;
+
+  /* ============================================================
+   * 13. SHADOW (custom, brand-tinted untuk hover state)
+   * ============================================================ */
+  --kt-shadow-sm: 0 1px 2px 0 rgba(0, 96, 160, 0.05);
+  --kt-shadow-md: 0 4px 6px -1px rgba(0, 96, 160, 0.10), 0 2px 4px -2px rgba(0, 96, 160, 0.05);
+  --kt-shadow-lg: 0 10px 15px -3px rgba(0, 96, 160, 0.10), 0 4px 6px -4px rgba(0, 96, 160, 0.05);
+}
+
+/* ============================================================
+ * DARK MODE OVERRIDES
+ * Mapping: bg jadi zinc-900, surface jadi zinc-800, text jadi zinc-50.
+ * Brand colors tidak berubah — kontras tetap aman karena deep blue
+ * cukup gelap dan sky blue cukup terang untuk dual-mode.
+ * Aktivasi: <html class="dark"> (Tailwind darkMode: 'class')
+ * ============================================================ */
+:root.dark,
+.dark {
+  --kt-text:        #FAFAFA; /* zinc-50 */
+  --kt-text-muted:  #A1A1AA; /* zinc-400 */
+  --kt-text-subtle: #71717A; /* zinc-500 */
+  --kt-text-inverse: #18181B;
+
+  --kt-bg:        #18181B; /* zinc-900 */
+  --kt-surface:   #27272A; /* zinc-800 */
+  --kt-border:    #3F3F46; /* zinc-700 */
+  --kt-border-strong: #52525B; /* zinc-600 */
+
+  /* Status bg jadi lebih gelap di dark mode supaya tidak terlalu mencolok */
+  --kt-status-todo-bg:     #27272A;
+  --kt-status-progress-bg: #0E2A3A;
+  --kt-status-review-bg:   #3D2D0A;
+  --kt-status-done-bg:     #0F2E1B;
+  --kt-status-blocked-bg:  #3D1414;
+}
+
+/* ============================================================
+ * BASE ELEMENT DEFAULTS (minimal — selebihnya di-handle Tailwind)
+ * ============================================================ */
+html {
+  font-family: var(--kt-font-sans);
+  background: var(--kt-bg);
+  color: var(--kt-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code, pre, kbd, samp {
+  font-family: var(--kt-font-mono);
+}
+
+/* Timestamp & ID utility — sering dipakai inline di table & meta info */
+.kt-mono {
+  font-family: var(--kt-font-mono);
+  font-size: var(--kt-text-xs);
+  color: var(--kt-text-muted);
+}

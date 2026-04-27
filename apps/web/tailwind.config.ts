@@ -1,0 +1,145 @@
+/**
+ * Tailwind config — KalaTask
+ * Source: docs/BRAND.md v1.0 + src/styles/theme.css
+ *
+ * Strategi: theme.css adalah source of truth untuk runtime values
+ * (CSS vars). Tailwind config di-map ke CSS vars supaya:
+ *   1. Dark mode otomatis ikut (cukup toggle <html class="dark">)
+ *   2. Token bisa dipakai dari CSS plain (var(--kt-deep)) maupun
+ *      Tailwind class (bg-brand-deep)
+ *   3. Tidak ada duplikasi nilai hex di 2 tempat
+ *
+ * Untuk update token: edit theme.css dulu, lalu sync mapping di sini
+ * jika perlu nama Tailwind class baru.
+ */
+
+import type { Config } from 'tailwindcss';
+
+const config: Config = {
+  content: [
+    './index.html',
+    './src/**/*.{ts,tsx,js,jsx}',
+  ],
+  darkMode: 'class',
+  theme: {
+    extend: {
+      // ============================================================
+      // COLORS
+      // ============================================================
+      colors: {
+        // Primary brand
+        'brand-deep': {
+          DEFAULT: 'var(--kt-deep)',
+          50:  'var(--kt-deep-50)',
+          100: 'var(--kt-deep-100)',
+          200: 'var(--kt-deep-200)',
+          300: 'var(--kt-deep-300)',
+          400: 'var(--kt-deep-400)',
+          500: 'var(--kt-deep-500)',
+          600: 'var(--kt-deep-600)',
+          700: 'var(--kt-deep-700)',
+          800: 'var(--kt-deep-800)',
+        },
+        'brand-sky': {
+          DEFAULT: 'var(--kt-sky)',
+          50:  'var(--kt-sky-50)',
+          100: 'var(--kt-sky-100)',
+          200: 'var(--kt-sky-200)',
+          300: 'var(--kt-sky-300)',
+          400: 'var(--kt-sky-400)',
+          500: 'var(--kt-sky-500)',
+          600: 'var(--kt-sky-600)',
+          700: 'var(--kt-sky-700)',
+          800: 'var(--kt-sky-800)',
+        },
+
+        // Status (PRD F1, F3, F4)
+        status: {
+          'todo':         'var(--kt-status-todo)',
+          'todo-bg':      'var(--kt-status-todo-bg)',
+          'progress':     'var(--kt-status-progress)',
+          'progress-bg':  'var(--kt-status-progress-bg)',
+          'review':       'var(--kt-status-review)',
+          'review-bg':    'var(--kt-status-review-bg)',
+          'done':         'var(--kt-status-done)',
+          'done-bg':      'var(--kt-status-done-bg)',
+          'blocked':      'var(--kt-status-blocked)',
+          'blocked-bg':   'var(--kt-status-blocked-bg)',
+        },
+
+        // Notification tier (PRD F7)
+        notif: {
+          'normal':   'var(--kt-notif-normal)',
+          'warning':  'var(--kt-notif-warning)',
+          'urgent':   'var(--kt-notif-urgent)',
+          'critical': 'var(--kt-notif-critical)',
+        },
+
+        // Source indicator (PRD F9, F15)
+        source: {
+          'manual': 'var(--kt-source-manual)',
+          'cowork': 'var(--kt-source-cowork)',
+          'csv':    'var(--kt-source-csv)',
+        },
+
+        // Semantic surface tokens (untuk dark mode handling)
+        surface: 'var(--kt-surface)',
+        canvas:  'var(--kt-bg)',
+      },
+
+      // ============================================================
+      // TYPOGRAPHY
+      // ============================================================
+      fontFamily: {
+        sans: ['Inter', 'Helvetica Neue', 'Arial', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'SF Mono', 'Consolas', 'monospace'],
+      },
+
+      // ============================================================
+      // SPACING — Tailwind default sudah 4px-based (1=4px, 2=8px, dst).
+      // Tidak perlu override. Token di theme.css untuk usage non-Tailwind.
+      // ============================================================
+
+      // ============================================================
+      // BORDER RADIUS
+      // ============================================================
+      borderRadius: {
+        'kt-sm':   'var(--kt-radius-sm)',
+        'kt-md':   'var(--kt-radius-md)',
+        'kt-lg':   'var(--kt-radius-lg)',
+        'kt-full': 'var(--kt-radius-full)',
+      },
+
+      // ============================================================
+      // CONTAINER WIDTHS
+      // ============================================================
+      maxWidth: {
+        'app':       'var(--kt-container-app)',
+        'dashboard': 'var(--kt-container-dashboard)',
+        'reading':   'var(--kt-container-reading)',
+      },
+
+      // ============================================================
+      // SHADOW (brand-tinted)
+      // ============================================================
+      boxShadow: {
+        'brand-sm': 'var(--kt-shadow-sm)',
+        'brand-md': 'var(--kt-shadow-md)',
+        'brand-lg': 'var(--kt-shadow-lg)',
+      },
+
+      // ============================================================
+      // LETTER SPACING (untuk wordmark "KalaTask" — BRAND.md §3.3)
+      // ============================================================
+      letterSpacing: {
+        'wordmark': '-0.05em', /* approx -3px pada 60px font-size */
+      },
+    },
+  },
+  plugins: [
+    // shadcn/ui akan otomatis inject plugin yang dibutuhkan
+    // saat `npx shadcn-ui@latest init`. Tidak perlu manual add di sini.
+  ],
+};
+
+export default config;

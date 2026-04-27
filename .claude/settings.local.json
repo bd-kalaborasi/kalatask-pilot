@@ -1,0 +1,11 @@
+{
+  "enabledMcpjsonServers": [
+    "supabase",
+    "context7"
+  ],
+  "permissions": {
+    "allow": [
+      "mcp__supabase__list_tables"
+    ]
+  }
+}

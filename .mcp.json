@@ -1,0 +1,12 @@
+﻿{
+  "mcpServers": {
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp?project_ref=iymtuvslcsoitgoulmmk&read_only=true"
+    },
+    "context7": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@upstash/context7-mcp"]
+    }
+  }
+}

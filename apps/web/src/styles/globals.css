@@ -1,0 +1,64 @@
+/**
+ * KalaTask Global Stylesheet
+ *
+ * Urutan import sengaja:
+ *   1. Google Fonts (sebelum Tailwind base supaya font tersedia saat
+ *      base reset apply font-family)
+ *   2. theme.css (CSS vars di :root, di-baca oleh Tailwind via var(...))
+ *   3. Tailwind directives
+ *   4. Custom component layer (kalau ada)
+ *
+ * Import di src/main.tsx:
+ *   import './styles/globals.css';
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@import './theme.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+ * CUSTOM COMPONENT CLASSES
+ * Dipakai untuk pattern yang ter-repeat di banyak tempat dan
+ * lebih ringkas sebagai single class daripada chain Tailwind utility.
+ * ============================================================ */
+@layer components {
+  /* Wordmark "KalaTask" — dual-tone (BRAND.md §3.3) */
+  .kt-wordmark {
+    @apply font-sans font-extrabold tracking-wordmark;
+  }
+  .kt-wordmark-kala { color: var(--kt-deep); }
+  .kt-wordmark-task { color: var(--kt-sky); }
+
+  /* Status badge — pill style, status-aware (BRAND.md §9.2) */
+  .kt-badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-kt-full text-xs font-medium;
+  }
+  .kt-badge-dot {
+    @apply w-1.5 h-1.5 rounded-kt-full;
+    background: currentColor;
+  }
+
+  /* Task card — Kanban variant (BRAND.md §9.3) */
+  .kt-task-card {
+    @apply bg-surface rounded-kt-md p-3 border-l-[3px] hover:shadow-brand-md transition-shadow;
+  }
+
+  /* Mono meta — timestamp, task ID, kbd shortcut */
+  .kt-meta {
+    @apply font-mono text-xs text-zinc-500 dark:text-zinc-400;
+  }
+}
+
+/* ============================================================
+ * UTILITY OVERRIDES
+ * ============================================================ */
+@layer utilities {
+  /* Focus ring brand-tinted, lebih konsisten daripada default Tailwind blue */
+  .kt-focus-ring {
+    @apply outline-none ring-2 ring-offset-2 ring-brand-deep;
+  }
+}

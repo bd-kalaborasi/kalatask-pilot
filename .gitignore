@@ -1,0 +1,86 @@
+# =============================================================
+# KalaTask — .gitignore
+# Stack: Node + Vite + React + TypeScript + Supabase
+# =============================================================
+
+# ----- Node / npm -----
+node_modules/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# ----- Vite / build output -----
+dist/
+dist-ssr/
+build/
+*.local
+
+# ----- Environment variables (NEVER commit secrets) -----
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
+# Allow committing .env.example sebagai template
+!.env.example
+
+# ----- Supabase -----
+# Local Supabase stack data — generated, jangan commit
+supabase/.branches/
+supabase/.temp/
+supabase/.env
+
+# Service role key file kalau ada (NEVER commit)
+**/service-role-key.txt
+**/*service-role*.json
+
+# ----- TypeScript -----
+*.tsbuildinfo
+.tsbuildinfo
+
+# ----- Test / coverage -----
+coverage/
+.nyc_output/
+*.lcov
+
+# ----- Editor / IDE -----
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ----- OS junk -----
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.AppleDouble
+.LSOverride
+
+# ----- Claude Code -----
+# Skill files KITA SHARE (.claude/skills/) — JANGAN ignore
+# Tapi data session lokal Claude Code biar lokal saja
+.claude/data/
+.claude/cache/
+.claude/sessions/
+
+# ----- Backup & temp -----
+*.bak
+*.tmp
+*.temp
+*~
+
+# ----- Generated docs -----
+docs/.cache/
+docs/.next/

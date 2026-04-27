@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KalaTask — Brand Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --kt-deep: #0060A0;
+    --kt-deep-700: #004A7A;
+    --kt-deep-100: #D6E7F2;
+    --kt-sky: #00A0E0;
+    --kt-sky-700: #0088C8;
+    --kt-sky-100: #D6F0FA;
+    --kt-bg: #FAFAFA;
+    --kt-bg-elev: #FFFFFF;
+    --kt-text: #18181B;
+    --kt-text-muted: #52525B;
+    --kt-border: #E4E4E7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--kt-bg);
+    color: var(--kt-text);
+    line-height: 1.5;
+    padding: 48px 24px;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .hero {
+    text-align: center;
+    padding: 64px 24px;
+    background: linear-gradient(135deg, var(--kt-deep) 0%, var(--kt-sky) 100%);
+    border-radius: 16px;
+    margin-bottom: 48px;
+    color: white;
+  }
+  .hero h1 { font-size: 48px; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 12px; }
+  .hero p { font-size: 18px; opacity: 0.95; max-width: 600px; margin: 0 auto; }
+  .hero-logo { background: white; display: inline-block; padding: 24px 40px; border-radius: 12px; margin-bottom: 32px; box-shadow: 0 8px 32px rgb(0 0 0 / 0.15); }
+  .hero-logo img { height: 60px; display: block; }
+
+  section { background: var(--kt-bg-elev); border: 1px solid var(--kt-border); border-radius: 12px; padding: 32px; margin-bottom: 24px; }
+  section h2 { font-size: 24px; font-weight: 700; color: var(--kt-deep); margin-bottom: 8px; }
+  section .lede { color: var(--kt-text-muted); margin-bottom: 24px; }
+
+  /* Color swatches */
+  .palette { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+  .swatch { border: 1px solid var(--kt-border); border-radius: 8px; overflow: hidden; }
+  .swatch-color { height: 96px; }
+  .swatch-info { padding: 12px 16px; background: white; }
+  .swatch-name { font-weight: 600; font-size: 14px; }
+  .swatch-hex { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--kt-text-muted); margin-top: 2px; }
+
+  .scale { display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; margin-top: 12px; }
+  .scale-step { height: 56px; border-radius: 4px; display: flex; align-items: end; padding: 4px 6px; font-family: 'JetBrains Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.9); }
+  .scale-step.dark-text { color: rgba(0,0,0,0.65); }
+
+  /* Logo variants */
+  .logo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .logo-card { border: 1px solid var(--kt-border); border-radius: 8px; overflow: hidden; }
+  .logo-card-canvas { display: flex; align-items: center; justify-content: center; padding: 32px; min-height: 140px; }
+  .logo-card-canvas.light { background: white; }
+  .logo-card-canvas.dark { background: var(--kt-text); }
+  .logo-card-canvas.brand { background: var(--kt-deep); }
+  .logo-card-canvas img { max-width: 100%; max-height: 80px; }
+  .logo-card-info { padding: 12px 16px; background: var(--kt-bg); border-top: 1px solid var(--kt-border); font-size: 13px; }
+  .logo-card-info code { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--kt-text-muted); }
+
+  /* Typography demo */
+  .type-demo { display: grid; gap: 16px; }
+  .type-row { display: flex; align-items: baseline; gap: 16px; padding-bottom: 16px; border-bottom: 1px dashed var(--kt-border); }
+  .type-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--kt-text-muted); width: 100px; flex-shrink: 0; }
+
+  /* Status badges */
+  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 9999px; font-size: 12px; font-weight: 500; }
+  .badge::before { content: ''; width: 6px; height: 6px; border-radius: 9999px; background: currentColor; }
+  .badge-todo { background: #F4F4F5; color: #71717A; }
+  .badge-progress { background: var(--kt-sky-100); color: var(--kt-sky-700); }
+  .badge-review { background: #FEF3C7; color: #B45309; }
+  .badge-done { background: #DCFCE7; color: #15803D; }
+  .badge-blocked { background: #FEE2E2; color: #B91C1C; }
+  .badge-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; font-weight: 500; font-size: 14px; cursor: pointer; border: 1px solid transparent; transition: all 150ms; }
+  .btn-primary { background: var(--kt-deep); color: white; }
+  .btn-primary:hover { background: var(--kt-deep-700); }
+  .btn-secondary { background: white; color: var(--kt-deep); border-color: var(--kt-deep); }
+  .btn-secondary:hover { background: var(--kt-deep-100); }
+  .btn-ghost { background: transparent; color: var(--kt-deep); }
+  .btn-ghost:hover { background: var(--kt-deep-100); }
+  .btn-destructive { background: #DC2626; color: white; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  /* Mock task card */
+  .mock-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .task-card { background: white; border: 1px solid var(--kt-border); border-left: 3px solid var(--kt-sky); border-radius: 8px; padding: 12px 14px; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.04); }
+  .task-card.todo { border-left-color: #A1A1AA; }
+  .task-card.review { border-left-color: #F59E0B; }
+  .task-card.done { border-left-color: #16A34A; }
+  .task-card.blocked { border-left-color: #EF4444; }
+  .task-title { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .task-meta { display: flex; gap: 8px; align-items: center; font-size: 11px; color: var(--kt-text-muted); }
+  .task-source { font-size: 10px; color: var(--kt-sky-700); margin-top: 4px; }
+
+  /* Notification examples */
+  .notif { padding: 12px 14px; border-radius: 8px; font-size: 14px; display: flex; gap: 10px; align-items: start; margin-bottom: 8px; }
+  .notif-icon { width: 8px; height: 8px; border-radius: 9999px; margin-top: 7px; flex-shrink: 0; }
+  .notif-normal { background: var(--kt-sky-100); }
+  .notif-normal .notif-icon { background: var(--kt-sky); }
+  .notif-warning { background: #FEF3C7; }
+  .notif-warning .notif-icon { background: #F59E0B; }
+  .notif-urgent { background: #FFEDD5; }
+  .notif-urgent .notif-icon { background: #F97316; }
+  .notif-critical { background: #FEE2E2; }
+  .notif-critical .notif-icon { background: #EF4444; }
+
+  /* Don'ts */
+  .donts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .dont-card { border: 1px solid #FCA5A5; border-radius: 8px; padding: 16px; background: #FEF2F2; text-align: center; }
+  .dont-card-canvas { background: white; padding: 16px; border-radius: 6px; margin-bottom: 12px; min-height: 80px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .dont-card-label { font-size: 12px; color: #B91C1C; font-weight: 600; }
+
+  footer { text-align: center; color: var(--kt-text-muted); font-size: 13px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--kt-border); }
+  footer code { font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-logo">
+      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3OTEgMjAwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkthbGFUYXNrIGxvZ28iPgogIDx0aXRsZT5LYWxhVGFzazwvdGl0bGU+CiAgPGcgYXJpYS1oaWRkZW49InRydWUiPgogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI5MiIgZmlsbD0iIzAwNjBBMCIvPgogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI2OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBBMEUwIiBzdHJva2Utd2lkdGg9IjEwIi8+CiAgICA8cGF0aCBkPSJNIDYyIDEwNCBMIDg4IDEzMCBMIDE0MiA3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjE2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8L2c+CiAgPGcgYXJpYS1oaWRkZW49InRydWUiPgogICAgPHBhdGggZmlsbD0iIzAwNjBBMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjE3LjU2IDE0NSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik00NjkgMCAyMzMgMzEwVjBINjJWNzAySDIzM1YzOTRMNDY3IDcwMkg2NjhMMzk2IDM1OEw2NzggMFoiLz4KICAgIDxwYXRoIGZpbGw9IiMwMDYwQTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI5OC4yMCAxNDUpIHNjYWxlKDAuMTIwMDAgLTAuMTIwMDApIiBkPSJNMjc0IDU2NlEzMzMgNTY2IDM3Ny41IDU0Mi4wUTQyMiA1MTggNDQ2IDQ3OVY1NThINjE3VjBINDQ2Vjc5UTQyMSA0MCAzNzYuNSAxNi4wUTMzMiAtOCAyNzMgLThRMjA1IC04IDE0OS4wIDI3LjVROTMgNjMgNjAuNSAxMjguNVEyOCAxOTQgMjggMjgwUTI4IDM2NiA2MC41IDQzMS4wUTkzIDQ5NiAxNDkuMCA1MzEuMFEyMDUgNTY2IDI3NCA1NjZaTTMyNCA0MTdRMjczIDQxNyAyMzcuNSAzODAuNVEyMDIgMzQ0IDIwMiAyODBRMjAyIDIxNiAyMzcuNSAxNzguNVEyNzMgMTQxIDMyNCAxNDFRMzc1IDE0MSA0MTAuNSAxNzguMFE0NDYgMjE1IDQ0NiAyNzlRNDQ2IDM0MyA0MTAuNSAzODAuMFEzNzUgNDE3IDMyNCA0MTdaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDA2MEEwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNzYuNjggMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTIzMyA3NDBWMEg2MlY3NDBaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDA2MEEwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0MDkuMDggMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTI3NCA1NjZRMzMzIDU2NiAzNzcuNSA1NDIuMFE0MjIgNTE4IDQ0NiA0NzlWNTU4SDYxN1YwSDQ0NlY3OVE0MjEgNDAgMzc2LjUgMTYuMFEzMzIgLTggMjczIC04UTIwNSAtOCAxNDkuMCAyNy41UTkzIDYzIDYwLjUgMTI4LjVRMjggMTk0IDI4IDI4MFEyOCAzNjYgNjAuNSA0MzEuMFE5MyA0OTYgMTQ5LjAgNTMxLjBRMjA1IDU2NiAyNzQgNTY2Wk0zMjQgNDE3UTI3MyA0MTcgMjM3LjUgMzgwLjVRMjAyIDM0NCAyMDIgMjgwUTIwMiAyMTYgMjM3LjUgMTc4LjVRMjczIDE0MSAzMjQgMTQxUTM3NSAxNDEgNDEwLjUgMTc4LjBRNDQ2IDIxNSA0NDYgMjc5UTQ0NiAzNDMgNDEwLjUgMzgwLjBRMzc1IDQxNyAzMjQgNDE3WiIvPgogICAgPHBhdGggZmlsbD0iIzAwQTBFMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDg3LjU2IDE0NSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik01NjcgNzAyVjU2NUgzODFWMEgyMTBWNTY1SDI0VjcwMloiLz4KICAgIDxwYXRoIGZpbGw9IiMwMEEwRTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU1NS40OCAxNDUpIHNjYWxlKDAuMTIwMDAgLTAuMTIwMDApIiBkPSJNMjc0IDU2NlEzMzMgNTY2IDM3Ny41IDU0Mi4wUTQyMiA1MTggNDQ2IDQ3OVY1NThINjE3VjBINDQ2Vjc5UTQyMSA0MCAzNzYuNSAxNi4wUTMzMiAtOCAyNzMgLThRMjA1IC04IDE0OS4wIDI3LjVROTMgNjMgNjAuNSAxMjguNVEyOCAxOTQgMjggMjgwUTI4IDM2NiA2MC41IDQzMS4wUTkzIDQ5NiAxNDkuMCA1MzEuMFEyMDUgNTY2IDI3NCA1NjZaTTMyNCA0MTdRMjczIDQxNyAyMzcuNSAzODAuNVEyMDIgMzQ0IDIwMiAyODBRMjAyIDIxNiAyMzcuNSAxNzguNVEyNzMgMTQxIDMyNCAxNDFRMzc1IDE0MSA0MTAuNSAxNzguMFE0NDYgMjE1IDQ0NiAyNzlRNDQ2IDM0MyA0MTAuNSAzODAuMFEzNzUgNDE3IDMyNCA0MTdaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDBBMEUwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2MzMuOTYgMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTMyIDE4M0gyMDFRMjA0IDE1NCAyMjguMCAxMzYuMFEyNTIgMTE4IDI4NyAxMThRMzE5IDExOCAzMzYuNSAxMzAuNVEzNTQgMTQzIDM1NCAxNjNRMzU0IDE4NyAzMjkuMCAxOTguNVEzMDQgMjEwIDI0OCAyMjRRMTg4IDIzOCAxNDguMCAyNTMuNVExMDggMjY5IDc5LjAgMzAyLjVRNTAgMzM2IDUwIDM5M1E1MCA0NDEgNzYuNSA0ODAuNVExMDMgNTIwIDE1NC41IDU0My4wUTIwNiA1NjYgMjc3IDU2NlEzODIgNTY2IDQ0Mi41IDUxNC4wUTUwMyA0NjIgNTEyIDM3NkgzNTRRMzUwIDQwNSAzMjguNSA0MjIuMFEzMDcgNDM5IDI3MiA0MzlRMjQyIDQzOSAyMjYuMCA0MjcuNVEyMTAgNDE2IDIxMCAzOTZRMjEwIDM3MiAyMzUuNSAzNjAuMFEyNjEgMzQ4IDMxNSAzMzZRMzc3IDMyMCA0MTYuMCAzMDQuNVE0NTUgMjg5IDQ4NC41IDI1NC41UTUxNCAyMjAgNTE1IDE2MlE1MTUgMTEzIDQ4Ny41IDc0LjVRNDYwIDM2IDQwOC41IDE0LjBRMzU3IC04IDI4OSAtOFEyMTYgLTggMTU5LjAgMTcuMFExMDIgNDIgNjkuMCA4NS41UTM2IDEyOSAzMiAxODNaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDBBMEUwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2OTcuOTIgMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTQwMyAwIDIzMyAyMzRWMEg2MlY3NDBIMjMzVjMzMUw0MDIgNTU4SDYxM0wzODEgMjc4TDYxNSAwWiIvPgogIDwvZz4KPC9zdmc+Cg==" alt="KalaTask">
+    </div>
+    <h1>Brand Showcase</h1>
+    <p>Visual identity untuk pilot internal task management Kalaborasi Group Indonesia. Mewarisi palet biru parent brand dengan adaptasi untuk konteks task management.</p>
+  </div>
+
+  <!-- LOGO VARIANTS -->
+  <section>
+    <h2>1. Logo variants</h2>
+    <p class="lede">5 file SVG siap pakai untuk berbagai konteks. Semua scalable, bobot file kecil (~1-2KB).</p>
+    <div class="logo-grid">
+      <div class="logo-card">
+        <div class="logo-card-canvas light"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3OTEgMjAwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkthbGFUYXNrIGxvZ28iPgogIDx0aXRsZT5LYWxhVGFzazwvdGl0bGU+CiAgPGcgYXJpYS1oaWRkZW49InRydWUiPgogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI5MiIgZmlsbD0iIzAwNjBBMCIvPgogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI2OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBBMEUwIiBzdHJva2Utd2lkdGg9IjEwIi8+CiAgICA8cGF0aCBkPSJNIDYyIDEwNCBMIDg4IDEzMCBMIDE0MiA3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjE2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8L2c+CiAgPGcgYXJpYS1oaWRkZW49InRydWUiPgogICAgPHBhdGggZmlsbD0iIzAwNjBBMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjE3LjU2IDE0NSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik00NjkgMCAyMzMgMzEwVjBINjJWNzAySDIzM1YzOTRMNDY3IDcwMkg2NjhMMzk2IDM1OEw2NzggMFoiLz4KICAgIDxwYXRoIGZpbGw9IiMwMDYwQTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI5OC4yMCAxNDUpIHNjYWxlKDAuMTIwMDAgLTAuMTIwMDApIiBkPSJNMjc0IDU2NlEzMzMgNTY2IDM3Ny41IDU0Mi4wUTQyMiA1MTggNDQ2IDQ3OVY1NThINjE3VjBINDQ2Vjc5UTQyMSA0MCAzNzYuNSAxNi4wUTMzMiAtOCAyNzMgLThRMjA1IC04IDE0OS4wIDI3LjVROTMgNjMgNjAuNSAxMjguNVEyOCAxOTQgMjggMjgwUTI4IDM2NiA2MC41IDQzMS4wUTkzIDQ5NiAxNDkuMCA1MzEuMFEyMDUgNTY2IDI3NCA1NjZaTTMyNCA0MTdRMjczIDQxNyAyMzcuNSAzODAuNVEyMDIgMzQ0IDIwMiAyODBRMjAyIDIxNiAyMzcuNSAxNzguNVEyNzMgMTQxIDMyNCAxNDFRMzc1IDE0MSA0MTAuNSAxNzguMFE0NDYgMjE1IDQ0NiAyNzlRNDQ2IDM0MyA0MTAuNSAzODAuMFEzNzUgNDE3IDMyNCA0MTdaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDA2MEEwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNzYuNjggMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTIzMyA3NDBWMEg2MlY3NDBaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDA2MEEwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0MDkuMDggMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTI3NCA1NjZRMzMzIDU2NiAzNzcuNSA1NDIuMFE0MjIgNTE4IDQ0NiA0NzlWNTU4SDYxN1YwSDQ0NlY3OVE0MjEgNDAgMzc2LjUgMTYuMFEzMzIgLTggMjczIC04UTIwNSAtOCAxNDkuMCAyNy41UTkzIDYzIDYwLjUgMTI4LjVRMjggMTk0IDI4IDI4MFEyOCAzNjYgNjAuNSA0MzEuMFE5MyA0OTYgMTQ5LjAgNTMxLjBRMjA1IDU2NiAyNzQgNTY2Wk0zMjQgNDE3UTI3MyA0MTcgMjM3LjUgMzgwLjVRMjAyIDM0NCAyMDIgMjgwUTIwMiAyMTYgMjM3LjUgMTc4LjVRMjczIDE0MSAzMjQgMTQxUTM3NSAxNDEgNDEwLjUgMTc4LjBRNDQ2IDIxNSA0NDYgMjc5UTQ0NiAzNDMgNDEwLjUgMzgwLjBRMzc1IDQxNyAzMjQgNDE3WiIvPgogICAgPHBhdGggZmlsbD0iIzAwQTBFMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDg3LjU2IDE0NSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik01NjcgNzAyVjU2NUgzODFWMEgyMTBWNTY1SDI0VjcwMloiLz4KICAgIDxwYXRoIGZpbGw9IiMwMEEwRTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU1NS40OCAxNDUpIHNjYWxlKDAuMTIwMDAgLTAuMTIwMDApIiBkPSJNMjc0IDU2NlEzMzMgNTY2IDM3Ny41IDU0Mi4wUTQyMiA1MTggNDQ2IDQ3OVY1NThINjE3VjBINDQ2Vjc5UTQyMSA0MCAzNzYuNSAxNi4wUTMzMiAtOCAyNzMgLThRMjA1IC04IDE0OS4wIDI3LjVROTMgNjMgNjAuNSAxMjguNVEyOCAxOTQgMjggMjgwUTI4IDM2NiA2MC41IDQzMS4wUTkzIDQ5NiAxNDkuMCA1MzEuMFEyMDUgNTY2IDI3NCA1NjZaTTMyNCA0MTdRMjczIDQxNyAyMzcuNSAzODAuNVEyMDIgMzQ0IDIwMiAyODBRMjAyIDIxNiAyMzcuNSAxNzguNVEyNzMgMTQxIDMyNCAxNDFRMzc1IDE0MSA0MTAuNSAxNzguMFE0NDYgMjE1IDQ0NiAyNzlRNDQ2IDM0MyA0MTAuNSAzODAuMFEzNzUgNDE3IDMyNCA0MTdaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDBBMEUwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2MzMuOTYgMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTMyIDE4M0gyMDFRMjA0IDE1NCAyMjguMCAxMzYuMFEyNTIgMTE4IDI4NyAxMThRMzE5IDExOCAzMzYuNSAxMzAuNVEzNTQgMTQzIDM1NCAxNjNRMzU0IDE4NyAzMjkuMCAxOTguNVEzMDQgMjEwIDI0OCAyMjRRMTg4IDIzOCAxNDguMCAyNTMuNVExMDggMjY5IDc5LjAgMzAyLjVRNTAgMzM2IDUwIDM5M1E1MCA0NDEgNzYuNSA0ODAuNVExMDMgNTIwIDE1NC41IDU0My4wUTIwNiA1NjYgMjc3IDU2NlEzODIgNTY2IDQ0Mi41IDUxNC4wUTUwMyA0NjIgNTEyIDM3NkgzNTRRMzUwIDQwNSAzMjguNSA0MjIuMFEzMDcgNDM5IDI3MiA0MzlRMjQyIDQzOSAyMjYuMCA0MjcuNVEyMTAgNDE2IDIxMCAzOTZRMjEwIDM3MiAyMzUuNSAzNjAuMFEyNjEgMzQ4IDMxNSAzMzZRMzc3IDMyMCA0MTYuMCAzMDQuNVE0NTUgMjg5IDQ4NC41IDI1NC41UTUxNCAyMjAgNTE1IDE2MlE1MTUgMTEzIDQ4Ny41IDc0LjVRNDYwIDM2IDQwOC41IDE0LjBRMzU3IC04IDI4OSAtOFEyMTYgLTggMTU5LjAgMTcuMFExMDIgNDIgNjkuMCA4NS41UTM2IDEyOSAzMiAxODNaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDBBMEUwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2OTcuOTIgMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTQwMyAwIDIzMyAyMzRWMEg2MlY3NDBIMjMzVjMzMUw0MDIgNTU4SDYxM0wzODEgMjc4TDYxNSAwWiIvPgogIDwvZz4KPC9zdmc+Cg==" alt=""></div>
+        <div class="logo-card-info"><strong>Full lockup</strong> · light bg<br><code>kalatask-logo-full.svg</code></div>
+      </div>
+      <div class="logo-card">
+        <div class="logo-card-canvas dark"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3OTEgMjAwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkthbGFUYXNrIGxvZ28gKGRhcmsgbW9kZSkiPgogIDx0aXRsZT5LYWxhVGFzazwvdGl0bGU+CiAgPGcgYXJpYS1oaWRkZW49InRydWUiPgogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI5MiIgZmlsbD0iIzAwQTBFMCIvPgogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI2OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjEwIi8+CiAgICA8cGF0aCBkPSJNIDYyIDEwNCBMIDg4IDEzMCBMIDE0MiA3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjE2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8L2c+CiAgPGcgYXJpYS1oaWRkZW49InRydWUiPgogICAgPHBhdGggZmlsbD0iI0ZGRkZGRiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjE3LjU2IDE0NSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik00NjkgMCAyMzMgMzEwVjBINjJWNzAySDIzM1YzOTRMNDY3IDcwMkg2NjhMMzk2IDM1OEw2NzggMFoiLz4KICAgIDxwYXRoIGZpbGw9IiNGRkZGRkYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI5OC4yMCAxNDUpIHNjYWxlKDAuMTIwMDAgLTAuMTIwMDApIiBkPSJNMjc0IDU2NlEzMzMgNTY2IDM3Ny41IDU0Mi4wUTQyMiA1MTggNDQ2IDQ3OVY1NThINjE3VjBINDQ2Vjc5UTQyMSA0MCAzNzYuNSAxNi4wUTMzMiAtOCAyNzMgLThRMjA1IC04IDE0OS4wIDI3LjVROTMgNjMgNjAuNSAxMjguNVEyOCAxOTQgMjggMjgwUTI4IDM2NiA2MC41IDQzMS4wUTkzIDQ5NiAxNDkuMCA1MzEuMFEyMDUgNTY2IDI3NCA1NjZaTTMyNCA0MTdRMjczIDQxNyAyMzcuNSAzODAuNVEyMDIgMzQ0IDIwMiAyODBRMjAyIDIxNiAyMzcuNSAxNzguNVEyNzMgMTQxIDMyNCAxNDFRMzc1IDE0MSA0MTAuNSAxNzguMFE0NDYgMjE1IDQ0NiAyNzlRNDQ2IDM0MyA0MTAuNSAzODAuMFEzNzUgNDE3IDMyNCA0MTdaIi8+CiAgICA8cGF0aCBmaWxsPSIjRkZGRkZGIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNzYuNjggMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTIzMyA3NDBWMEg2MlY3NDBaIi8+CiAgICA8cGF0aCBmaWxsPSIjRkZGRkZGIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0MDkuMDggMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTI3NCA1NjZRMzMzIDU2NiAzNzcuNSA1NDIuMFE0MjIgNTE4IDQ0NiA0NzlWNTU4SDYxN1YwSDQ0NlY3OVE0MjEgNDAgMzc2LjUgMTYuMFEzMzIgLTggMjczIC04UTIwNSAtOCAxNDkuMCAyNy41UTkzIDYzIDYwLjUgMTI4LjVRMjggMTk0IDI4IDI4MFEyOCAzNjYgNjAuNSA0MzEuMFE5MyA0OTYgMTQ5LjAgNTMxLjBRMjA1IDU2NiAyNzQgNTY2Wk0zMjQgNDE3UTI3MyA0MTcgMjM3LjUgMzgwLjVRMjAyIDM0NCAyMDIgMjgwUTIwMiAyMTYgMjM3LjUgMTc4LjVRMjczIDE0MSAzMjQgMTQxUTM3NSAxNDEgNDEwLjUgMTc4LjBRNDQ2IDIxNSA0NDYgMjc5UTQ0NiAzNDMgNDEwLjUgMzgwLjBRMzc1IDQxNyAzMjQgNDE3WiIvPgogICAgPHBhdGggZmlsbD0iIzAwQTBFMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDg3LjU2IDE0NSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik01NjcgNzAyVjU2NUgzODFWMEgyMTBWNTY1SDI0VjcwMloiLz4KICAgIDxwYXRoIGZpbGw9IiMwMEEwRTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU1NS40OCAxNDUpIHNjYWxlKDAuMTIwMDAgLTAuMTIwMDApIiBkPSJNMjc0IDU2NlEzMzMgNTY2IDM3Ny41IDU0Mi4wUTQyMiA1MTggNDQ2IDQ3OVY1NThINjE3VjBINDQ2Vjc5UTQyMSA0MCAzNzYuNSAxNi4wUTMzMiAtOCAyNzMgLThRMjA1IC04IDE0OS4wIDI3LjVROTMgNjMgNjAuNSAxMjguNVEyOCAxOTQgMjggMjgwUTI4IDM2NiA2MC41IDQzMS4wUTkzIDQ5NiAxNDkuMCA1MzEuMFEyMDUgNTY2IDI3NCA1NjZaTTMyNCA0MTdRMjczIDQxNyAyMzcuNSAzODAuNVEyMDIgMzQ0IDIwMiAyODBRMjAyIDIxNiAyMzcuNSAxNzguNVEyNzMgMTQxIDMyNCAxNDFRMzc1IDE0MSA0MTAuNSAxNzguMFE0NDYgMjE1IDQ0NiAyNzlRNDQ2IDM0MyA0MTAuNSAzODAuMFEzNzUgNDE3IDMyNCA0MTdaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDBBMEUwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2MzMuOTYgMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTMyIDE4M0gyMDFRMjA0IDE1NCAyMjguMCAxMzYuMFEyNTIgMTE4IDI4NyAxMThRMzE5IDExOCAzMzYuNSAxMzAuNVEzNTQgMTQzIDM1NCAxNjNRMzU0IDE4NyAzMjkuMCAxOTguNVEzMDQgMjEwIDI0OCAyMjRRMTg4IDIzOCAxNDguMCAyNTMuNVExMDggMjY5IDc5LjAgMzAyLjVRNTAgMzM2IDUwIDM5M1E1MCA0NDEgNzYuNSA0ODAuNVExMDMgNTIwIDE1NC41IDU0My4wUTIwNiA1NjYgMjc3IDU2NlEzODIgNTY2IDQ0Mi41IDUxNC4wUTUwMyA0NjIgNTEyIDM3NkgzNTRRMzUwIDQwNSAzMjguNSA0MjIuMFEzMDcgNDM5IDI3MiA0MzlRMjQyIDQzOSAyMjYuMCA0MjcuNVEyMTAgNDE2IDIxMCAzOTZRMjEwIDM3MiAyMzUuNSAzNjAuMFEyNjEgMzQ4IDMxNSAzMzZRMzc3IDMyMCA0MTYuMCAzMDQuNVE0NTUgMjg5IDQ4NC41IDI1NC41UTUxNCAyMjAgNTE1IDE2MlE1MTUgMTEzIDQ4Ny41IDc0LjVRNDYwIDM2IDQwOC41IDE0LjBRMzU3IC04IDI4OSAtOFEyMTYgLTggMTU5LjAgMTcuMFExMDIgNDIgNjkuMCA4NS41UTM2IDEyOSAzMiAxODNaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDBBMEUwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2OTcuOTIgMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTQwMyAwIDIzMyAyMzRWMEg2MlY3NDBIMjMzVjMzMUw0MDIgNTU4SDYxM0wzODEgMjc4TDYxNSAwWiIvPgogIDwvZz4KPC9zdmc+Cg==" alt=""></div>
+        <div class="logo-card-info"><strong>Full lockup</strong> · dark mode<br><code>kalatask-logo-full-dark.svg</code></div>
+      </div>
+      <div class="logo-card">
+        <div class="logo-card-canvas light"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkthbGFUYXNrIGljb24iPgogIDx0aXRsZT5LYWxhVGFzazwvdGl0bGU+CiAgPCEtLSBPdXRlciBzb2xpZCBjaXJjbGU6IEthbGFib3Jhc2kgRGVlcCBCbHVlIC0tPgogIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iOTIiIGZpbGw9IiMwMDYwQTAiLz4KICA8IS0tIElubmVyIG9yYml0YWwgcmluZzogS2FsYWJvcmFzaSBTa3kgQmx1ZSAoZWNob2VzIHRoZSAibyIgaW4gcGFyZW50IGxvZ28pIC0tPgogIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iNjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwQTBFMCIgc3Ryb2tlLXdpZHRoPSIxMCIvPgogIDwhLS0gQ2hlY2ttYXJrOiB0YXNrLW1hbmFnZW1lbnQgc2VtYW50aWMsIHdoaXRlIG9uIGRhcmsgLS0+CiAgPHBhdGggZD0iTSA2MiAxMDQgTCA4OCAxMzAgTCAxNDIgNzYiCiAgICAgICAgZmlsbD0ibm9uZSIKICAgICAgICBzdHJva2U9IiNGRkZGRkYiCiAgICAgICAgc3Ryb2tlLXdpZHRoPSIxNiIKICAgICAgICBzdHJva2UtbGluZWNhcD0icm91bmQiCiAgICAgICAgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K" alt="" style="max-height: 96px;"></div>
+        <div class="logo-card-info"><strong>Icon mark</strong> · app icon, sidebar<br><code>kalatask-icon.svg</code></div>
+      </div>
+      <div class="logo-card">
+        <div class="logo-card-canvas brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkthbGFUYXNrIGljb24gKG1vbm9jaHJvbWUpIj4KICA8dGl0bGU+S2FsYVRhc2s8L3RpdGxlPgogIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iOTIiIGZpbGw9IiMwMDYwQTAiLz4KICA8Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjY4IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMTAiIG9wYWNpdHk9IjAuNDUiLz4KICA8cGF0aCBkPSJNIDYyIDEwNCBMIDg4IDEzMCBMIDE0MiA3NiIKICAgICAgICBmaWxsPSJub25lIgogICAgICAgIHN0cm9rZT0iI0ZGRkZGRiIKICAgICAgICBzdHJva2Utd2lkdGg9IjE2IgogICAgICAgIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIKICAgICAgICBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo=" alt="" style="max-height: 96px;"></div>
+        <div class="logo-card-info"><strong>Mono variant</strong> · single-color contexts<br><code>kalatask-icon-mono.svg</code></div>
+      </div>
+      <div class="logo-card">
+        <div class="logo-card-canvas light"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1ODEgMTYwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkthbGFUYXNrIHdvcmRtYXJrIj4KICA8dGl0bGU+S2FsYVRhc2s8L3RpdGxlPgogIDxnIGFyaWEtaGlkZGVuPSJ0cnVlIj4KICAgIDxwYXRoIGZpbGw9IiMwMDYwQTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDcuNTYgMTI1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTQ2OSAwIDIzMyAzMTBWMEg2MlY3MDJIMjMzVjM5NEw0NjcgNzAySDY2OEwzOTYgMzU4TDY3OCAwWiIvPgogICAgPHBhdGggZmlsbD0iIzAwNjBBMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODguMjAgMTI1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTI3NCA1NjZRMzMzIDU2NiAzNzcuNSA1NDIuMFE0MjIgNTE4IDQ0NiA0NzlWNTU4SDYxN1YwSDQ0NlY3OVE0MjEgNDAgMzc2LjUgMTYuMFEzMzIgLTggMjczIC04UTIwNSAtOCAxNDkuMCAyNy41UTkzIDYzIDYwLjUgMTI4LjVRMjggMTk0IDI4IDI4MFEyOCAzNjYgNjAuNSA0MzEuMFE5MyA0OTYgMTQ5LjAgNTMxLjBRMjA1IDU2NiAyNzQgNTY2Wk0zMjQgNDE3UTI3MyA0MTcgMjM3LjUgMzgwLjVRMjAyIDM0NCAyMDIgMjgwUTIwMiAyMTYgMjM3LjUgMTc4LjVRMjczIDE0MSAzMjQgMTQxUTM3NSAxNDEgNDEwLjUgMTc4LjBRNDQ2IDIxNSA0NDYgMjc5UTQ0NiAzNDMgNDEwLjUgMzgwLjBRMzc1IDQxNyAzMjQgNDE3WiIvPgogICAgPHBhdGggZmlsbD0iIzAwNjBBMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTY2LjY4IDEyNSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik0yMzMgNzQwVjBINjJWNzQwWiIvPgogICAgPHBhdGggZmlsbD0iIzAwNjBBMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTk5LjA4IDEyNSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik0yNzQgNTY2UTMzMyA1NjYgMzc3LjUgNTQyLjBRNDIyIDUxOCA0NDYgNDc5VjU1OEg2MTdWMEg0NDZWNzlRNDIxIDQwIDM3Ni41IDE2LjBRMzMyIC04IDI3MyAtOFEyMDUgLTggMTQ5LjAgMjcuNVE5MyA2MyA2MC41IDEyOC41UTI4IDE5NCAyOCAyODBRMjggMzY2IDYwLjUgNDMxLjBROTMgNDk2IDE0OS4wIDUzMS4wUTIwNSA1NjYgMjc0IDU2NlpNMzI0IDQxN1EyNzMgNDE3IDIzNy41IDM4MC41UTIwMiAzNDQgMjAyIDI4MFEyMDIgMjE2IDIzNy41IDE3OC41UTI3MyAxNDEgMzI0IDE0MVEzNzUgMTQxIDQxMC41IDE3OC4wUTQ0NiAyMTUgNDQ2IDI3OVE0NDYgMzQzIDQxMC41IDM4MC4wUTM3NSA0MTcgMzI0IDQxN1oiLz4KICAgIDxwYXRoIGZpbGw9IiMwMEEwRTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI3Ny41NiAxMjUpIHNjYWxlKDAuMTIwMDAgLTAuMTIwMDApIiBkPSJNNTY3IDcwMlY1NjVIMzgxVjBIMjEwVjU2NUgyNFY3MDJaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDBBMEUwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNDUuNDggMTI1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTI3NCA1NjZRMzMzIDU2NiAzNzcuNSA1NDIuMFE0MjIgNTE4IDQ0NiA0NzlWNTU4SDYxN1YwSDQ0NlY3OVE0MjEgNDAgMzc2LjUgMTYuMFEzMzIgLTggMjczIC04UTIwNSAtOCAxNDkuMCAyNy41UTkzIDYzIDYwLjUgMTI4LjVRMjggMTk0IDI4IDI4MFEyOCAzNjYgNjAuNSA0MzEuMFE5MyA0OTYgMTQ5LjAgNTMxLjBRMjA1IDU2NiAyNzQgNTY2Wk0zMjQgNDE3UTI3MyA0MTcgMjM3LjUgMzgwLjVRMjAyIDM0NCAyMDIgMjgwUTIwMiAyMTYgMjM3LjUgMTc4LjVRMjczIDE0MSAzMjQgMTQxUTM3NSAxNDEgNDEwLjUgMTc4LjBRNDQ2IDIxNSA0NDYgMjc5UTQ0NiAzNDMgNDEwLjUgMzgwLjBRMzc1IDQxNyAzMjQgNDE3WiIvPgogICAgPHBhdGggZmlsbD0iIzAwQTBFMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDIzLjk2IDEyNSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik0zMiAxODNIMjAxUTIwNCAxNTQgMjI4LjAgMTM2LjBRMjUyIDExOCAyODcgMTE4UTMxOSAxMTggMzM2LjUgMTMwLjVRMzU0IDE0MyAzNTQgMTYzUTM1NCAxODcgMzI5LjAgMTk4LjVRMzA0IDIxMCAyNDggMjI0UTE4OCAyMzggMTQ4LjAgMjUzLjVRMTA4IDI2OSA3OS4wIDMwMi41UTUwIDMzNiA1MCAzOTNRNTAgNDQxIDc2LjUgNDgwLjVRMTAzIDUyMCAxNTQuNSA1NDMuMFEyMDYgNTY2IDI3NyA1NjZRMzgyIDU2NiA0NDIuNSA1MTQuMFE1MDMgNDYyIDUxMiAzNzZIMzU0UTM1MCA0MDUgMzI4LjUgNDIyLjBRMzA3IDQzOSAyNzIgNDM5UTI0MiA0MzkgMjI2LjAgNDI3LjVRMjEwIDQxNiAyMTAgMzk2UTIxMCAzNzIgMjM1LjUgMzYwLjBRMjYxIDM0OCAzMTUgMzM2UTM3NyAzMjAgNDE2LjAgMzA0LjVRNDU1IDI4OSA0ODQuNSAyNTQuNVE1MTQgMjIwIDUxNSAxNjJRNTE1IDExMyA0ODcuNSA3NC41UTQ2MCAzNiA0MDguNSAxNC4wUTM1NyAtOCAyODkgLThRMjE2IC04IDE1OS4wIDE3LjBRMTAyIDQyIDY5LjAgODUuNVEzNiAxMjkgMzIgMTgzWiIvPgogICAgPHBhdGggZmlsbD0iIzAwQTBFMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDg3LjkyIDEyNSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik00MDMgMCAyMzMgMjM0VjBINjJWNzQwSDIzM1YzMzFMNDAyIDU1OEg2MTNMMzgxIDI3OEw2MTUgMFoiLz4KICA8L2c+Cjwvc3ZnPgo=" alt=""></div>
+        <div class="logo-card-info"><strong>Wordmark only</strong> · tight horizontal spaces<br><code>kalatask-wordmark.svg</code></div>
+      </div>
+      <div class="logo-card">
+        <div class="logo-card-canvas light"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJLYWxhVGFzayI+CiAgPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTUiIGZpbGw9IiMwMDYwQTAiLz4KICA8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxMSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBBMEUwIiBzdHJva2Utd2lkdGg9IjEuNiIvPgogIDxwYXRoIGQ9Ik0gMTAgMTYuNSBMIDE0LjIgMjEgTCAyMi41IDEyLjUiCiAgICAgICAgZmlsbD0ibm9uZSIKICAgICAgICBzdHJva2U9IiNGRkZGRkYiCiAgICAgICAgc3Ryb2tlLXdpZHRoPSIyLjgiCiAgICAgICAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogICAgICAgIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" alt="" style="max-height: 64px; image-rendering: crisp-edges;"></div>
+        <div class="logo-card-info"><strong>Favicon</strong> · 32×32 optimized<br><code>favicon.svg</code></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLOR PALETTE -->
+  <section>
+    <h2>2. Color palette</h2>
+    <p class="lede">Diturunkan langsung dari logo Kalaborasi via pixel sampling. Dua warna primer + scale 9-step untuk UI states.</p>
+
+    <h3 style="font-size: 16px; font-weight: 600; margin: 16px 0 12px;">Primary brand colors</h3>
+    <div class="palette">
+      <div class="swatch">
+        <div class="swatch-color" style="background: #0060A0;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Deep Blue</div>
+          <div class="swatch-hex">#0060A0</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #00A0E0;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Sky Blue</div>
+          <div class="swatch-hex">#00A0E0</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size: 16px; font-weight: 600; margin: 24px 0 12px;">Brand Deep — 9-step scale</h3>
+    <div class="scale">
+      <div class="scale-step dark-text" style="background: #EBF3F9;">50</div>
+      <div class="scale-step dark-text" style="background: #D6E7F2;">100</div>
+      <div class="scale-step dark-text" style="background: #A8CDE3;">200</div>
+      <div class="scale-step" style="background: #7AB3D4;">300</div>
+      <div class="scale-step" style="background: #4C99C5;">400</div>
+      <div class="scale-step" style="background: #1A75B5;">500</div>
+      <div class="scale-step" style="background: #0060A0;">600</div>
+      <div class="scale-step" style="background: #004A7A;">700</div>
+      <div class="scale-step" style="background: #003355;">800</div>
+    </div>
+
+    <h3 style="font-size: 16px; font-weight: 600; margin: 24px 0 12px;">Brand Sky — 9-step scale</h3>
+    <div class="scale">
+      <div class="scale-step dark-text" style="background: #EBF8FD;">50</div>
+      <div class="scale-step dark-text" style="background: #D6F0FA;">100</div>
+      <div class="scale-step dark-text" style="background: #A8E1F5;">200</div>
+      <div class="scale-step" style="background: #7AD1F0;">300</div>
+      <div class="scale-step" style="background: #4CC2EB;">400</div>
+      <div class="scale-step" style="background: #33B5E8;">500</div>
+      <div class="scale-step" style="background: #00A0E0;">600</div>
+      <div class="scale-step" style="background: #0088C8;">700</div>
+      <div class="scale-step" style="background: #0066A0;">800</div>
+    </div>
+  </section>
+
+  <!-- TYPOGRAPHY -->
+  <section>
+    <h2>3. Typography</h2>
+    <p class="lede">Inter (sans) + JetBrains Mono (mono). Free, ekosistem matang, dekat dengan custom typeface Kalaborasi.</p>
+    <div class="type-demo">
+      <div class="type-row">
+        <div class="type-label">text-4xl/800</div>
+        <div style="font-size: 36px; font-weight: 800; letter-spacing: -1px;">KalaTask Display</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">text-3xl/700</div>
+        <div style="font-size: 30px; font-weight: 700;">Page heading</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">text-2xl/600</div>
+        <div style="font-size: 24px; font-weight: 600;">Section heading</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">text-xl/600</div>
+        <div style="font-size: 20px; font-weight: 600;">Card heading</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">text-base/400</div>
+        <div style="font-size: 16px;">Body default — paragraf utama, deskripsi task, dan komentar pakai size ini. Line-height 1.5.</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">text-sm/400</div>
+        <div style="font-size: 14px;">Body small — table cell, secondary action, meta info di card.</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">text-xs · mono</div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px;">27-04-2026 14:30 WIB · #task_a1b2c3</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUTTONS -->
+  <section>
+    <h2>4. Buttons</h2>
+    <p class="lede">4 varian utama. Hover state shift +1 step ke darker.</p>
+    <div class="btn-row">
+      <button class="btn btn-primary">+ Create Task</button>
+      <button class="btn btn-secondary">Cancel</button>
+      <button class="btn btn-ghost">View Details</button>
+      <button class="btn btn-destructive">🗑 Delete</button>
+    </div>
+  </section>
+
+  <!-- STATUS BADGES -->
+  <section>
+    <h2>5. Status badges</h2>
+    <p class="lede">5 status sesuai PRD F1, F3. Status <code>in_progress</code> pakai brand sky biar visual continuity — task aktif = warna brand.</p>
+    <div class="badge-row">
+      <span class="badge badge-todo">Todo</span>
+      <span class="badge badge-progress">In Progress</span>
+      <span class="badge badge-review">Review</span>
+      <span class="badge badge-done">Done</span>
+      <span class="badge badge-blocked">Blocked</span>
+    </div>
+  </section>
+
+  <!-- TASK CARDS PREVIEW -->
+  <section>
+    <h2>6. Task card preview (Kanban)</h2>
+    <p class="lede">Border-left 3px = status indicator. Source dari Cowork ditandai eksplisit untuk transparency.</p>
+    <div class="mock-row">
+      <div class="task-card todo">
+        <div class="task-title">Follow-up vendor packaging</div>
+        <div class="task-meta">
+          <span class="badge badge-todo" style="font-size: 10px; padding: 2px 6px;">Todo</span>
+          <span>📅 03-05-2026</span>
+        </div>
+      </div>
+      <div class="task-card">
+        <div class="task-title">Review draft proposal Q3</div>
+        <div class="task-meta">
+          <span class="badge badge-progress" style="font-size: 10px; padding: 2px 6px;">In Progress</span>
+          <span>📅 28-04-2026</span>
+        </div>
+        <div class="task-source">🤖 Auto from MoM rapat-marketing-2026-04-26.docx</div>
+      </div>
+      <div class="task-card review">
+        <div class="task-title">Validasi data baseline survey</div>
+        <div class="task-meta">
+          <span class="badge badge-review" style="font-size: 10px; padding: 2px 6px;">Review</span>
+          <span>📅 30-04-2026</span>
+        </div>
+      </div>
+      <div class="task-card done">
+        <div class="task-title">Setup Supabase project</div>
+        <div class="task-meta">
+          <span class="badge badge-done" style="font-size: 10px; padding: 2px 6px;">Done</span>
+          <span>✓ Selesai 25-04-2026</span>
+        </div>
+      </div>
+      <div class="task-card blocked">
+        <div class="task-title">Migrasi data spreadsheet HR</div>
+        <div class="task-meta">
+          <span class="badge badge-blocked" style="font-size: 10px; padding: 2px 6px;">Blocked</span>
+          <span>⚠ Menunggu IT</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTIFICATIONS -->
+  <section>
+    <h2>7. Notification urgency tiers (PRD F7)</h2>
+    <p class="lede">Tone copy match dengan tier urgency — semakin urgent, semakin direct dan action-oriented.</p>
+    <div class="notif notif-normal">
+      <div class="notif-icon"></div>
+      <div><strong>Task baru di-assign ke kamu:</strong> Review laporan Q1</div>
+    </div>
+    <div class="notif notif-warning">
+      <div class="notif-icon"></div>
+      <div><strong>H-3 deadline:</strong> Review laporan Q1 deadline 3 hari lagi</div>
+    </div>
+    <div class="notif notif-urgent">
+      <div class="notif-icon"></div>
+      <div><strong>H-1 deadline:</strong> Review laporan Q1 deadline besok</div>
+    </div>
+    <div class="notif notif-critical">
+      <div class="notif-icon"></div>
+      <div><strong>Overdue:</strong> Review laporan Q1 sudah lewat deadline 2 hari. Update sekarang.</div>
+    </div>
+  </section>
+
+  <!-- DON'TS -->
+  <section>
+    <h2>8. Logo don'ts</h2>
+    <p class="lede">Pertahankan integritas visual — proporsi, warna brand, dan clear space.</p>
+    <div class="donts">
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3OTEgMjAwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkthbGFUYXNrIGxvZ28iPgogIDx0aXRsZT5LYWxhVGFzazwvdGl0bGU+CiAgPGcgYXJpYS1oaWRkZW49InRydWUiPgogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI5MiIgZmlsbD0iIzAwNjBBMCIvPgogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI2OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBBMEUwIiBzdHJva2Utd2lkdGg9IjEwIi8+CiAgICA8cGF0aCBkPSJNIDYyIDEwNCBMIDg4IDEzMCBMIDE0MiA3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjE2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8L2c+CiAgPGcgYXJpYS1oaWRkZW49InRydWUiPgogICAgPHBhdGggZmlsbD0iIzAwNjBBMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjE3LjU2IDE0NSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik00NjkgMCAyMzMgMzEwVjBINjJWNzAySDIzM1YzOTRMNDY3IDcwMkg2NjhMMzk2IDM1OEw2NzggMFoiLz4KICAgIDxwYXRoIGZpbGw9IiMwMDYwQTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI5OC4yMCAxNDUpIHNjYWxlKDAuMTIwMDAgLTAuMTIwMDApIiBkPSJNMjc0IDU2NlEzMzMgNTY2IDM3Ny41IDU0Mi4wUTQyMiA1MTggNDQ2IDQ3OVY1NThINjE3VjBINDQ2Vjc5UTQyMSA0MCAzNzYuNSAxNi4wUTMzMiAtOCAyNzMgLThRMjA1IC04IDE0OS4wIDI3LjVROTMgNjMgNjAuNSAxMjguNVEyOCAxOTQgMjggMjgwUTI4IDM2NiA2MC41IDQzMS4wUTkzIDQ5NiAxNDkuMCA1MzEuMFEyMDUgNTY2IDI3NCA1NjZaTTMyNCA0MTdRMjczIDQxNyAyMzcuNSAzODAuNVEyMDIgMzQ0IDIwMiAyODBRMjAyIDIxNiAyMzcuNSAxNzguNVEyNzMgMTQxIDMyNCAxNDFRMzc1IDE0MSA0MTAuNSAxNzguMFE0NDYgMjE1IDQ0NiAyNzlRNDQ2IDM0MyA0MTAuNSAzODAuMFEzNzUgNDE3IDMyNCA0MTdaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDA2MEEwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNzYuNjggMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTIzMyA3NDBWMEg2MlY3NDBaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDA2MEEwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0MDkuMDggMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTI3NCA1NjZRMzMzIDU2NiAzNzcuNSA1NDIuMFE0MjIgNTE4IDQ0NiA0NzlWNTU4SDYxN1YwSDQ0NlY3OVE0MjEgNDAgMzc2LjUgMTYuMFEzMzIgLTggMjczIC04UTIwNSAtOCAxNDkuMCAyNy41UTkzIDYzIDYwLjUgMTI4LjVRMjggMTk0IDI4IDI4MFEyOCAzNjYgNjAuNSA0MzEuMFE5MyA0OTYgMTQ5LjAgNTMxLjBRMjA1IDU2NiAyNzQgNTY2Wk0zMjQgNDE3UTI3MyA0MTcgMjM3LjUgMzgwLjVRMjAyIDM0NCAyMDIgMjgwUTIwMiAyMTYgMjM3LjUgMTc4LjVRMjczIDE0MSAzMjQgMTQxUTM3NSAxNDEgNDEwLjUgMTc4LjBRNDQ2IDIxNSA0NDYgMjc5UTQ0NiAzNDMgNDEwLjUgMzgwLjBRMzc1IDQxNyAzMjQgNDE3WiIvPgogICAgPHBhdGggZmlsbD0iIzAwQTBFMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDg3LjU2IDE0NSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik01NjcgNzAyVjU2NUgzODFWMEgyMTBWNTY1SDI0VjcwMloiLz4KICAgIDxwYXRoIGZpbGw9IiMwMEEwRTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU1NS40OCAxNDUpIHNjYWxlKDAuMTIwMDAgLTAuMTIwMDApIiBkPSJNMjc0IDU2NlEzMzMgNTY2IDM3Ny41IDU0Mi4wUTQyMiA1MTggNDQ2IDQ3OVY1NThINjE3VjBINDQ2Vjc5UTQyMSA0MCAzNzYuNSAxNi4wUTMzMiAtOCAyNzMgLThRMjA1IC04IDE0OS4wIDI3LjVROTMgNjMgNjAuNSAxMjguNVEyOCAxOTQgMjggMjgwUTI4IDM2NiA2MC41IDQzMS4wUTkzIDQ5NiAxNDkuMCA1MzEuMFEyMDUgNTY2IDI3NCA1NjZaTTMyNCA0MTdRMjczIDQxNyAyMzcuNSAzODAuNVEyMDIgMzQ0IDIwMiAyODBRMjAyIDIxNiAyMzcuNSAxNzguNVEyNzMgMTQxIDMyNCAxNDFRMzc1IDE0MSA0MTAuNSAxNzguMFE0NDYgMjE1IDQ0NiAyNzlRNDQ2IDM0MyA0MTAuNSAzODAuMFEzNzUgNDE3IDMyNCA0MTdaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDBBMEUwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2MzMuOTYgMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTMyIDE4M0gyMDFRMjA0IDE1NCAyMjguMCAxMzYuMFEyNTIgMTE4IDI4NyAxMThRMzE5IDExOCAzMzYuNSAxMzAuNVEzNTQgMTQzIDM1NCAxNjNRMzU0IDE4NyAzMjkuMCAxOTguNVEzMDQgMjEwIDI0OCAyMjRRMTg4IDIzOCAxNDguMCAyNTMuNVExMDggMjY5IDc5LjAgMzAyLjVRNTAgMzM2IDUwIDM5M1E1MCA0NDEgNzYuNSA0ODAuNVExMDMgNTIwIDE1NC41IDU0My4wUTIwNiA1NjYgMjc3IDU2NlEzODIgNTY2IDQ0Mi41IDUxNC4wUTUwMyA0NjIgNTEyIDM3NkgzNTRRMzUwIDQwNSAzMjguNSA0MjIuMFEzMDcgNDM5IDI3MiA0MzlRMjQyIDQzOSAyMjYuMCA0MjcuNVEyMTAgNDE2IDIxMCAzOTZRMjEwIDM3MiAyMzUuNSAzNjAuMFEyNjEgMzQ4IDMxNSAzMzZRMzc3IDMyMCA0MTYuMCAzMDQuNVE0NTUgMjg5IDQ4NC41IDI1NC41UTUxNCAyMjAgNTE1IDE2MlE1MTUgMTEzIDQ4Ny41IDc0LjVRNDYwIDM2IDQwOC41IDE0LjBRMzU3IC04IDI4OSAtOFEyMTYgLTggMTU5LjAgMTcuMFExMDIgNDIgNjkuMCA4NS41UTM2IDEyOSAzMiAxODNaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDBBMEUwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2OTcuOTIgMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTQwMyAwIDIzMyAyMzRWMEg2MlY3NDBIMjMzVjMzMUw0MDIgNTU4SDYxM0wzODEgMjc4TDYxNSAwWiIvPgogIDwvZz4KPC9zdmc+Cg==" alt="" style="height: 40px; transform: scaleX(1.5);">
+        </div>
+        <div class="dont-card-label">❌ Stretch / squish</div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3OTEgMjAwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkthbGFUYXNrIGxvZ28iPgogIDx0aXRsZT5LYWxhVGFzazwvdGl0bGU+CiAgPGcgYXJpYS1oaWRkZW49InRydWUiPgogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI5MiIgZmlsbD0iIzAwNjBBMCIvPgogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI2OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBBMEUwIiBzdHJva2Utd2lkdGg9IjEwIi8+CiAgICA8cGF0aCBkPSJNIDYyIDEwNCBMIDg4IDEzMCBMIDE0MiA3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjE2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8L2c+CiAgPGcgYXJpYS1oaWRkZW49InRydWUiPgogICAgPHBhdGggZmlsbD0iIzAwNjBBMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjE3LjU2IDE0NSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik00NjkgMCAyMzMgMzEwVjBINjJWNzAySDIzM1YzOTRMNDY3IDcwMkg2NjhMMzk2IDM1OEw2NzggMFoiLz4KICAgIDxwYXRoIGZpbGw9IiMwMDYwQTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI5OC4yMCAxNDUpIHNjYWxlKDAuMTIwMDAgLTAuMTIwMDApIiBkPSJNMjc0IDU2NlEzMzMgNTY2IDM3Ny41IDU0Mi4wUTQyMiA1MTggNDQ2IDQ3OVY1NThINjE3VjBINDQ2Vjc5UTQyMSA0MCAzNzYuNSAxNi4wUTMzMiAtOCAyNzMgLThRMjA1IC04IDE0OS4wIDI3LjVROTMgNjMgNjAuNSAxMjguNVEyOCAxOTQgMjggMjgwUTI4IDM2NiA2MC41IDQzMS4wUTkzIDQ5NiAxNDkuMCA1MzEuMFEyMDUgNTY2IDI3NCA1NjZaTTMyNCA0MTdRMjczIDQxNyAyMzcuNSAzODAuNVEyMDIgMzQ0IDIwMiAyODBRMjAyIDIxNiAyMzcuNSAxNzguNVEyNzMgMTQxIDMyNCAxNDFRMzc1IDE0MSA0MTAuNSAxNzguMFE0NDYgMjE1IDQ0NiAyNzlRNDQ2IDM0MyA0MTAuNSAzODAuMFEzNzUgNDE3IDMyNCA0MTdaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDA2MEEwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNzYuNjggMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTIzMyA3NDBWMEg2MlY3NDBaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDA2MEEwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0MDkuMDggMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTI3NCA1NjZRMzMzIDU2NiAzNzcuNSA1NDIuMFE0MjIgNTE4IDQ0NiA0NzlWNTU4SDYxN1YwSDQ0NlY3OVE0MjEgNDAgMzc2LjUgMTYuMFEzMzIgLTggMjczIC04UTIwNSAtOCAxNDkuMCAyNy41UTkzIDYzIDYwLjUgMTI4LjVRMjggMTk0IDI4IDI4MFEyOCAzNjYgNjAuNSA0MzEuMFE5MyA0OTYgMTQ5LjAgNTMxLjBRMjA1IDU2NiAyNzQgNTY2Wk0zMjQgNDE3UTI3MyA0MTcgMjM3LjUgMzgwLjVRMjAyIDM0NCAyMDIgMjgwUTIwMiAyMTYgMjM3LjUgMTc4LjVRMjczIDE0MSAzMjQgMTQxUTM3NSAxNDEgNDEwLjUgMTc4LjBRNDQ2IDIxNSA0NDYgMjc5UTQ0NiAzNDMgNDEwLjUgMzgwLjBRMzc1IDQxNyAzMjQgNDE3WiIvPgogICAgPHBhdGggZmlsbD0iIzAwQTBFMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDg3LjU2IDE0NSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik01NjcgNzAyVjU2NUgzODFWMEgyMTBWNTY1SDI0VjcwMloiLz4KICAgIDxwYXRoIGZpbGw9IiMwMEEwRTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU1NS40OCAxNDUpIHNjYWxlKDAuMTIwMDAgLTAuMTIwMDApIiBkPSJNMjc0IDU2NlEzMzMgNTY2IDM3Ny41IDU0Mi4wUTQyMiA1MTggNDQ2IDQ3OVY1NThINjE3VjBINDQ2Vjc5UTQyMSA0MCAzNzYuNSAxNi4wUTMzMiAtOCAyNzMgLThRMjA1IC04IDE0OS4wIDI3LjVROTMgNjMgNjAuNSAxMjguNVEyOCAxOTQgMjggMjgwUTI4IDM2NiA2MC41IDQzMS4wUTkzIDQ5NiAxNDkuMCA1MzEuMFEyMDUgNTY2IDI3NCA1NjZaTTMyNCA0MTdRMjczIDQxNyAyMzcuNSAzODAuNVEyMDIgMzQ0IDIwMiAyODBRMjAyIDIxNiAyMzcuNSAxNzguNVEyNzMgMTQxIDMyNCAxNDFRMzc1IDE0MSA0MTAuNSAxNzguMFE0NDYgMjE1IDQ0NiAyNzlRNDQ2IDM0MyA0MTAuNSAzODAuMFEzNzUgNDE3IDMyNCA0MTdaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDBBMEUwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2MzMuOTYgMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTMyIDE4M0gyMDFRMjA0IDE1NCAyMjguMCAxMzYuMFEyNTIgMTE4IDI4NyAxMThRMzE5IDExOCAzMzYuNSAxMzAuNVEzNTQgMTQzIDM1NCAxNjNRMzU0IDE4NyAzMjkuMCAxOTguNVEzMDQgMjEwIDI0OCAyMjRRMTg4IDIzOCAxNDguMCAyNTMuNVExMDggMjY5IDc5LjAgMzAyLjVRNTAgMzM2IDUwIDM5M1E1MCA0NDEgNzYuNSA0ODAuNVExMDMgNTIwIDE1NC41IDU0My4wUTIwNiA1NjYgMjc3IDU2NlEzODIgNTY2IDQ0Mi41IDUxNC4wUTUwMyA0NjIgNTEyIDM3NkgzNTRRMzUwIDQwNSAzMjguNSA0MjIuMFEzMDcgNDM5IDI3MiA0MzlRMjQyIDQzOSAyMjYuMCA0MjcuNVEyMTAgNDE2IDIxMCAzOTZRMjEwIDM3MiAyMzUuNSAzNjAuMFEyNjEgMzQ4IDMxNSAzMzZRMzc3IDMyMCA0MTYuMCAzMDQuNVE0NTUgMjg5IDQ4NC41IDI1NC41UTUxNCAyMjAgNTE1IDE2MlE1MTUgMTEzIDQ4Ny41IDc0LjVRNDYwIDM2IDQwOC41IDE0LjBRMzU3IC04IDI4OSAtOFEyMTYgLTggMTU5LjAgMTcuMFExMDIgNDIgNjkuMCA4NS41UTM2IDEyOSAzMiAxODNaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDBBMEUwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2OTcuOTIgMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTQwMyAwIDIzMyAyMzRWMEg2MlY3NDBIMjMzVjMzMUw0MDIgNTU4SDYxM0wzODEgMjc4TDYxNSAwWiIvPgogIDwvZz4KPC9zdmc+Cg==" alt="" style="height: 40px; filter: hue-rotate(120deg);">
+        </div>
+        <div class="dont-card-label">❌ Off-brand colors</div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3OTEgMjAwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkthbGFUYXNrIGxvZ28iPgogIDx0aXRsZT5LYWxhVGFzazwvdGl0bGU+CiAgPGcgYXJpYS1oaWRkZW49InRydWUiPgogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI5MiIgZmlsbD0iIzAwNjBBMCIvPgogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI2OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBBMEUwIiBzdHJva2Utd2lkdGg9IjEwIi8+CiAgICA8cGF0aCBkPSJNIDYyIDEwNCBMIDg4IDEzMCBMIDE0MiA3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjE2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8L2c+CiAgPGcgYXJpYS1oaWRkZW49InRydWUiPgogICAgPHBhdGggZmlsbD0iIzAwNjBBMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjE3LjU2IDE0NSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik00NjkgMCAyMzMgMzEwVjBINjJWNzAySDIzM1YzOTRMNDY3IDcwMkg2NjhMMzk2IDM1OEw2NzggMFoiLz4KICAgIDxwYXRoIGZpbGw9IiMwMDYwQTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI5OC4yMCAxNDUpIHNjYWxlKDAuMTIwMDAgLTAuMTIwMDApIiBkPSJNMjc0IDU2NlEzMzMgNTY2IDM3Ny41IDU0Mi4wUTQyMiA1MTggNDQ2IDQ3OVY1NThINjE3VjBINDQ2Vjc5UTQyMSA0MCAzNzYuNSAxNi4wUTMzMiAtOCAyNzMgLThRMjA1IC04IDE0OS4wIDI3LjVROTMgNjMgNjAuNSAxMjguNVEyOCAxOTQgMjggMjgwUTI4IDM2NiA2MC41IDQzMS4wUTkzIDQ5NiAxNDkuMCA1MzEuMFEyMDUgNTY2IDI3NCA1NjZaTTMyNCA0MTdRMjczIDQxNyAyMzcuNSAzODAuNVEyMDIgMzQ0IDIwMiAyODBRMjAyIDIxNiAyMzcuNSAxNzguNVEyNzMgMTQxIDMyNCAxNDFRMzc1IDE0MSA0MTAuNSAxNzguMFE0NDYgMjE1IDQ0NiAyNzlRNDQ2IDM0MyA0MTAuNSAzODAuMFEzNzUgNDE3IDMyNCA0MTdaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDA2MEEwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNzYuNjggMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTIzMyA3NDBWMEg2MlY3NDBaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDA2MEEwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0MDkuMDggMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTI3NCA1NjZRMzMzIDU2NiAzNzcuNSA1NDIuMFE0MjIgNTE4IDQ0NiA0NzlWNTU4SDYxN1YwSDQ0NlY3OVE0MjEgNDAgMzc2LjUgMTYuMFEzMzIgLTggMjczIC04UTIwNSAtOCAxNDkuMCAyNy41UTkzIDYzIDYwLjUgMTI4LjVRMjggMTk0IDI4IDI4MFEyOCAzNjYgNjAuNSA0MzEuMFE5MyA0OTYgMTQ5LjAgNTMxLjBRMjA1IDU2NiAyNzQgNTY2Wk0zMjQgNDE3UTI3MyA0MTcgMjM3LjUgMzgwLjVRMjAyIDM0NCAyMDIgMjgwUTIwMiAyMTYgMjM3LjUgMTc4LjVRMjczIDE0MSAzMjQgMTQxUTM3NSAxNDEgNDEwLjUgMTc4LjBRNDQ2IDIxNSA0NDYgMjc5UTQ0NiAzNDMgNDEwLjUgMzgwLjBRMzc1IDQxNyAzMjQgNDE3WiIvPgogICAgPHBhdGggZmlsbD0iIzAwQTBFMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDg3LjU2IDE0NSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik01NjcgNzAyVjU2NUgzODFWMEgyMTBWNTY1SDI0VjcwMloiLz4KICAgIDxwYXRoIGZpbGw9IiMwMEEwRTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU1NS40OCAxNDUpIHNjYWxlKDAuMTIwMDAgLTAuMTIwMDApIiBkPSJNMjc0IDU2NlEzMzMgNTY2IDM3Ny41IDU0Mi4wUTQyMiA1MTggNDQ2IDQ3OVY1NThINjE3VjBINDQ2Vjc5UTQyMSA0MCAzNzYuNSAxNi4wUTMzMiAtOCAyNzMgLThRMjA1IC04IDE0OS4wIDI3LjVROTMgNjMgNjAuNSAxMjguNVEyOCAxOTQgMjggMjgwUTI4IDM2NiA2MC41IDQzMS4wUTkzIDQ5NiAxNDkuMCA1MzEuMFEyMDUgNTY2IDI3NCA1NjZaTTMyNCA0MTdRMjczIDQxNyAyMzcuNSAzODAuNVEyMDIgMzQ0IDIwMiAyODBRMjAyIDIxNiAyMzcuNSAxNzguNVEyNzMgMTQxIDMyNCAxNDFRMzc1IDE0MSA0MTAuNSAxNzguMFE0NDYgMjE1IDQ0NiAyNzlRNDQ2IDM0MyA0MTAuNSAzODAuMFEzNzUgNDE3IDMyNCA0MTdaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDBBMEUwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2MzMuOTYgMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTMyIDE4M0gyMDFRMjA0IDE1NCAyMjguMCAxMzYuMFEyNTIgMTE4IDI4NyAxMThRMzE5IDExOCAzMzYuNSAxMzAuNVEzNTQgMTQzIDM1NCAxNjNRMzU0IDE4NyAzMjkuMCAxOTguNVEzMDQgMjEwIDI0OCAyMjRRMTg4IDIzOCAxNDguMCAyNTMuNVExMDggMjY5IDc5LjAgMzAyLjVRNTAgMzM2IDUwIDM5M1E1MCA0NDEgNzYuNSA0ODAuNVExMDMgNTIwIDE1NC41IDU0My4wUTIwNiA1NjYgMjc3IDU2NlEzODIgNTY2IDQ0Mi41IDUxNC4wUTUwMyA0NjIgNTEyIDM3NkgzNTRRMzUwIDQwNSAzMjguNSA0MjIuMFEzMDcgNDM5IDI3MiA0MzlRMjQyIDQzOSAyMjYuMCA0MjcuNVEyMTAgNDE2IDIxMCAzOTZRMjEwIDM3MiAyMzUuNSAzNjAuMFEyNjEgMzQ4IDMxNSAzMzZRMzc3IDMyMCA0MTYuMCAzMDQuNVE0NTUgMjg5IDQ4NC41IDI1NC41UTUxNCAyMjAgNTE1IDE2MlE1MTUgMTEzIDQ4Ny41IDc0LjVRNDYwIDM2IDQwOC41IDE0LjBRMzU3IC04IDI4OSAtOFEyMTYgLTggMTU5LjAgMTcuMFExMDIgNDIgNjkuMCA4NS41UTM2IDEyOSAzMiAxODNaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDBBMEUwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2OTcuOTIgMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTQwMyAwIDIzMyAyMzRWMEg2MlY3NDBIMjMzVjMzMUw0MDIgNTU4SDYxM0wzODEgMjc4TDYxNSAwWiIvPgogIDwvZz4KPC9zdmc+Cg==" alt="" style="height: 40px; transform: rotate(-12deg);">
+        </div>
+        <div class="dont-card-label">❌ Rotate / tilt</div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas" style="background: #FCD34D;">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3OTEgMjAwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkthbGFUYXNrIGxvZ28iPgogIDx0aXRsZT5LYWxhVGFzazwvdGl0bGU+CiAgPGcgYXJpYS1oaWRkZW49InRydWUiPgogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI5MiIgZmlsbD0iIzAwNjBBMCIvPgogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI2OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBBMEUwIiBzdHJva2Utd2lkdGg9IjEwIi8+CiAgICA8cGF0aCBkPSJNIDYyIDEwNCBMIDg4IDEzMCBMIDE0MiA3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjE2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8L2c+CiAgPGcgYXJpYS1oaWRkZW49InRydWUiPgogICAgPHBhdGggZmlsbD0iIzAwNjBBMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjE3LjU2IDE0NSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik00NjkgMCAyMzMgMzEwVjBINjJWNzAySDIzM1YzOTRMNDY3IDcwMkg2NjhMMzk2IDM1OEw2NzggMFoiLz4KICAgIDxwYXRoIGZpbGw9IiMwMDYwQTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI5OC4yMCAxNDUpIHNjYWxlKDAuMTIwMDAgLTAuMTIwMDApIiBkPSJNMjc0IDU2NlEzMzMgNTY2IDM3Ny41IDU0Mi4wUTQyMiA1MTggNDQ2IDQ3OVY1NThINjE3VjBINDQ2Vjc5UTQyMSA0MCAzNzYuNSAxNi4wUTMzMiAtOCAyNzMgLThRMjA1IC04IDE0OS4wIDI3LjVROTMgNjMgNjAuNSAxMjguNVEyOCAxOTQgMjggMjgwUTI4IDM2NiA2MC41IDQzMS4wUTkzIDQ5NiAxNDkuMCA1MzEuMFEyMDUgNTY2IDI3NCA1NjZaTTMyNCA0MTdRMjczIDQxNyAyMzcuNSAzODAuNVEyMDIgMzQ0IDIwMiAyODBRMjAyIDIxNiAyMzcuNSAxNzguNVEyNzMgMTQxIDMyNCAxNDFRMzc1IDE0MSA0MTAuNSAxNzguMFE0NDYgMjE1IDQ0NiAyNzlRNDQ2IDM0MyA0MTAuNSAzODAuMFEzNzUgNDE3IDMyNCA0MTdaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDA2MEEwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNzYuNjggMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTIzMyA3NDBWMEg2MlY3NDBaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDA2MEEwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0MDkuMDggMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTI3NCA1NjZRMzMzIDU2NiAzNzcuNSA1NDIuMFE0MjIgNTE4IDQ0NiA0NzlWNTU4SDYxN1YwSDQ0NlY3OVE0MjEgNDAgMzc2LjUgMTYuMFEzMzIgLTggMjczIC04UTIwNSAtOCAxNDkuMCAyNy41UTkzIDYzIDYwLjUgMTI4LjVRMjggMTk0IDI4IDI4MFEyOCAzNjYgNjAuNSA0MzEuMFE5MyA0OTYgMTQ5LjAgNTMxLjBRMjA1IDU2NiAyNzQgNTY2Wk0zMjQgNDE3UTI3MyA0MTcgMjM3LjUgMzgwLjVRMjAyIDM0NCAyMDIgMjgwUTIwMiAyMTYgMjM3LjUgMTc4LjVRMjczIDE0MSAzMjQgMTQxUTM3NSAxNDEgNDEwLjUgMTc4LjBRNDQ2IDIxNSA0NDYgMjc5UTQ0NiAzNDMgNDEwLjUgMzgwLjBRMzc1IDQxNyAzMjQgNDE3WiIvPgogICAgPHBhdGggZmlsbD0iIzAwQTBFMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDg3LjU2IDE0NSkgc2NhbGUoMC4xMjAwMCAtMC4xMjAwMCkiIGQ9Ik01NjcgNzAyVjU2NUgzODFWMEgyMTBWNTY1SDI0VjcwMloiLz4KICAgIDxwYXRoIGZpbGw9IiMwMEEwRTAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU1NS40OCAxNDUpIHNjYWxlKDAuMTIwMDAgLTAuMTIwMDApIiBkPSJNMjc0IDU2NlEzMzMgNTY2IDM3Ny41IDU0Mi4wUTQyMiA1MTggNDQ2IDQ3OVY1NThINjE3VjBINDQ2Vjc5UTQyMSA0MCAzNzYuNSAxNi4wUTMzMiAtOCAyNzMgLThRMjA1IC04IDE0OS4wIDI3LjVROTMgNjMgNjAuNSAxMjguNVEyOCAxOTQgMjggMjgwUTI4IDM2NiA2MC41IDQzMS4wUTkzIDQ5NiAxNDkuMCA1MzEuMFEyMDUgNTY2IDI3NCA1NjZaTTMyNCA0MTdRMjczIDQxNyAyMzcuNSAzODAuNVEyMDIgMzQ0IDIwMiAyODBRMjAyIDIxNiAyMzcuNSAxNzguNVEyNzMgMTQxIDMyNCAxNDFRMzc1IDE0MSA0MTAuNSAxNzguMFE0NDYgMjE1IDQ0NiAyNzlRNDQ2IDM0MyA0MTAuNSAzODAuMFEzNzUgNDE3IDMyNCA0MTdaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDBBMEUwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2MzMuOTYgMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTMyIDE4M0gyMDFRMjA0IDE1NCAyMjguMCAxMzYuMFEyNTIgMTE4IDI4NyAxMThRMzE5IDExOCAzMzYuNSAxMzAuNVEzNTQgMTQzIDM1NCAxNjNRMzU0IDE4NyAzMjkuMCAxOTguNVEzMDQgMjEwIDI0OCAyMjRRMTg4IDIzOCAxNDguMCAyNTMuNVExMDggMjY5IDc5LjAgMzAyLjVRNTAgMzM2IDUwIDM5M1E1MCA0NDEgNzYuNSA0ODAuNVExMDMgNTIwIDE1NC41IDU0My4wUTIwNiA1NjYgMjc3IDU2NlEzODIgNTY2IDQ0Mi41IDUxNC4wUTUwMyA0NjIgNTEyIDM3NkgzNTRRMzUwIDQwNSAzMjguNSA0MjIuMFEzMDcgNDM5IDI3MiA0MzlRMjQyIDQzOSAyMjYuMCA0MjcuNVEyMTAgNDE2IDIxMCAzOTZRMjEwIDM3MiAyMzUuNSAzNjAuMFEyNjEgMzQ4IDMxNSAzMzZRMzc3IDMyMCA0MTYuMCAzMDQuNVE0NTUgMjg5IDQ4NC41IDI1NC41UTUxNCAyMjAgNTE1IDE2MlE1MTUgMTEzIDQ4Ny41IDc0LjVRNDYwIDM2IDQwOC41IDE0LjBRMzU3IC04IDI4OSAtOFEyMTYgLTggMTU5LjAgMTcuMFExMDIgNDIgNjkuMCA4NS41UTM2IDEyOSAzMiAxODNaIi8+CiAgICA8cGF0aCBmaWxsPSIjMDBBMEUwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2OTcuOTIgMTQ1KSBzY2FsZSgwLjEyMDAwIC0wLjEyMDAwKSIgZD0iTTQwMyAwIDIzMyAyMzRWMEg2MlY3NDBIMjMzVjMzMUw0MDIgNTU4SDYxM0wzODEgMjc4TDYxNSAwWiIvPgogIDwvZz4KPC9zdmc+Cg==" alt="" style="height: 40px;">
+        </div>
+        <div class="dont-card-label">❌ Low-contrast bg</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    KalaTask Brand Kit v1.0 · 2026-04-27 · Generated for Kalaborasi Group Indonesia<br>
+    Files: <code>BRAND.md</code>, <code>theme.css</code>, <code>tailwind.config.snippet.js</code>, <code>logo/*.svg</code>
+  </footer>
+
+</div>
+</body>
+</html>
