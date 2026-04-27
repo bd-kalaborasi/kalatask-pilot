@@ -37,10 +37,20 @@
 --   DROP FUNCTION IF EXISTS public.current_user_role()     CASCADE;
 --   DROP FUNCTION IF EXISTS public.set_updated_at()        CASCADE;
 --
--- IMPORTANT: Functions ini reference public.users yang BELUM ADA. CREATE
---   FUNCTION succeed (Postgres deferred resolution untuk SQL fn body);
---   function akan ERROR kalau dipanggil sebelum public.users dibuat di
---   migration berikutnya (20260427120100_create_users_table.sql).
+-- IMPORTANT: Functions yang reference public.users (yang BELUM ADA saat
+--   migration ini apply) pakai LANGUAGE plpgsql, BUKAN sql. Postgres
+--   eager-validate LANGUAGE sql function body saat CREATE — kalau table
+--   yang di-reference belum ada, error 42P01 "relation does not exist".
+--   plpgsql lazy-validate name resolution di runtime, jadi CREATE FUNCTION
+--   sukses meskipun public.users belum exist. Function akan tetap ERROR
+--   kalau dipanggil sebelum public.users dibuat di migration berikutnya
+--   (20260427120100_create_users_table.sql).
+--
+--   Language per function:
+--     - set_updated_at:  plpgsql (mandatory untuk trigger fn, akses NEW)
+--     - current_user_role, is_admin/manager/member/viewer,
+--       current_user_team_id: plpgsql (lazy validation untuk public.users)
+--     - is_authenticated: sql (no public.users ref, aman LANGUAGE sql)
 --
 -- Author: Claude Code (skill: supabase-migration)
 -- =============================================================
@@ -80,12 +90,14 @@ COMMENT ON FUNCTION public.set_updated_at IS
 -- attack di mana attacker bikin tabel public.users palsu di schema lain.
 CREATE OR REPLACE FUNCTION public.current_user_role()
 RETURNS text
-LANGUAGE sql
+LANGUAGE plpgsql
 SECURITY DEFINER
 STABLE
 SET search_path = public, auth
 AS $$
-  SELECT role FROM public.users WHERE id = auth.uid();
+BEGIN
+  RETURN (SELECT role FROM public.users WHERE id = auth.uid());
+END;
 $$;
 
 COMMENT ON FUNCTION public.current_user_role IS
@@ -100,12 +112,14 @@ COMMENT ON FUNCTION public.current_user_role IS
 -- ditolak, tapi explicit false lebih predictable untuk testing.
 CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS boolean
-LANGUAGE sql
+LANGUAGE plpgsql
 SECURITY DEFINER
 STABLE
 SET search_path = public, auth
 AS $$
-  SELECT coalesce(public.current_user_role() = 'admin', false);
+BEGIN
+  RETURN coalesce(public.current_user_role() = 'admin', false);
+END;
 $$;
 
 COMMENT ON FUNCTION public.is_admin IS
@@ -117,12 +131,14 @@ COMMENT ON FUNCTION public.is_admin IS
 -- ============================================================
 CREATE OR REPLACE FUNCTION public.is_manager()
 RETURNS boolean
-LANGUAGE sql
+LANGUAGE plpgsql
 SECURITY DEFINER
 STABLE
 SET search_path = public, auth
 AS $$
-  SELECT coalesce(public.current_user_role() = 'manager', false);
+BEGIN
+  RETURN coalesce(public.current_user_role() = 'manager', false);
+END;
 $$;
 
 COMMENT ON FUNCTION public.is_manager IS
@@ -134,12 +150,14 @@ COMMENT ON FUNCTION public.is_manager IS
 -- ============================================================
 CREATE OR REPLACE FUNCTION public.is_member()
 RETURNS boolean
-LANGUAGE sql
+LANGUAGE plpgsql
 SECURITY DEFINER
 STABLE
 SET search_path = public, auth
 AS $$
-  SELECT coalesce(public.current_user_role() = 'member', false);
+BEGIN
+  RETURN coalesce(public.current_user_role() = 'member', false);
+END;
 $$;
 
 COMMENT ON FUNCTION public.is_member IS
@@ -151,12 +169,14 @@ COMMENT ON FUNCTION public.is_member IS
 -- ============================================================
 CREATE OR REPLACE FUNCTION public.is_viewer()
 RETURNS boolean
-LANGUAGE sql
+LANGUAGE plpgsql
 SECURITY DEFINER
 STABLE
 SET search_path = public, auth
 AS $$
-  SELECT coalesce(public.current_user_role() = 'viewer', false);
+BEGIN
+  RETURN coalesce(public.current_user_role() = 'viewer', false);
+END;
 $$;
 
 COMMENT ON FUNCTION public.is_viewer IS
@@ -191,12 +211,14 @@ COMMENT ON FUNCTION public.is_authenticated IS
 -- (admin/viewer biasanya tidak punya team).
 CREATE OR REPLACE FUNCTION public.current_user_team_id()
 RETURNS uuid
-LANGUAGE sql
+LANGUAGE plpgsql
 SECURITY DEFINER
 STABLE
 SET search_path = public, auth
 AS $$
-  SELECT team_id FROM public.users WHERE id = auth.uid();
+BEGIN
+  RETURN (SELECT team_id FROM public.users WHERE id = auth.uid());
+END;
 $$;
 
 COMMENT ON FUNCTION public.current_user_team_id IS
