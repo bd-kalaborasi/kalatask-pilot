@@ -14,6 +14,7 @@
  */
 
 import type { Config } from 'tailwindcss';
+import animate from 'tailwindcss-animate';
 
 const config: Config = {
   content: [
@@ -85,6 +86,45 @@ const config: Config = {
         // Semantic surface tokens (untuk dark mode handling)
         surface: 'var(--kt-surface)',
         canvas:  'var(--kt-bg)',
+
+        // ============================================================
+        // shadcn/ui semantic tokens (HSL CSS vars di globals.css)
+        // Dipakai oleh komponen yang di-generate via `npx shadcn add`.
+        // KalaTask custom components tetap pakai brand-deep / brand-sky.
+        // ============================================================
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
       },
 
       // ============================================================
@@ -108,6 +148,11 @@ const config: Config = {
         'kt-md':   'var(--kt-radius-md)',
         'kt-lg':   'var(--kt-radius-lg)',
         'kt-full': 'var(--kt-radius-full)',
+
+        // shadcn/ui radii — derive dari --radius CSS var
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
       },
 
       // ============================================================
@@ -137,8 +182,7 @@ const config: Config = {
     },
   },
   plugins: [
-    // shadcn/ui akan otomatis inject plugin yang dibutuhkan
-    // saat `npx shadcn-ui@latest init`. Tidak perlu manual add di sini.
+    animate, // tailwindcss-animate — dipakai shadcn/ui untuk transition states
   ],
 };
 
