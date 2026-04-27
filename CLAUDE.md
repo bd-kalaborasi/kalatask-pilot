@@ -1,5 +1,7 @@
 # CLAUDE.md — Trackr Pilot
 
+_Last updated: 2026-04-27_
+
 > File ini di-load otomatis oleh Claude Code di repo ini. Di sini ada konteks project, tech stack, sprint plan, coding conventions, dan **3 review checkpoint wajib** yang harus kamu ikuti sebelum lanjut sprint berikutnya.
 
 ---
@@ -61,7 +63,7 @@ Owner project (BD) memberikan otonomi untuk 3 keputusan ini, tapi **wajib tulis 
   - Sprint 1 = foundation (auth + RLS + task CRUD). Tanpa ini, sprint lain tidak bisa.
   - Sprint 6 = soft launch (testing + hardening). Selalu di akhir.
   - F6 (onboarding) tidak boleh ditunda ke Phase 2 — critical untuk adopsi.
-- **Output:** ADR-005 kalau kamu mengubah sprint order dari PRD section 11.
+- **Output:** ADR-005 sebelum mulai Sprint 1 (wajib, bukan conditional). Dokumentasikan keputusan: ikut urutan PRD section 11 apa adanya, atau ada penyesuaian — disertai reasoning. Kalau "ikut PRD", ADR cukup pendek (1 paragraf konfirmasi).
 
 ---
 
@@ -69,13 +71,20 @@ Owner project (BD) memberikan otonomi untuk 3 keputusan ini, tapi **wajib tulis 
 
 Owner project bukan engineer dan tidak akan code review per-PR. Sebagai gantinya, ada 3 checkpoint wajib di mana kamu **stop, kasih ringkasan, dan tunggu approval** sebelum lanjut. Jangan auto-merge atau auto-continue.
 
-### Checkpoint 1: Setelah ADR-001 sampai ADR-005 ditulis (sebelum coding apapun)
+### Checkpoint 1: Sebelum mulai Sprint 1 (ADR-001/002/005 wajib selesai)
 
-Stop dan kasih ringkasan ke owner:
-- Decision yang kamu ambil untuk Gantt library, query strategy, sprint order
-- Reasoning singkat (max 3 bullet per decision)
+ADR di-stage per kebutuhan sprint, bukan semua di muka — supaya tiap keputusan ditulis dengan data nyata (bundle size aktual, schema final), bukan rubber stamp default. Spirit checkpoint tetap sama: untuk setiap ADR baru, stop → kasih ringkasan → tunggu approval.
+
+Jadwal ADR:
+- **Pre-Sprint 1 (sekarang):** ADR-001 (Supabase managed) dan ADR-002 (RLS strategy) sudah ada. ADR-005 (sprint sequencing) wajib selesai — dokumentasikan apakah urutan sprint mengikuti PRD section 11 atau ada perubahan, plus reasoning.
+- **Pre-Sprint 2:** ADR-003 (Gantt library) — ditulis setelah scaffolding sudah ada, sehingga bundle-size impact-nya berbasis baseline aktual.
+- **Pre-Sprint 3:** ADR-004 (productivity dashboard query strategy) — ditulis setelah schema final, sehingga query complexity-nya konkret.
+
+Untuk setiap ADR baru, stop dan kasih ringkasan ke owner:
+- Decision yang diambil
+- Reasoning singkat (max 3 bullet)
 - Risiko yang kamu lihat
-- Tunggu approval sebelum mulai Sprint 1.
+- Tunggu approval sebelum lanjut ke implementasi sprint terkait.
 
 ### Checkpoint 2: Setelah Sprint 1 selesai (sebelum mulai Sprint 2)
 
@@ -207,3 +216,9 @@ Owner adalah BD, bukan engineer. Saat kamu kasih update atau minta input:
 | Sprint 6 | Testing, hardening, soft launch | Hardening |
 
 Untuk detail per feature, **selalu refer ke `/docs/PRD.md`**.
+
+---
+
+## Changelog
+
+- **2026-04-27:** Clarify Checkpoint 1 gating — ADR-001/002/005 wajib pre-Sprint 1; ADR-003 pre-Sprint 2 (butuh data bundle size); ADR-004 pre-Sprint 3 (butuh schema final). ADR-005 dijadikan wajib (bukan conditional). Owner approval untuk Sprint 1 mulai.
