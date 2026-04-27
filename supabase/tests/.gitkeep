@@ -1,0 +1,3 @@
+# Folder untuk pgTAP test files.
+# Skill: .claude/skills/rls-tester/SKILL.md
+# Pattern: supabase/tests/rls/{test-name}.sql
