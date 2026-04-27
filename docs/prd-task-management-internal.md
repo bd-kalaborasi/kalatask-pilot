@@ -798,8 +798,7 @@ Semua **F1-F16** dan **N1-N8** dari section 3, dengan urutan delivery (sprint-st
 - F13 (Productivity & Management dashboard)
 
 **Sprint 4 (minggu 5): Onboarding & UX polish**
-- F6 (Onboarding sample data + wizard) — prioritas tinggi karena critical untuk adopsi
-- F10 onboarding wizard
+- F10 (Onboarding sample data + wizard) — prioritas tinggi karena critical untuk adopsi
 - F15 (CSV import)
 - N2 (PWA installable)
 

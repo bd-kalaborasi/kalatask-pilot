@@ -62,7 +62,7 @@ Owner project (BD) memberikan otonomi untuk 3 keputusan ini, tapi **wajib tulis 
 - **Constraint yang TIDAK boleh diubah:**
   - Sprint 1 = foundation (auth + RLS + task CRUD). Tanpa ini, sprint lain tidak bisa.
   - Sprint 6 = soft launch (testing + hardening). Selalu di akhir.
-  - F6 (onboarding) tidak boleh ditunda ke Phase 2 — critical untuk adopsi.
+  - F10 (onboarding) tidak boleh ditunda ke Phase 2 — critical untuk adopsi.
 - **Output:** ADR-005 sebelum mulai Sprint 1 (wajib, bukan conditional). Dokumentasikan keputusan: ikut urutan PRD section 11 apa adanya, atau ada penyesuaian — disertai reasoning. Kalau "ikut PRD", ADR cukup pendek (1 paragraf konfirmasi).
 
 ---
@@ -222,3 +222,4 @@ Untuk detail per feature, **selalu refer ke `/docs/PRD.md`**.
 ## Changelog
 
 - **2026-04-27:** Clarify Checkpoint 1 gating — ADR-001/002/005 wajib pre-Sprint 1; ADR-003 pre-Sprint 2 (butuh data bundle size); ADR-004 pre-Sprint 3 (butuh schema final). ADR-005 dijadikan wajib (bukan conditional). Owner approval untuk Sprint 1 mulai.
+- **2026-04-27 (later):** Fix F6/F10 mislabel — F6 = Bottleneck view (PRD line 116), F10 = Onboarding wizard. CLAUDE.md line 65 dan PRD line 801 sebelumnya keliru pakai F6 untuk onboarding. Affected: CLAUDE.md (1 line), PRD section 11 Sprint 4 (1 line fix + 1 line redundant deleted).
