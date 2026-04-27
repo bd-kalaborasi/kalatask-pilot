@@ -27,10 +27,7 @@
 --      di-implement (Sprint 1+).
 --   2. team_id = bare uuid (no FK constraint). FK ke public.teams(id)
 --      di-add via ALTER TABLE saat teams migration dibuat.
---   3. SELECT policy DEVIASI dari ADR-002 viewer=all → tighter team scope
---      per Sprint 1 task brief 2026-04-27. Cek ADR-002 untuk update jika
---      deviation ini intentional jadi new baseline.
---   4. Field lock UPDATE: trigger users_field_lock — RLS WITH CHECK tidak
+--   3. Field lock UPDATE: trigger users_field_lock — RLS WITH CHECK tidak
 --      bisa column-level. Pattern dari skill rls-policy-writer §E.
 --
 -- Reversal:
@@ -148,10 +145,21 @@ COMMENT ON POLICY "users_select_admin_all" ON public.users IS
   'Admin: SELECT semua user lintas team. ADR-002 users matrix.';
 
 
--- 5b. SELECT — authenticated can see same-team users + self
--- DEVIASI dari ADR-002 (viewer=all): per Sprint 1 task brief 2026-04-27,
--- semua authenticated user team-scoped. Kalau jadi baseline final,
--- update ADR-002 supaya konsisten.
+-- 5b. SELECT — viewer can see all users (cross-team, management overview)
+-- ADR-002: Viewer = manajemen role yang butuh visibility lintas team.
+CREATE POLICY "users_select_viewer_all" ON public.users
+  FOR SELECT
+  TO authenticated
+  USING (public.is_viewer());
+
+COMMENT ON POLICY "users_select_viewer_all" ON public.users IS
+  'Viewer (manajemen): SELECT semua user lintas team untuk dashboard management overview. ADR-002 users matrix.';
+
+
+-- 5c. SELECT — manager/member can see same-team users + self
+-- Note: admin & viewer covered by dedicated policies (5a + 5b). Postgres RLS
+-- OR-combine policies — manager/member effectively team-scoped via policy ini
+-- karena mereka tidak satisfy is_admin() atau is_viewer().
 CREATE POLICY "users_select_same_team_or_self" ON public.users
   FOR SELECT
   TO authenticated
@@ -164,10 +172,10 @@ CREATE POLICY "users_select_same_team_or_self" ON public.users
   );
 
 COMMENT ON POLICY "users_select_same_team_or_self" ON public.users IS
-  'Manager/Member/Viewer: SELECT user di team yang sama, plus diri sendiri. Sprint 1 task brief 2026-04-27. NOTE: deviation dari ADR-002 viewer=all.';
+  'Manager/Member: SELECT user di team yang sama, plus diri sendiri. ADR-002 users matrix. Admin & Viewer covered by dedicated policies (OR-combined).';
 
 
--- 5c. INSERT — admin only
+-- 5d. INSERT — admin only
 CREATE POLICY "users_insert_admin_only" ON public.users
   FOR INSERT
   TO authenticated
@@ -177,7 +185,7 @@ COMMENT ON POLICY "users_insert_admin_only" ON public.users IS
   'Admin only: create user record. Per ADR-002.';
 
 
--- 5d. UPDATE — admin (semua field, field_lock bypass via is_admin check)
+-- 5e. UPDATE — admin (semua field, field_lock bypass via is_admin check)
 CREATE POLICY "users_update_admin_all" ON public.users
   FOR UPDATE
   TO authenticated
@@ -188,7 +196,7 @@ COMMENT ON POLICY "users_update_admin_all" ON public.users IS
   'Admin: UPDATE semua field di semua user. Field lock trigger bypassed via is_admin() check.';
 
 
--- 5e. UPDATE — self (limited fields enforced via trigger users_field_lock)
+-- 5f. UPDATE — self (limited fields enforced via trigger users_field_lock)
 CREATE POLICY "users_update_self_limited" ON public.users
   FOR UPDATE
   TO authenticated
@@ -199,7 +207,7 @@ COMMENT ON POLICY "users_update_self_limited" ON public.users IS
   'Self UPDATE: user bisa update record sendiri. Field role + team_id locked via trigger users_field_lock. Sprint 1 task brief.';
 
 
--- 5f. DELETE — admin only
+-- 5g. DELETE — admin only
 CREATE POLICY "users_delete_admin_only" ON public.users
   FOR DELETE
   TO authenticated

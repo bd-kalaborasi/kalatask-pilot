@@ -3,19 +3,20 @@
 -- Migration tested: 20260427120100_create_users_table.sql
 -- Refer: ADR-002 + Sprint 1 task brief 2026-04-27
 --
--- Coverage: 12 assertions across 4 role × CRUD operations:
+-- Coverage: 13 assertions across 4 role × CRUD operations:
 --   1.  anon SELECT → 0 rows (anon blocked)
 --   2.  member team A SELECT → 4 team A users only
 --   3.  member team B SELECT → 4 team B users only
 --   4.  admin SELECT → all 8 users
---   5.  viewer INSERT → throws 42501 (insufficient_privilege)
---   6.  member INSERT → throws 42501
---   7.  admin INSERT → success (1 new row)
---   8.  member self UPDATE → full_name changes, role locked (field_lock)
---   9.  member UPDATE other team A user → 0 rowcount (USING fail)
---   10. admin UPDATE any user role → success
---   11. viewer DELETE → 0 rowcount (USING fail)
---   12. admin DELETE → 1 rowcount
+--   5.  viewer SELECT → all 8 users (cross-team per ADR-002)
+--   6.  viewer INSERT → throws 42501 (insufficient_privilege)
+--   7.  member INSERT → throws 42501
+--   8.  admin INSERT → success (1 new row)
+--   9.  member self UPDATE → full_name changes, role locked (field_lock)
+--   10. member UPDATE other team A user → 0 rowcount (USING fail)
+--   11. admin UPDATE any user role → success
+--   12. viewer DELETE → 0 rowcount (USING fail)
+--   13. admin DELETE → 1 rowcount
 --
 -- Fixture: mirror supabase/seed/users.csv (8 users, 2 teams).
 -- Loading: inline INSERT (CSV COPY tidak portable di Dashboard).
@@ -29,7 +30,7 @@
 -- =============================================================
 
 BEGIN;
-SELECT plan(12);
+SELECT plan(13);
 
 
 -- ============================================================
@@ -125,7 +126,21 @@ SELECT is(
 
 
 -- ============================================================
--- TEST 5: viewer (Maya) INSERT → throws 42501
+-- TEST 5: viewer (Maya) SELECT → all 8 users (cross-team per ADR-002)
+-- ============================================================
+RESET ROLE;
+SELECT pg_temp.impersonate('00000000-0000-0000-0000-000000000008');
+SET LOCAL ROLE authenticated;
+
+SELECT is(
+  (SELECT count(*)::int FROM public.users),
+  8,
+  'viewer: SELECT users returns all 8 users (cross-team, ADR-002 management overview)'
+);
+
+
+-- ============================================================
+-- TEST 6: viewer (Maya) INSERT → throws 42501
 -- ============================================================
 RESET ROLE;
 SELECT pg_temp.impersonate('00000000-0000-0000-0000-000000000008');
@@ -140,7 +155,7 @@ SELECT throws_ok(
 
 
 -- ============================================================
--- TEST 6: member (Andi) INSERT → throws 42501
+-- TEST 7: member (Andi) INSERT → throws 42501
 -- ============================================================
 RESET ROLE;
 SELECT pg_temp.impersonate('00000000-0000-0000-0000-000000000003');
@@ -155,7 +170,7 @@ SELECT throws_ok(
 
 
 -- ============================================================
--- TEST 7: admin (Budi) INSERT → success
+-- TEST 8: admin (Budi) INSERT → success
 -- ============================================================
 RESET ROLE;
 SELECT pg_temp.impersonate('00000000-0000-0000-0000-000000000001');
@@ -172,7 +187,7 @@ SELECT is(
 
 
 -- ============================================================
--- TEST 8: member (Andi) self UPDATE → full_name changes, role locked
+-- TEST 9: member (Andi) self UPDATE → full_name changes, role locked
 -- ============================================================
 RESET ROLE;
 SELECT pg_temp.impersonate('00000000-0000-0000-0000-000000000003');
@@ -191,7 +206,7 @@ SELECT results_eq(
 
 
 -- ============================================================
--- TEST 9: member (Andi) UPDATE other team A user (Dewi) → 0 rowcount
+-- TEST 10: member (Andi) UPDATE other team A user (Dewi) → 0 rowcount
 -- ============================================================
 RESET ROLE;
 SELECT pg_temp.impersonate('00000000-0000-0000-0000-000000000003');
@@ -211,7 +226,7 @@ SELECT is(
 
 
 -- ============================================================
--- TEST 10: admin (Budi) UPDATE any user role → success
+-- TEST 11: admin (Budi) UPDATE any user role → success
 -- ============================================================
 RESET ROLE;
 SELECT pg_temp.impersonate('00000000-0000-0000-0000-000000000001');
@@ -229,7 +244,7 @@ SELECT is(
 
 
 -- ============================================================
--- TEST 11: viewer (Maya) DELETE → 0 rowcount
+-- TEST 12: viewer (Maya) DELETE → 0 rowcount
 -- ============================================================
 RESET ROLE;
 SELECT pg_temp.impersonate('00000000-0000-0000-0000-000000000008');
@@ -247,7 +262,7 @@ SELECT is(
 
 
 -- ============================================================
--- TEST 12: admin (Budi) DELETE → 1 rowcount
+-- TEST 13: admin (Budi) DELETE → 1 rowcount
 -- ============================================================
 RESET ROLE;
 SELECT pg_temp.impersonate('00000000-0000-0000-0000-000000000001');
