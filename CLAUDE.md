@@ -10,7 +10,7 @@ _Last updated: 2026-04-27_
 
 **Trackr** = internal task management pilot untuk 10-30 karyawan, alternatif gratis dari Asana/Monday selama validasi adopsi 6-12 bulan. Owner: Business Development (BD) team, bukan engineer. Pilot ini akan di-handoff ke tim IT untuk scale-up kalau adopsi terbukti.
 
-**Source of truth:** `/docs/PRD.md` (versi v0.2, 16 functional + 8 non-functional requirements). **Selalu refer ke PRD untuk acceptance criteria.** Kalau ada konflik antara CLAUDE.md dan PRD, PRD menang — kecuali untuk hal yang eksplisit di-override di file ini.
+**Source of truth:** `/docs/prd-task-management-internal.md` (versi v0.2, 16 functional + 8 non-functional requirements). **Selalu refer ke PRD untuk acceptance criteria.** Kalau ada konflik antara CLAUDE.md dan PRD, PRD menang — kecuali untuk hal yang eksplisit di-override di file ini.
 
 **Goal pilot (bukan production):**
 - Validasi adopsi user
@@ -34,7 +34,7 @@ _Last updated: 2026-04-27_
 
 ## 3 keputusan yang di-defer ke kamu (Claude Code) — wajib tulis ADR
 
-Owner project (BD) memberikan otonomi untuk 3 keputusan ini, tapi **wajib tulis ADR di `/docs/decisions/`** sebelum mulai implementasi:
+Owner project (BD) memberikan otonomi untuk 3 keputusan ini, tapi **wajib tulis ADR di `/docs/adr/`** sebelum mulai implementasi:
 
 ### Keputusan 1: Gantt library (frappe-gantt vs dhtmlx-gantt)
 
@@ -168,10 +168,10 @@ npm run dev
 
 | File | Isi | Pakai untuk |
 |---|---|---|
-| `/docs/PRD.md` | PRD lengkap v0.2 | Acceptance criteria per feature |
-| `/docs/decisions/ADR-001-supabase-managed.md` | Kenapa Supabase managed | Konteks tech stack |
-| `/docs/decisions/ADR-002-rls-strategy.md` | RLS policy plan per tabel | Implementasi Sprint 1 |
-| `/docs/decisions/ADR-template.md` | Template untuk ADR baru | Tulis ADR-003, 004, 005 |
+| `/docs/prd-task-management-internal.md` | PRD lengkap v0.2 | Acceptance criteria per feature |
+| `/docs/adr/ADR-001-supabase-managed.md` | Kenapa Supabase managed | Konteks tech stack |
+| `/docs/adr/ADR-002-rls-strategy.md` | RLS policy plan per tabel | Implementasi Sprint 1 |
+| `/docs/adr/ADR-template.md` | Template untuk ADR baru | Tulis ADR-003, 004, 005 |
 | `/docs/sample-mom/` | Sample MoM real (10 file) | Testing prompt Cowork Sprint 5 |
 | `/supabase/seed/users.csv` | Daftar user pilot (nama Indonesia) | Seed data realistis |
 | `/.env.example` | Template env var | Setup |
@@ -215,7 +215,7 @@ Owner adalah BD, bukan engineer. Saat kamu kasih update atau minta input:
 | Sprint 5 | F9 (Cowork integration), F16 (admin usage) | Otomasi |
 | Sprint 6 | Testing, hardening, soft launch | Hardening |
 
-Untuk detail per feature, **selalu refer ke `/docs/PRD.md`**.
+Untuk detail per feature, **selalu refer ke `/docs/prd-task-management-internal.md`**.
 
 ---
 
@@ -224,3 +224,4 @@ Untuk detail per feature, **selalu refer ke `/docs/PRD.md`**.
 - **2026-04-27:** Clarify Checkpoint 1 gating — ADR-001/002/005 wajib pre-Sprint 1; ADR-003 pre-Sprint 2 (butuh data bundle size); ADR-004 pre-Sprint 3 (butuh schema final). ADR-005 dijadikan wajib (bukan conditional). Owner approval untuk Sprint 1 mulai.
 - **2026-04-27 (later):** Fix F6/F10 mislabel — F6 = Bottleneck view (PRD line 116), F10 = Onboarding wizard. CLAUDE.md line 65 dan PRD line 801 sebelumnya keliru pakai F6 untuk onboarding. Affected: CLAUDE.md (1 line), PRD section 11 Sprint 4 (1 line fix + 1 line redundant deleted).
 - **2026-04-27 (later):** Owner approval explicit untuk Sprint 1 mulai. Checkpoint 1 cleared (ADR-001/002/005 Accepted; ADR-003/004 deferred sesuai gating). Baseline foundation: theme.css + globals.css + tailwind.config.ts di apps/web/. Belum ada Vite scaffolding.
+- **2026-04-27 (later):** Fix path references di CLAUDE.md — /docs/decisions/ → /docs/adr/, /docs/PRD.md → /docs/prd-task-management-internal.md. Sebelumnya inconsistent dengan actual filesystem.
