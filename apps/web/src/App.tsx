@@ -3,6 +3,7 @@ import { AuthProvider } from '@/contexts/AuthContext';
 import { ToastProvider } from '@/contexts/ToastContext';
 import { ToastContainer } from '@/components/ui/toast-container';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { WizardTour } from '@/components/onboarding/WizardTour';
 import { LoginPage } from '@/pages/LoginPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { ProjectsPage } from '@/pages/ProjectsPage';
@@ -26,6 +27,7 @@ function App() {
       <ToastProvider>
         <ToastContainer />
         <BrowserRouter>
+        <WizardTour />
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route
