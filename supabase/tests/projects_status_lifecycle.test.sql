@@ -12,8 +12,18 @@
 --   5. viewer UPDATE project status → 0 rowcount (no Viewer UPDATE policy)
 --   6. status UPDATE preserves other field values (name, description unchanged)
 --
--- Fixture: 2 teams + 8 users + 4 projects (mirror Sprint 1 pattern).
--- Run: MCP execute_sql via TEMP table aggregation pattern.
+-- Fixture: 2 teams + 5 users + 2 projects (test-scoped UUIDs).
+-- Pattern: BEGIN/ROLLBACK transaction-rollback (Sprint 1 RLS test convention).
+-- ON CONFLICT (id) DO NOTHING di setup INSERTs supaya idempotent terhadap
+-- state DB:
+--   - Empty DB (dev): semua INSERT proceed normal
+--   - Post-Sprint-1-auth-seed (current): teams + 4 users sudah persisten,
+--     ON CONFLICT skip duplicate rows. User 005 (rangga) inserted fresh.
+--   - Post-Sprint-2-demo-seed: project a1/b1 UUIDs distinct dari dXXX seed.
+-- ROLLBACK at end wipe rangga + projects; persistent teams/users untouched.
+--
+-- Run: MCP execute_sql via TEMP table aggregation pattern, atau Dashboard
+-- SQL Editor (paste isi file → Run).
 -- =============================================================
 
 BEGIN;
@@ -25,17 +35,28 @@ SELECT plan(6);
 -- ============================================================
 SET LOCAL ROLE postgres;
 
+-- Teams: ON CONFLICT DO NOTHING — Team Alpha/Beta likely persisten dari
+-- Sprint 1 auth_users_seed.sql. Skip duplicate, reuse existing UUID.
 INSERT INTO public.teams (id, name, description) VALUES
   ('00000000-0000-0000-0000-00000000aaaa', 'Team Alpha', 'Tim pilot fixture A'),
-  ('00000000-0000-0000-0000-00000000bbbb', 'Team Beta',  'Tim pilot fixture B');
+  ('00000000-0000-0000-0000-00000000bbbb', 'Team Beta',  'Tim pilot fixture B')
+ON CONFLICT (id) DO NOTHING;
 
+-- Users: ON CONFLICT DO NOTHING — 4 user (001/002/003/008) persisten dari
+-- auth_users_seed.sql. Email/full_name yang persisten akan tetap dipakai
+-- (skip new values di test fixture). User 005 (rangga manager Team Beta)
+-- TIDAK ada di auth seed → fresh INSERT untuk transaction scope.
+-- ROLLBACK at end wipe rangga 005, persistent users untouched.
 INSERT INTO public.users (id, email, full_name, role, team_id) VALUES
   ('00000000-0000-0000-0000-000000000001', 'budi@kalatask.test',   'Budi Santoso',    'admin',   '00000000-0000-0000-0000-00000000aaaa'),
   ('00000000-0000-0000-0000-000000000002', 'sari@kalatask.test',   'Sari Wijaya',     'manager', '00000000-0000-0000-0000-00000000aaaa'),
   ('00000000-0000-0000-0000-000000000003', 'andi@kalatask.test',   'Andi Pratama',    'member',  '00000000-0000-0000-0000-00000000aaaa'),
   ('00000000-0000-0000-0000-000000000005', 'rangga@kalatask.test', 'Rangga Saputra',  'manager', '00000000-0000-0000-0000-00000000bbbb'),
-  ('00000000-0000-0000-0000-000000000008', 'maya@kalatask.test',   'Maya Anggraini',  'viewer',  '00000000-0000-0000-0000-00000000bbbb');
+  ('00000000-0000-0000-0000-000000000008', 'maya@kalatask.test',   'Maya Anggraini',  'viewer',  '00000000-0000-0000-0000-00000000bbbb')
+ON CONFLICT (id) DO NOTHING;
 
+-- Projects: test-scoped UUIDs (...a1, ...b1) — distinct dari demo seed
+-- (...d1100/d2200/d3300). No conflict possible. INSERT plain.
 INSERT INTO public.projects (id, name, description, owner_id, status) VALUES
   ('00000000-0000-0000-0000-0000000000a1', 'Project Alpha One',  'Owner Sari',   '00000000-0000-0000-0000-000000000002', 'planning'),
   ('00000000-0000-0000-0000-0000000000b1', 'Project Beta One',   'Owner Rangga', '00000000-0000-0000-0000-000000000005', 'planning');
