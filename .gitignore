@@ -48,6 +48,11 @@ coverage/
 .nyc_output/
 *.lcov
 
+# ----- Playwright (E2E artifacts, generated) -----
+playwright-report/
+test-results/
+playwright/.cache/
+
 # ----- Editor / IDE -----
 .vscode/*
 !.vscode/settings.json
