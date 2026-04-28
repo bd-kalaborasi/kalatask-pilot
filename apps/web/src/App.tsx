@@ -6,6 +6,14 @@ import { DashboardPage } from '@/pages/DashboardPage';
 import { ProjectsPage } from '@/pages/ProjectsPage';
 import { ProjectDetailPage } from '@/pages/ProjectDetailPage';
 import { ManagerDashboardPage } from '@/pages/ManagerDashboardPage';
+import { lazy, Suspense } from 'react';
+// Lazy-load ProductivityDashboardPage untuk code-split Recharts (R1
+// mitigation per Sprint 3 plan)
+const ProductivityDashboardPage = lazy(() =>
+  import('@/pages/ProductivityDashboardPage').then((m) => ({
+    default: m.ProductivityDashboardPage,
+  })),
+);
 
 function App() {
   return (
@@ -42,6 +50,24 @@ function App() {
             element={
               <ProtectedRoute>
                 <ManagerDashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/productivity"
+            element={
+              <ProtectedRoute>
+                <Suspense
+                  fallback={
+                    <div className="min-h-screen flex items-center justify-center bg-canvas">
+                      <p className="text-sm text-muted-foreground">
+                        Memuat dashboard...
+                      </p>
+                    </div>
+                  }
+                >
+                  <ProductivityDashboardPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
