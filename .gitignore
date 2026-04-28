@@ -53,6 +53,8 @@ playwright-report/
 test-results/
 playwright/.cache/
 apps/web/tests/tmp/
+apps/web/tests/screenshots/
+apps/web/reports/
 
 # ----- PWA generated -----
 apps/web/dev-dist/

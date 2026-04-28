@@ -68,18 +68,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Subscribe-only pattern. onAuthStateChange fires INITIAL_SESSION
     // immediately on subscribe. Callback WAJIB sync — async work via void.
+    // CRITICAL: set profile IMMEDIATELY when fetched. Don't await seed RPC
+    // di .then chain karena bikin supabase-js v2 listener deadlock (issues
+    // #762, #963) — lock contention dengan auth listener internals.
+    // Seed check fires di separate microtask, update profile post-seed.
     const { data } = onAuthStateChange((_event, newSession) => {
       if (!mounted) return;
       setSession(newSession);
       setLoading(false);
       if (newSession) {
-        void getCurrentUserProfile().then(async (userProfile) => {
-          if (!mounted || !userProfile) {
-            if (mounted) setProfile(userProfile);
-            return;
+        void getCurrentUserProfile().then((userProfile) => {
+          if (!mounted) return;
+          setProfile(userProfile);
+          if (userProfile) {
+            // Defer seed check ke microtask terpisah biar tidak block setProfile.
+            void seedSampleIfNeeded(userProfile).then((seeded) => {
+              if (mounted && seeded !== userProfile) setProfile(seeded);
+            });
           }
-          const seeded = await seedSampleIfNeeded(userProfile);
-          if (mounted) setProfile(seeded);
         });
       } else {
         setProfile(null);

@@ -21,11 +21,16 @@ export default defineConfig({
   globalSetup: path.resolve(__dirname, './tests/e2e/globalSetup.ts'),
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
-    baseURL: 'http://localhost:5174',
+    baseURL: 'http://127.0.0.1:5174',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     actionTimeout: 10_000,
     navigationTimeout: 15_000,
+    // SW disabled by default — intercepts fetches secara unpredictable di
+    // Playwright runs (cause Sprint 1-3 redirect tests stuck di Suspense
+    // fallback). Override per-test via test.use({ serviceWorkers: 'allow' })
+    // di sprint-4-pwa-installability spec.
+    serviceWorkers: 'block',
   },
   projects: [
     {
