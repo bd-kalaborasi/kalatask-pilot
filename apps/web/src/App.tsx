@@ -6,13 +6,16 @@ import { DashboardPage } from '@/pages/DashboardPage';
 import { ProjectsPage } from '@/pages/ProjectsPage';
 import { ProjectDetailPage } from '@/pages/ProjectDetailPage';
 import { ManagerDashboardPage } from '@/pages/ManagerDashboardPage';
+import { BottleneckPage } from '@/pages/BottleneckPage';
 import { lazy, Suspense } from 'react';
-// Lazy-load ProductivityDashboardPage untuk code-split Recharts (R1
-// mitigation per Sprint 3 plan)
+// Lazy-load Recharts-heavy pages untuk code-split (R1 mitigation Sprint 3)
 const ProductivityDashboardPage = lazy(() =>
   import('@/pages/ProductivityDashboardPage').then((m) => ({
     default: m.ProductivityDashboardPage,
   })),
+);
+const WorkloadPage = lazy(() =>
+  import('@/pages/WorkloadPage').then((m) => ({ default: m.WorkloadPage })),
 );
 
 function App() {
@@ -68,6 +71,30 @@ function App() {
                 >
                   <ProductivityDashboardPage />
                 </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/workload"
+            element={
+              <ProtectedRoute>
+                <Suspense
+                  fallback={
+                    <div className="min-h-screen flex items-center justify-center bg-canvas">
+                      <p className="text-sm text-muted-foreground">Memuat...</p>
+                    </div>
+                  }
+                >
+                  <WorkloadPage />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bottleneck"
+            element={
+              <ProtectedRoute>
+                <BottleneckPage />
               </ProtectedRoute>
             }
           />
