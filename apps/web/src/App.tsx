@@ -20,6 +20,11 @@ const ProductivityDashboardPage = lazy(() =>
 const WorkloadPage = lazy(() =>
   import('@/pages/WorkloadPage').then((m) => ({ default: m.WorkloadPage })),
 );
+const AdminCsvImportPage = lazy(() =>
+  import('@/pages/AdminCsvImportPage').then((m) => ({
+    default: m.AdminCsvImportPage,
+  })),
+);
 
 function App() {
   return (
@@ -101,6 +106,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <BottleneckPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/csv-import"
+            element={
+              <ProtectedRoute>
+                <Suspense
+                  fallback={
+                    <div className="min-h-screen flex items-center justify-center bg-canvas">
+                      <p className="text-sm text-muted-foreground">Memuat...</p>
+                    </div>
+                  }
+                >
+                  <AdminCsvImportPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
