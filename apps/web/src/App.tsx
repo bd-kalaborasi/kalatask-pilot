@@ -5,6 +5,7 @@ import { LoginPage } from '@/pages/LoginPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { ProjectsPage } from '@/pages/ProjectsPage';
 import { ProjectDetailPage } from '@/pages/ProjectDetailPage';
+import { ManagerDashboardPage } from '@/pages/ManagerDashboardPage';
 
 function App() {
   return (
@@ -33,6 +34,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ProjectDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/manager"
+            element={
+              <ProtectedRoute>
+                <ManagerDashboardPage />
               </ProtectedRoute>
             }
           />

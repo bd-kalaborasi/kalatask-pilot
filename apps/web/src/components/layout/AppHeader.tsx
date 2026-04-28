@@ -63,6 +63,21 @@ export function AppHeader() {
           >
             Projects
           </NavLink>
+          {profile && (profile.role === 'admin' || profile.role === 'manager') && (
+            <NavLink
+              to="/dashboard/manager"
+              className={({ isActive }) =>
+                cn(
+                  'px-3 py-1.5 rounded-md transition-colors',
+                  isActive
+                    ? 'bg-accent text-accent-foreground font-medium'
+                    : 'text-muted-foreground hover:text-foreground',
+                )
+              }
+            >
+              Dashboard
+            </NavLink>
+          )}
         </nav>
 
         <div className="flex items-center gap-2 flex-shrink-0">
