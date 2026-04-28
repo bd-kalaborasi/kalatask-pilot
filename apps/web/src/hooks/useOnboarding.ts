@@ -16,7 +16,9 @@ export function useOnboarding() {
   const { profile, setOnboardingState } = useAuth();
   const state: OnboardingState = profile?.onboarding_state ?? {};
 
-  const showWizard = shouldShowWizard(state);
+  // Guard: wizard only relevant for authenticated users with a profile.
+  // Without profile (login page, loading state) suppress wizard modal.
+  const showWizard = !!profile && shouldShowWizard(state);
 
   const completeWizard = useCallback(async () => {
     await setOnboardingState({ tutorial_done: true });

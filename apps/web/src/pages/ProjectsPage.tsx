@@ -13,6 +13,7 @@ import { useProjectsList } from '@/hooks/useProjectsList';
 import { useTeamsList } from '@/hooks/useTeamsList';
 import {
   applyProjectsFilter,
+  EMPTY_PROJECTS_FILTER,
   type ProjectsFilter,
 } from '@/lib/projects';
 import {
@@ -97,7 +98,7 @@ export function ProjectsPage() {
                 title="Filter ini nggak nemu apa-apa"
                 body="Coba longgarin filter status atau team — atau reset filter biar lihat semua."
                 ctaLabel="Reset filter"
-                ctaOnClick={() => setFilter({})}
+                ctaOnClick={() => setFilter(EMPTY_PROJECTS_FILTER)}
               />
             )}
           </div>

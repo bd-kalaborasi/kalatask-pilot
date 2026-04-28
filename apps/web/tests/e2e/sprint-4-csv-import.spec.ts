@@ -19,6 +19,7 @@ async function login(page: Page, email: string, password: string) {
   await page.goto('/login');
   const keluarButton = page.getByRole('button', { name: 'Keluar' });
   if (await keluarButton.isVisible().catch(() => false)) {
+    await dismissWizardIfVisible(page);
     await keluarButton.click();
     await page.waitForURL('**/login', { timeout: 5000 });
   }
@@ -28,6 +29,15 @@ async function login(page: Page, email: string, password: string) {
   await page.waitForURL((url) => !url.pathname.startsWith('/login'), {
     timeout: 10000,
   });
+  await dismissWizardIfVisible(page);
+}
+
+async function dismissWizardIfVisible(page: Page) {
+  const dialog = page.locator('[role="dialog"]');
+  if (await dialog.isVisible().catch(() => false)) {
+    await page.getByRole('button', { name: 'Skip tutorial' }).click();
+    await dialog.waitFor({ state: 'hidden', timeout: 3000 });
+  }
 }
 
 test.describe('Sprint 4 — CSV Import admin-only', () => {

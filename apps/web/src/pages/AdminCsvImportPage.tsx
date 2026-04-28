@@ -182,7 +182,9 @@ export function AdminCsvImportPage() {
     setPhase('idle');
   }, []);
 
-  if (authLoading) {
+  // Profile loads async setelah session — wait sampai resolve sebelum
+  // redirect (avoid false-positive redirect saat profile masih null).
+  if (authLoading || !profile) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-canvas">
         <p className="text-sm text-muted-foreground">Memuat...</p>
@@ -190,7 +192,7 @@ export function AdminCsvImportPage() {
     );
   }
 
-  if (!profile || profile.role !== 'admin') {
+  if (profile.role !== 'admin') {
     return <Navigate to="/" replace />;
   }
 
