@@ -211,6 +211,88 @@ Expected: line dengan project ref + linked indicator.
 
 Kalau tidak terdaftar → owner re-run `npx supabase login`.
 
+---
+
+## Migration tracking drift recovery
+
+### Why drift happens
+
+Saat migration apply via Supabase Dashboard SQL Editor (Sprint 1-3 pattern, sebelum CLI link), tracking table `supabase_migrations.schema_migrations` **TIDAK ter-update**. Tracking ini cuma populated oleh:
+- `supabase db push` (CLI)
+- `supabase migration up` (local CLI)
+- Migration applied via REST API `/rest/v1/rpc/...`
+
+Result: Dashboard apply sukses (DDL executed), tapi `supabase db push --dry-run` lapor 15 migration "would be pushed" karena tracking thinks none applied. Kalau langsung run `db push`, CLI akan reject duplicate atau worse — try re-apply dan break karena `CREATE TABLE` fail di idempotency.
+
+### Repair procedure (Sprint 3 wrap actual)
+
+Verified 2026-04-28: `migration repair` works against linked project, no Docker required.
+
+```bash
+npx supabase migration repair --status applied --linked --yes \
+  <timestamp1> <timestamp2> ... <timestampN>
+```
+
+Sprint 3 actual command (15 migrations):
+
+```bash
+npx supabase migration repair --status applied --linked --yes \
+  20260427000000 \
+  20260427120100 \
+  20260427120150 \
+  20260427130000 \
+  20260427130100 \
+  20260427140000 \
+  20260427150000 \
+  20260427150100 \
+  20260427150200 \
+  20260428100000 \
+  20260428100100 \
+  20260428100200 \
+  20260428100300 \
+  20260428110000 \
+  20260428110100
+```
+
+Output:
+```
+Repaired migration history: [...] => applied
+Finished supabase migration repair.
+```
+
+### Verify sync
+
+```bash
+npx supabase migration list --linked
+# Expected: Local + Remote columns match for all 15 versions
+
+npx supabase db push --dry-run --linked
+# Expected: "Remote database is up to date."
+```
+
+### Prevention untuk Sprint 4+
+
+✅ **Use `npx supabase db push`** untuk apply migration baru — auto-update tracking table.
+
+❌ **JANGAN apply via Dashboard SQL Editor** untuk migration yang ditrack. Dashboard OK untuk one-off SQL queries (verification, debugging) tapi NOT untuk migrations.
+
+Kalau Sprint 4+ kepaksa apply via Dashboard (mis. emergency hotfix saat CLI down), wajib follow-up dengan `migration repair --status applied <version>` untuk sync tracking.
+
+### Cleanup pattern
+
+Setelah repair sukses, cek apakah ada drift di file migrations vs tracking:
+
+```bash
+# List file local
+ls supabase/migrations/
+
+# Compare dengan tracking
+npx supabase migration list --linked
+```
+
+Kalau ada migration di file tapi tidak di tracking → `migration repair` lagi.
+Kalau ada tracking tapi tidak di file → file deleted manual (rare, biasanya bug). FLAG ke owner sebelum action.
+
 ### Playwright
 
 Installed Sprint 1 Step 9. Run via `npx playwright test` di `apps/web/`.
