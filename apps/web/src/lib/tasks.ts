@@ -73,6 +73,21 @@ export async function fetchTasksByProject(
   return (data ?? []) as unknown as TaskWithAssignee[];
 }
 
+export async function fetchTaskById(
+  taskId: string,
+): Promise<TaskWithAssignee | null> {
+  const { data, error } = await supabase
+    .from('tasks')
+    .select(TASK_SELECT_COLUMNS)
+    .eq('id', taskId)
+    .maybeSingle();
+  if (error) {
+    console.error('[tasks] fetchTaskById failed:', error);
+    return null;
+  }
+  return (data as unknown as TaskWithAssignee | null) ?? null;
+}
+
 export interface UpdateTaskStatusArgs {
   id: string;
   status: TaskStatus;
