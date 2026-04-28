@@ -8,6 +8,7 @@
  */
 import { TaskStatusBadge } from '@/components/task/TaskStatusBadge';
 import { TaskPriorityBadge } from '@/components/task/TaskPriorityBadge';
+import { EmptyState } from '@/components/ui/empty-state';
 import { formatDateID, formatDeadlineRelative } from '@/lib/formatDate';
 import { groupTasks, type GroupBy } from '@/lib/tasksFilter';
 import type { TaskWithAssignee } from '@/lib/tasks';
@@ -22,10 +23,12 @@ export function ListView({ tasks, groupBy }: ListViewProps) {
 
   if (tasks.length === 0) {
     return (
-      <div className="border rounded-md p-8 bg-surface text-center">
-        <p className="text-sm text-muted-foreground">
-          Belum ada task di project ini.
-        </p>
+      <div className="border rounded-md bg-surface">
+        <EmptyState
+          icon="✅"
+          title="Project ini masih kosong"
+          body="Klik 'Bikin task' di atas untuk mulai. Atau biarkan Cowork agent ngisi otomatis dari MoM besok pagi 🤖"
+        />
       </div>
     );
   }

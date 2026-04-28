@@ -8,6 +8,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { Button } from '@/components/ui/button';
+import { EmptyState } from '@/components/ui/empty-state';
 import {
   Card,
   CardContent,
@@ -135,9 +136,12 @@ export function ManagerDashboardPage() {
               </CardHeader>
               <CardContent>
                 {workload.members.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">
-                    Belum ada member yang ter-track di scope ini.
-                  </p>
+                  <EmptyState
+                    compact
+                    icon="👥"
+                    title="Scope ini masih kosong"
+                    body="Belum ada Member dengan task aktif di scope yang dipilih. Coba ganti filter team atau tunggu task ter-assign."
+                  />
                 ) : (
                   <ul className="divide-y">
                     {workload.members.map((m) => (

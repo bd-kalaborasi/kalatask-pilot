@@ -22,6 +22,7 @@ import {
 import { ProjectStatusBadge } from '@/components/project/ProjectStatusBadge';
 import { ProjectsFilterBar } from '@/components/project/ProjectsFilterBar';
 import { Button } from '@/components/ui/button';
+import { EmptyState } from '@/components/ui/empty-state';
 import { AppHeader } from '@/components/layout/AppHeader';
 
 export function ProjectsPage() {
@@ -83,12 +84,22 @@ export function ProjectsPage() {
         )}
 
         {!loading && !error && filteredProjects.length === 0 && (
-          <div className="border rounded-md p-8 bg-surface text-center">
-            <p className="text-sm text-muted-foreground">
-              {projects.length === 0
-                ? 'Belum ada project. Admin atau Manager bisa buat project baru.'
-                : 'Filter ini gak nemu apa-apa. Reset filter?'}
-            </p>
+          <div className="border rounded-md bg-surface">
+            {projects.length === 0 ? (
+              <EmptyState
+                icon="📋"
+                title="Belum ada project di sini"
+                body="Admin atau Manager bisa bikin project baru. Sample 'Project Contoh' juga sudah disiapin di onboarding."
+              />
+            ) : (
+              <EmptyState
+                icon="🔍"
+                title="Filter ini nggak nemu apa-apa"
+                body="Coba longgarin filter status atau team — atau reset filter biar lihat semua."
+                ctaLabel="Reset filter"
+                ctaOnClick={() => setFilter({})}
+              />
+            )}
           </div>
         )}
 

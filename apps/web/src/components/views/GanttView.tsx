@@ -23,6 +23,7 @@ import Gantt, {
 // Node ESM resolver). Workaround per ADR-003 mitigation: copy CSS file
 // dan import dari local path. Re-validate saat upgrade frappe-gantt.
 import '@/styles/frappe-gantt.css';
+import { EmptyState } from '@/components/ui/empty-state';
 import type { TaskWithAssignee } from '@/lib/tasks';
 
 interface GanttViewProps {
@@ -66,22 +67,24 @@ export function GanttView({ tasks, viewMode = 'Day' }: GanttViewProps) {
 
   if (tasks.length === 0) {
     return (
-      <div className="border rounded-md p-8 bg-surface text-center">
-        <p className="text-sm text-muted-foreground">
-          Belum ada task untuk ditampilkan di Gantt.
-        </p>
+      <div className="border rounded-md bg-surface">
+        <EmptyState
+          icon="📅"
+          title="Timeline-nya masih kosong"
+          body="Bikin task dengan deadline dulu, baru bar Gantt muncul di sini."
+        />
       </div>
     );
   }
 
   if (ganttTasks.length === 0) {
     return (
-      <div className="border rounded-md p-8 bg-surface text-center">
-        <p className="text-sm text-muted-foreground">
-          Tidak ada task dengan deadline untuk Gantt. Set deadline + estimasi
-          durasi (estimated_hours) untuk render bar, atau deadline saja untuk
-          render milestone.
-        </p>
+      <div className="border rounded-md bg-surface">
+        <EmptyState
+          icon="🗓️"
+          title="Belum ada task dengan deadline"
+          body="Gantt butuh deadline (untuk milestone) atau deadline + estimated_hours (untuk bar). Buka detail task → set deadline."
+        />
       </div>
     );
   }
