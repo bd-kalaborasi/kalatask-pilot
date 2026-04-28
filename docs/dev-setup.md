@@ -97,16 +97,119 @@ Kalau "not logged in" → owner re-run `gh auth login`.
 
 ## Other tools (cumulative Sprint 1-3)
 
-### Supabase CLI (Sprint 3 Q6 deferred)
+### Supabase CLI (Sprint 4+ autonomous workflow)
+
+#### Why
+
+Sprint 1-3 patterns:
+- Migration apply → Dashboard SQL Editor (manual paste)
+- pgTAP execution → MCP `execute_sql` aggregation OR Dashboard
+
+Sprint 4+ goal: eliminate manual Dashboard step untuk migration apply via `supabase db push`. pgTAP execution stays MCP-based (no Docker overhead).
+
+#### Install — DO NOT install native
+
+Supabase tidak di winget catalog (verified 2026-04-28). Scoop available tapi extra hop. **Use `npx supabase`** (v2.95.5+) — works immediately, no PATH setup, consistent across Sprint 4+ session.
 
 ```bash
 npx --yes supabase --version
-# 2.95.5+ via npx
+# Expected: 2.95.5 (or newer)
 ```
 
-Setup di `supabase/config.toml` (Sprint 3 commit `fcfb5c4`).
+Setup `supabase/config.toml` already done Sprint 3 (commit `fcfb5c4`). No re-init needed.
 
-Status: `init` done, `link` + `start` deferred (owner action ~30-60 menit).
+#### Owner one-time auth (~3 menit)
+
+##### Step 1: Generate access token
+
+Open: https://supabase.com/dashboard/account/tokens
+
+- Click **Generate new token**
+- Name: "kalatask-pilot CLI" (atau apapun)
+- Click **Generate token**
+- **Copy token immediately** (di-display sekali only)
+
+##### Step 2: Login
+
+```bash
+npx supabase login
+# Paste token saat prompt → Enter
+# Token disimpan di:
+#   Windows: %USERPROFILE%\AppData\Roaming\supabase\access-token
+#   Linux/Mac: ~/.supabase/access-token
+```
+
+##### Step 3: Link project
+
+```bash
+cd C:\Users\bdkal\Projects\kalatask-pilot
+npx supabase link --project-ref iymtuvslcsoitgoulmmk
+# Akan prompt database password
+```
+
+DB password from: https://supabase.com/dashboard/project/iymtuvslcsoitgoulmmk/settings/database
+
+(Section "Connection string" → klik "Show password" atau scroll ke field password.)
+
+#### Verify auth
+
+```bash
+npx supabase projects list
+# Expected: project iymtuvslcsoitgoulmmk visible dengan flag "linked: true"
+```
+
+#### Common commands Sprint 4+
+
+| Command | Purpose | Docker required? |
+|---|---|---|
+| `npx supabase db push` | Apply local migrations to remote | ❌ No |
+| `npx supabase db diff` | Check sync local vs remote schema | ❌ No |
+| `npx supabase db pull` | Pull remote schema → local migrations | ❌ No |
+| `npx supabase migration list` | List migration status | ❌ No |
+| `npx supabase test db` | Run pgTAP against local | ✅ Yes (`supabase start` Docker) |
+| `npx supabase start` | Start local stack (Postgres + Studio + Auth) | ✅ Yes (Docker Desktop) |
+
+**Sprint 4+ recommended migrations workflow:**
+```bash
+# Develop local (apps/web/dev server pakai remote — same as Sprint 1-3)
+# Write migration file di supabase/migrations/
+
+# Apply to remote (replaces Dashboard manual paste):
+npx supabase db push
+
+# Verify sync:
+npx supabase db diff
+# Expected: no output (in sync)
+```
+
+#### pgTAP execution path (Sprint 4+)
+
+**Recommended: continue MCP `execute_sql` aggregation pattern** (Sprint 1+2 established, no Docker required).
+
+Workflow:
+1. Owner toggle `.mcp.json` ke `read_only=false`
+2. Owner restart Claude Code (MCP session config refresh)
+3. Claude Code run pgTAP via MCP `execute_sql` dengan TEMP table aggregation pattern
+4. Owner toggle back `read_only=true` after run
+
+Alternative: `npx supabase test db` requires Docker Desktop + `supabase start` setup (~10-15 menit Docker initial pull). Defer to owner discretion.
+
+#### Security hygiene
+
+- ❌ JANGAN commit access token / DB password
+- ✅ Token storage: `%USERPROFILE%\AppData\Roaming\supabase\access-token` (file system, no env var pollution)
+- ✅ DB password: Supabase keychain via `supabase link` (encrypted di config)
+- 🔁 Token rotation: 6 bulan default expiry, calendar reminder
+
+#### Verification command (session start)
+
+```bash
+npx supabase projects list 2>&1 | grep iymtuvslcsoitgoulmmk
+```
+
+Expected: line dengan project ref + linked indicator.
+
+Kalau tidak terdaftar → owner re-run `npx supabase login`.
 
 ### Playwright
 
