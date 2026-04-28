@@ -19,7 +19,6 @@ import {
 import type { Session } from '@supabase/supabase-js';
 import {
   getCurrentUserProfile,
-  getSession,
   onAuthStateChange,
   signOut as supabaseSignOut,
   type UserProfile,
@@ -42,25 +41,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let mounted = true;
 
-    // Bootstrap: cek session existing + fetch profile kalau ada
-    (async () => {
-      const initialSession = await getSession();
-      if (!mounted) return;
-      setSession(initialSession);
-      if (initialSession) {
-        const userProfile = await getCurrentUserProfile();
-        if (mounted) setProfile(userProfile);
-      }
-      if (mounted) setLoading(false);
-    })();
-
-    // Subscribe ke auth state change (sign in / sign out / token refresh)
-    const { data } = onAuthStateChange(async (_event, newSession) => {
+    // Subscribe-only pattern. onAuthStateChange fires INITIAL_SESSION
+    // immediately on subscribe — provides initial session AND trigger
+    // untuk resolve loading. Tidak perlu parallel getSession() bootstrap.
+    //
+    // Callback WAJIB sync (no async/await langsung). Async work di-defer
+    // via void promise. supabase-js v2 deadlock kalau listener await
+    // supabase auth/db method — lock contention dengan signOut/refresh.
+    // Refer: supabase-js issues #762, #963.
+    const { data } = onAuthStateChange((_event, newSession) => {
       if (!mounted) return;
       setSession(newSession);
+      setLoading(false);
       if (newSession) {
-        const userProfile = await getCurrentUserProfile();
-        if (mounted) setProfile(userProfile);
+        void getCurrentUserProfile().then((userProfile) => {
+          if (mounted) setProfile(userProfile);
+        });
       } else {
         setProfile(null);
       }
