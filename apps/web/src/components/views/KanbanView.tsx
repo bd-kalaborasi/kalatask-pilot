@@ -14,7 +14,6 @@
  *
  * Q3 stub: notif emission deferred ke Sprint 3 (lihat lib/notifStub.ts).
  */
-import { useState } from 'react';
 import {
   DndContext,
   PointerSensor,
@@ -35,7 +34,7 @@ import {
 } from '@/lib/tasks';
 import { TaskPriorityBadge } from '@/components/task/TaskPriorityBadge';
 import { formatDateID } from '@/lib/formatDate';
-import { emitTaskNotifStub } from '@/lib/notifStub';
+import { useOptimisticMutation } from '@/hooks/useOptimisticMutation';
 
 interface KanbanViewProps {
   tasks: TaskWithAssignee[];
@@ -61,13 +60,32 @@ const COLUMN_HEADER_CLASS: Record<TaskStatus, string> = {
   blocked: 'bg-red-100 text-red-700 border-red-300', // Q1 visual urgency
 };
 
-export function KanbanView({ tasks, onLocalUpdate, onRefetch }: KanbanViewProps) {
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+interface DragArgs {
+  taskId: string;
+  fromStatus: TaskStatus;
+  toStatus: TaskStatus;
+}
 
+export function KanbanView({ tasks, onLocalUpdate, onRefetch }: KanbanViewProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
     useSensor(KeyboardSensor),
   );
+
+  const { mutate: mutateStatus } = useOptimisticMutation<DragArgs>({
+    mutationFn: ({ taskId, toStatus }) =>
+      updateTaskStatus({ id: taskId, status: toStatus }),
+    onApply: ({ taskId, toStatus }) => {
+      onLocalUpdate(taskId, { status: toStatus });
+    },
+    onRollback: ({ taskId, fromStatus }) => {
+      onLocalUpdate(taskId, { status: fromStatus });
+      onRefetch();
+    },
+    errorMessage: 'Gagal update status task. Coba lagi atau refresh halaman.',
+    // No success toast — drag-drop UI itself = visual feedback
+    successMessage: false,
+  });
 
   const tasksByStatus: Record<TaskStatus, TaskWithAssignee[]> = {
     todo: [],
@@ -90,42 +108,15 @@ export function KanbanView({ tasks, onLocalUpdate, onRefetch }: KanbanViewProps)
     const task = tasks.find((t) => t.id === taskId);
     if (!task || task.status === targetStatus) return;
 
-    const previousStatus = task.status;
-    setErrorMsg(null);
-
-    // Optimistic
-    onLocalUpdate(taskId, { status: targetStatus });
-
-    try {
-      await updateTaskStatus({ id: taskId, status: targetStatus });
-      // Q3 stub — notif emission deferred Sprint 3
-      emitTaskNotifStub({
-        event: 'task_status_changed',
-        taskId,
-        detail: { from: previousStatus, to: targetStatus },
-      });
-    } catch (err) {
-      // Rollback local state
-      onLocalUpdate(taskId, { status: previousStatus });
-      const msg =
-        err instanceof Error ? err.message : 'Gagal update status.';
-      setErrorMsg(`${msg}. Coba lagi atau refresh halaman.`);
-      // Best-effort sync server state
-      onRefetch();
-    }
+    await mutateStatus({
+      taskId,
+      fromStatus: task.status,
+      toStatus: targetStatus,
+    });
   }
 
   return (
     <div className="space-y-3">
-      {errorMsg && (
-        <div
-          role="alert"
-          className="border border-destructive/50 bg-destructive/10 rounded-md p-3 text-sm text-destructive"
-        >
-          {errorMsg}
-        </div>
-      )}
-
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
           {TASK_STATUS_VALUES.map((status) => (

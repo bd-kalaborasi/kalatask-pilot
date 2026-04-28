@@ -36,6 +36,7 @@ const GanttView = lazy(() =>
 );
 import { supabase } from '@/lib/supabase';
 import { updateProjectStatus, type Project } from '@/lib/projects';
+import { useOptimisticMutation } from '@/hooks/useOptimisticMutation';
 import { useTasksByProject } from '@/hooks/useTasksByProject';
 import {
   readGroupByFromUrl,
@@ -117,21 +118,30 @@ export function ProjectDetailPage() {
     };
   }, [projectId]);
 
+  const { mutate: mutateProjectStatus } =
+    useOptimisticMutation<{
+      next: ProjectStatus;
+      previous: ProjectStatus;
+    }>({
+      mutationFn: ({ next }) => {
+        if (!project) throw new Error('Project tidak ditemukan');
+        return updateProjectStatus({ id: project.id, status: next });
+      },
+      onApply: ({ next }) => {
+        setProject((p) => (p ? { ...p, status: next } : p));
+      },
+      onRollback: ({ previous }) => {
+        setProject((p) => (p ? { ...p, status: previous } : p));
+      },
+      successMessage: 'Status project diupdate.',
+      errorMessage: 'Gagal update status project. Coba lagi.',
+    });
+
   async function handleStatusChange(next: ProjectStatus) {
     if (!project) return;
-    const previous = project.status;
-    setProject({ ...project, status: next });
     setStatusUpdating(true);
-    try {
-      await updateProjectStatus({ id: project.id, status: next });
-    } catch (err) {
-      setProject({ ...project, status: previous });
-      setProjectError(
-        err instanceof Error ? err : new Error('Gagal update status'),
-      );
-    } finally {
-      setStatusUpdating(false);
-    }
+    await mutateProjectStatus({ next, previous: project.status });
+    setStatusUpdating(false);
   }
 
   if (!profile) return null;
