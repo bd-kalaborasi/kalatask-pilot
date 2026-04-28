@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TaskStatusBadge } from '@/components/task/TaskStatusBadge';
 import { TaskPriorityBadge } from '@/components/task/TaskPriorityBadge';
-// CommentsThread implemented Step 7
+import { CommentsThread } from '@/components/comments/CommentsThread';
 import { fetchTaskById, type TaskWithAssignee } from '@/lib/tasks';
 import { formatDateID, formatDeadlineRelative } from '@/lib/formatDate';
 
@@ -144,16 +144,7 @@ export function TaskDetailPage() {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Komen</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Komen thread coming soon (Sprint 4.5 Step 7).
-                </p>
-              </CardContent>
-            </Card>
+            <CommentsThread taskId={task.id} />
           </>
         )}
       </main>
