@@ -1,16 +1,21 @@
 /**
  * AuthContext — provide session + user profile state ke seluruh app.
  *
- * Pattern: simple useState + useEffect (no reducer/Zustand — Context cukup
- * untuk auth scope per task brief constraint).
+ * F10 augment: detect first login → trigger create_onboarding_sample RPC
+ * (Q5 owner answer b). Idempotent — RPC skip duplicate insert.
  *
  * Lifecycle:
- *   1. Mount: bootstrap dengan getSession() + onAuthStateChange listener
+ *   1. Mount: bootstrap dengan onAuthStateChange listener
  *   2. Saat session change: re-fetch user profile dari public.users
- *   3. Saat sign out: clear session + profile
+ *   3. Kalau profile.onboarding_state.sample_seeded !== true:
+ *      → call createOnboardingSample(profile.id)
+ *      → updateOnboardingState({ sample_seeded: true })
+ *      → re-fetch profile (ensure UI sees latest state)
+ *   4. Saat sign out: clear session + profile
  */
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -21,14 +26,22 @@ import {
   getCurrentUserProfile,
   onAuthStateChange,
   signOut as supabaseSignOut,
+  type OnboardingState,
   type UserProfile,
 } from '@/lib/auth';
+import {
+  createOnboardingSample,
+  shouldSeedSample,
+  updateOnboardingState,
+} from '@/lib/onboarding';
 
 interface AuthContextValue {
   session: Session | null;
   profile: UserProfile | null;
   loading: boolean;
   signOut: () => Promise<void>;
+  refreshProfile: () => Promise<void>;
+  setOnboardingState: (patch: Partial<OnboardingState>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -38,24 +51,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const seedSampleIfNeeded = useCallback(async (userProfile: UserProfile) => {
+    if (!shouldSeedSample(userProfile.onboarding_state)) return userProfile;
+    const projectId = await createOnboardingSample(userProfile.id);
+    if (!projectId) return userProfile;
+    const merged = await updateOnboardingState(userProfile.id, {
+      sample_seeded: true,
+    });
+    return merged
+      ? { ...userProfile, onboarding_state: merged }
+      : userProfile;
+  }, []);
+
   useEffect(() => {
     let mounted = true;
 
     // Subscribe-only pattern. onAuthStateChange fires INITIAL_SESSION
-    // immediately on subscribe — provides initial session AND trigger
-    // untuk resolve loading. Tidak perlu parallel getSession() bootstrap.
-    //
-    // Callback WAJIB sync (no async/await langsung). Async work di-defer
-    // via void promise. supabase-js v2 deadlock kalau listener await
-    // supabase auth/db method — lock contention dengan signOut/refresh.
-    // Refer: supabase-js issues #762, #963.
+    // immediately on subscribe. Callback WAJIB sync — async work via void.
     const { data } = onAuthStateChange((_event, newSession) => {
       if (!mounted) return;
       setSession(newSession);
       setLoading(false);
       if (newSession) {
-        void getCurrentUserProfile().then((userProfile) => {
-          if (mounted) setProfile(userProfile);
+        void getCurrentUserProfile().then(async (userProfile) => {
+          if (!mounted || !userProfile) {
+            if (mounted) setProfile(userProfile);
+            return;
+          }
+          const seeded = await seedSampleIfNeeded(userProfile);
+          if (mounted) setProfile(seeded);
         });
       } else {
         setProfile(null);
@@ -66,7 +90,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       mounted = false;
       data.subscription.unsubscribe();
     };
-  }, []);
+  }, [seedSampleIfNeeded]);
 
   const handleSignOut = async () => {
     await supabaseSignOut();
@@ -74,9 +98,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfile(null);
   };
 
+  const refreshProfile = useCallback(async () => {
+    const fresh = await getCurrentUserProfile();
+    setProfile(fresh);
+  }, []);
+
+  const setOnboardingState = useCallback(
+    async (patch: Partial<OnboardingState>) => {
+      if (!profile) return;
+      const merged = await updateOnboardingState(profile.id, patch);
+      if (merged) {
+        setProfile({ ...profile, onboarding_state: merged });
+      }
+    },
+    [profile],
+  );
+
   return (
     <AuthContext.Provider
-      value={{ session, profile, loading, signOut: handleSignOut }}
+      value={{
+        session,
+        profile,
+        loading,
+        signOut: handleSignOut,
+        refreshProfile,
+        setOnboardingState,
+      }}
     >
       {children}
     </AuthContext.Provider>
