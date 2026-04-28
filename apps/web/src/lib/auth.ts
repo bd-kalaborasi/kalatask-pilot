@@ -12,6 +12,13 @@ import { supabase } from '@/lib/supabase';
 
 export type UserRole = 'admin' | 'manager' | 'member' | 'viewer';
 
+export interface OnboardingState {
+  tutorial_done?: boolean;
+  tutorial_skipped?: boolean;
+  sample_seeded?: boolean;
+  tooltips_seen?: string[];
+}
+
 export interface UserProfile {
   id: string;
   email: string;
@@ -19,6 +26,7 @@ export interface UserProfile {
   role: UserRole;
   team_id: string | null;
   locale: 'id' | 'en';
+  onboarding_state: OnboardingState;
 }
 
 export async function signIn(email: string, password: string) {
@@ -44,12 +52,18 @@ export async function getCurrentUserProfile(): Promise<UserProfile | null> {
 
   const { data, error } = await supabase
     .from('users')
-    .select('id, email, full_name, role, team_id, locale')
+    .select('id, email, full_name, role, team_id, locale, onboarding_state')
     .eq('id', session.user.id)
     .maybeSingle();
 
   if (error || !data) return null;
-  return data as UserProfile;
+  const profile = data as Omit<UserProfile, 'onboarding_state'> & {
+    onboarding_state: OnboardingState | null;
+  };
+  return {
+    ...profile,
+    onboarding_state: profile.onboarding_state ?? {},
+  };
 }
 
 export function onAuthStateChange(

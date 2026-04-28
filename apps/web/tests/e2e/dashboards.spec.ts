@@ -91,9 +91,12 @@ test.describe('F13 Productivity Dashboard permission', () => {
   }) => {
     await login(page, ANDI);
     await page.goto('/dashboard/productivity');
-    // Wait for Suspense load + profile auto-load + Navigate redirect to settle
-    await page.waitForURL((url) => url.pathname === '/', { timeout: 15_000 });
-    await expect(page).toHaveURL(/\/$/);
+    // Wait for Suspense load + profile auto-load + Navigate redirect to settle.
+    // Use toHaveURL (polling-based) untuk handle SPA history.replace tanpa
+    // 'load' lifecycle event yang waitForURL butuh.
+    await expect(page).toHaveURL(/^http:\/\/127\.0\.0\.1:5174\/$/, {
+      timeout: 15_000,
+    });
   });
 
   test('period filter URL state', async ({ page }) => {

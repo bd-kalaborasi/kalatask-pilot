@@ -20,6 +20,7 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { Button } from '@/components/ui/button';
+import { EmptyState } from '@/components/ui/empty-state';
 import {
   Card,
   CardContent,
@@ -95,9 +96,12 @@ export function WorkloadPage() {
               </CardHeader>
               <CardContent>
                 {workload.members.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">
-                    Belum ada member yang ter-track.
-                  </p>
+                  <EmptyState
+                    compact
+                    icon="👥"
+                    title="Belum ada member yang ter-track"
+                    body="Workload muncul setelah ada Member dengan task assigned. Cek Tim & User di scope ini."
+                  />
                 ) : (
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart

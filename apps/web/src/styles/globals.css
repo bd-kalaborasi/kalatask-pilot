@@ -61,6 +61,21 @@
   .kt-focus-ring {
     @apply outline-none ring-2 ring-offset-2 ring-brand-deep;
   }
+
+  /* WizardTour entrance animation (Sprint 4 F10) */
+  @keyframes wizard-in {
+    0% {
+      opacity: 0;
+      transform: translateY(8px) scale(0.96);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  .animate-wizard-in {
+    animation: wizard-in 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
 }
 
 /* ============================================================

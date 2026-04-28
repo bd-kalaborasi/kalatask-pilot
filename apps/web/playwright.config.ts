@@ -1,4 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Playwright config — KalaTask Sprint 1 Step 9 Checkpoint 2.
@@ -12,15 +16,21 @@ export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: 0,
+  retries: 1,
   workers: 1,
+  globalSetup: path.resolve(__dirname, './tests/e2e/globalSetup.ts'),
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
-    baseURL: 'http://localhost:5174',
+    baseURL: 'http://127.0.0.1:5174',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     actionTimeout: 10_000,
     navigationTimeout: 15_000,
+    // SW disabled by default — intercepts fetches secara unpredictable di
+    // Playwright runs (cause Sprint 1-3 redirect tests stuck di Suspense
+    // fallback). Override per-test via test.use({ serviceWorkers: 'allow' })
+    // di sprint-4-pwa-installability spec.
+    serviceWorkers: 'block',
   },
   projects: [
     {

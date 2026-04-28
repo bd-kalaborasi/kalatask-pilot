@@ -1,0 +1,20 @@
+{
+  "name": "KalaTask",
+  "short_name": "KalaTask",
+  "description": "Task management internal Kalaborasi Group Indonesia",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FAFAFA",
+  "theme_color": "#0060A0",
+  "lang": "id-ID",
+  "icons": [
+    {
+      "src": "/kalatask-icon.svg",
+      "sizes": "192x192 512x512 any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

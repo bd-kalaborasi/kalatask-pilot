@@ -73,6 +73,14 @@ const DEMO_PROJECT_MIGRASI = '00000000-0000-0000-0000-0000000d3300';
  * Strategy: cek Email field visibility short-timeout. Kalau gak ada,
  * berarti sudah authed → logout dulu via tombol Keluar, lalu login fresh.
  */
+async function dismissWizardIfVisible(page: Page) {
+  const dialog = page.locator('[role="dialog"]');
+  if (await dialog.isVisible().catch(() => false)) {
+    await page.getByRole('button', { name: 'Skip tutorial' }).click();
+    await dialog.waitFor({ state: 'hidden', timeout: 3_000 });
+  }
+}
+
 async function login(page: Page, user: TestUser): Promise<void> {
   await page.goto('/login');
 
@@ -83,6 +91,7 @@ async function login(page: Page, user: TestUser): Promise<void> {
 
   if (!emailVisible) {
     // Already authenticated → /login redirected ke /. Logout dulu.
+    await dismissWizardIfVisible(page);
     await page.getByRole('button', { name: 'Keluar' }).click();
     await page.waitForURL(/\/login/, { timeout: 10_000 });
   }
@@ -93,6 +102,7 @@ async function login(page: Page, user: TestUser): Promise<void> {
   await expect(page.getByRole('button', { name: 'Keluar' })).toBeVisible({
     timeout: 10_000,
   });
+  await dismissWizardIfVisible(page);
 }
 
 async function seedDataPresent(page: Page): Promise<boolean> {

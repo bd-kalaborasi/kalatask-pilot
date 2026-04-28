@@ -7,6 +7,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { NotificationDropdown } from '@/components/notifications/NotificationDropdown';
+import { InstallPrompt } from '@/components/pwa/InstallPrompt';
 import { cn } from '@/lib/utils';
 import type { UserRole } from '@/lib/auth';
 
@@ -78,11 +79,27 @@ export function AppHeader() {
               Dashboard
             </NavLink>
           )}
+          {profile?.role === 'admin' && (
+            <NavLink
+              to="/admin/csv-import"
+              className={({ isActive }) =>
+                cn(
+                  'px-3 py-1.5 rounded-md transition-colors',
+                  isActive
+                    ? 'bg-accent text-accent-foreground font-medium'
+                    : 'text-muted-foreground hover:text-foreground',
+                )
+              }
+            >
+              Import CSV
+            </NavLink>
+          )}
         </nav>
 
         <div className="flex items-center gap-2 flex-shrink-0">
           {profile && (
             <>
+              <InstallPrompt />
               <NotificationDropdown />
               <div className="hidden sm:flex items-center gap-2 ml-1">
                 <span className="text-sm text-muted-foreground">

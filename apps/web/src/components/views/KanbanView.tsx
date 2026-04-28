@@ -33,6 +33,7 @@ import {
   type TaskWithAssignee,
 } from '@/lib/tasks';
 import { TaskPriorityBadge } from '@/components/task/TaskPriorityBadge';
+import { Tooltip } from '@/components/onboarding/Tooltip';
 import { formatDateID } from '@/lib/formatDate';
 import { useOptimisticMutation } from '@/hooks/useOptimisticMutation';
 
@@ -116,7 +117,10 @@ export function KanbanView({ tasks, onLocalUpdate, onRefetch }: KanbanViewProps)
   }
 
   return (
-    <div className="space-y-3">
+    <div className="relative space-y-3">
+      <Tooltip tooltipKey="kanban-drag" anchor="below" className="left-4 -translate-x-0">
+        Tip: drag kartu antar kolom untuk update status. Cobain dulu! 👋
+      </Tooltip>
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
           {TASK_STATUS_VALUES.map((status) => (

@@ -5,6 +5,7 @@
  */
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useOnboarding } from '@/hooks/useOnboarding';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { Button } from '@/components/ui/button';
 import {
@@ -29,6 +30,7 @@ const ROLE_DESCRIPTION: Record<UserRole, string> = {
 
 export function DashboardPage() {
   const { profile } = useAuth();
+  const { reopenWizard } = useOnboarding();
 
   if (!profile) {
     return (
@@ -61,9 +63,19 @@ export function DashboardPage() {
             <p className="text-sm leading-relaxed">
               {ROLE_DESCRIPTION[profile.role]}
             </p>
-            <Button asChild>
-              <Link to="/projects">Buka Projects</Link>
-            </Button>
+            <div className="flex flex-wrap items-center gap-3">
+              <Button asChild>
+                <Link to="/projects">Buka Projects</Link>
+              </Button>
+              <button
+                type="button"
+                onClick={() => void reopenWizard()}
+                className="text-sm font-medium underline-offset-2 hover:underline"
+                style={{ color: 'var(--kt-sky-700)' }}
+              >
+                Buka tutorial
+              </button>
+            </div>
           </CardContent>
         </Card>
       </main>
