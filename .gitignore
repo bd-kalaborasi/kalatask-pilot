@@ -52,6 +52,10 @@ coverage/
 playwright-report/
 test-results/
 playwright/.cache/
+apps/web/tests/tmp/
+
+# ----- PWA generated -----
+apps/web/dev-dist/
 
 # ----- Editor / IDE -----
 .vscode/*
