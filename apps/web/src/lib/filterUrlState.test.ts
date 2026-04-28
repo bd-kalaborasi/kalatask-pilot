@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import {
+  readGroupByFromUrl,
   readProjectsFilterFromUrl,
+  readTasksFilterFromUrl,
+  readViewFromUrl,
+  writeGroupByToUrl,
   writeProjectsFilterToUrl,
+  writeTasksFilterToUrl,
+  writeViewToUrl,
 } from './filterUrlState';
 
 describe('readProjectsFilterFromUrl', () => {
@@ -90,5 +96,102 @@ describe('writeProjectsFilterToUrl', () => {
     const reparsed = readProjectsFilterFromUrl(written);
     expect(reparsed.statuses).toEqual(original.statuses);
     expect(reparsed.teamId).toBe(original.teamId);
+  });
+});
+
+// ============================================================
+// Tasks filter URL state (Step 7)
+// ============================================================
+describe('readTasksFilterFromUrl', () => {
+  it('empty saat URL bersih', () => {
+    expect(readTasksFilterFromUrl(new URLSearchParams(''))).toEqual({
+      statuses: [],
+      priorities: [],
+      assigneeId: '',
+    });
+  });
+
+  it('parse tasks status + priority + assignee', () => {
+    const params = new URLSearchParams(
+      'f.tstatus=todo,blocked&f.tprio=urgent&f.tassignee=u1',
+    );
+    expect(readTasksFilterFromUrl(params)).toEqual({
+      statuses: ['todo', 'blocked'],
+      priorities: ['urgent'],
+      assigneeId: 'u1',
+    });
+  });
+
+  it('reject invalid task status enum', () => {
+    const params = new URLSearchParams('f.tstatus=hacker,todo');
+    expect(readTasksFilterFromUrl(params).statuses).toEqual(['todo']);
+  });
+});
+
+describe('writeTasksFilterToUrl', () => {
+  it('write tasks filter dan preserve unrelated params', () => {
+    const next = writeTasksFilterToUrl(
+      { statuses: ['done'], priorities: ['high'], assigneeId: 'u1' },
+      new URLSearchParams('view=kanban'),
+    );
+    expect(next.get('view')).toBe('kanban');
+    expect(next.get('f.tstatus')).toBe('done');
+    expect(next.get('f.tprio')).toBe('high');
+    expect(next.get('f.tassignee')).toBe('u1');
+  });
+});
+
+describe('view + groupBy URL state', () => {
+  it('readViewFromUrl default fallback "list"', () => {
+    expect(readViewFromUrl(new URLSearchParams(''))).toBe('list');
+  });
+
+  it('readViewFromUrl parse valid value', () => {
+    expect(readViewFromUrl(new URLSearchParams('view=kanban'))).toBe('kanban');
+    expect(readViewFromUrl(new URLSearchParams('view=gantt'))).toBe('gantt');
+  });
+
+  it('readViewFromUrl reject invalid value', () => {
+    expect(readViewFromUrl(new URLSearchParams('view=hacker'))).toBe('list');
+  });
+
+  it('writeViewToUrl skip param untuk default "list"', () => {
+    const out = writeViewToUrl('list', new URLSearchParams('view=kanban'));
+    expect(out.has('view')).toBe(false);
+  });
+
+  it('writeViewToUrl set non-default value', () => {
+    const out = writeViewToUrl('gantt', new URLSearchParams(''));
+    expect(out.get('view')).toBe('gantt');
+  });
+
+  it('readGroupByFromUrl default "none"', () => {
+    expect(readGroupByFromUrl(new URLSearchParams(''))).toBe('none');
+  });
+
+  it('writeGroupByToUrl skip param untuk default "none"', () => {
+    const out = writeGroupByToUrl(
+      'none',
+      new URLSearchParams('group=status'),
+    );
+    expect(out.has('group')).toBe(false);
+  });
+
+  it('writeGroupByToUrl set non-default value', () => {
+    const out = writeGroupByToUrl('priority', new URLSearchParams(''));
+    expect(out.get('group')).toBe('priority');
+  });
+
+  it('roundtrip view + groupBy + filter compose tanpa clash', () => {
+    let params = new URLSearchParams('');
+    params = writeViewToUrl('kanban', params);
+    params = writeGroupByToUrl('status', params);
+    params = writeTasksFilterToUrl(
+      { statuses: ['blocked'], priorities: [], assigneeId: '' },
+      params,
+    );
+    expect(readViewFromUrl(params)).toBe('kanban');
+    expect(readGroupByFromUrl(params)).toBe('status');
+    expect(readTasksFilterFromUrl(params).statuses).toEqual(['blocked']);
   });
 });
