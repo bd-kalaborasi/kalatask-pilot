@@ -5,7 +5,6 @@
  * Sprint 4.5 Step 7.
  */
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { CommentMarkdown } from './CommentMarkdown';
 import { CommentComposer } from './CommentComposer';
 import { useToast } from '@/contexts/ToastContext';
