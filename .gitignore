@@ -80,6 +80,10 @@ $RECYCLE.BIN/
 .claude/cache/
 .claude/sessions/
 
+# User-local settings (permissions allowlist, MCP enabling, dst)
+# Pakai .claude/settings.json untuk shared team config
+.claude/settings.local.json
+
 # ----- Backup & temp -----
 *.bak
 *.tmp
