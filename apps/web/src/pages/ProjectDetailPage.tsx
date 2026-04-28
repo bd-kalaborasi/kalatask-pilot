@@ -25,8 +25,15 @@ import {
 } from '@/components/project/ProjectStatusBadge';
 import { ProjectStatusSelect } from '@/components/project/ProjectStatusSelect';
 import { TasksFilterBar } from '@/components/task/TasksFilterBar';
+import { lazy, Suspense } from 'react';
 import { ListView } from '@/components/views/ListView';
 import { KanbanView } from '@/components/views/KanbanView';
+// Lazy-load GanttView untuk code-split frappe-gantt + CSS. Initial bundle
+// stays slim; chunk loads saat user toggle ke Gantt view (R3 mitigation
+// per Sprint 2 plan).
+const GanttView = lazy(() =>
+  import('@/components/views/GanttView').then((m) => ({ default: m.GanttView })),
+);
 import { supabase } from '@/lib/supabase';
 import { updateProjectStatus, type Project } from '@/lib/projects';
 import { useTasksByProject } from '@/hooks/useTasksByProject';
@@ -309,10 +316,14 @@ function ViewRenderer({
   }
   // gantt
   return (
-    <div className="border rounded-md p-8 bg-surface text-center">
-      <p className="text-sm text-muted-foreground">
-        Gantt view dibangun di Step 6.
-      </p>
-    </div>
+    <Suspense
+      fallback={
+        <div className="border rounded-md p-8 bg-surface text-center">
+          <p className="text-sm text-muted-foreground">Memuat Gantt...</p>
+        </div>
+      }
+    >
+      <GanttView tasks={tasks} />
+    </Suspense>
   );
 }
