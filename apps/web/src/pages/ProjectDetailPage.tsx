@@ -26,6 +26,7 @@ import {
 import { ProjectStatusSelect } from '@/components/project/ProjectStatusSelect';
 import { TasksFilterBar } from '@/components/task/TasksFilterBar';
 import { ListView } from '@/components/views/ListView';
+import { KanbanView } from '@/components/views/KanbanView';
 import { supabase } from '@/lib/supabase';
 import { updateProjectStatus, type Project } from '@/lib/projects';
 import { useTasksByProject } from '@/hooks/useTasksByProject';
@@ -53,6 +54,8 @@ export function ProjectDetailPage() {
     tasks,
     loading: tasksLoading,
     error: tasksError,
+    updateLocal: updateLocalTask,
+    refetch: refetchTasks,
   } = useTasksByProject(projectId);
 
   const filter = useMemo(
@@ -225,6 +228,8 @@ export function ProjectDetailPage() {
                     view={view}
                     tasks={filteredTasks}
                     groupBy={groupBy}
+                    onLocalUpdate={updateLocalTask}
+                    onRefetch={() => void refetchTasks()}
                   />
                 </>
               )}
@@ -276,19 +281,30 @@ interface ViewRendererProps {
   view: 'list' | 'kanban' | 'gantt';
   tasks: import('@/lib/tasks').TaskWithAssignee[];
   groupBy: GroupBy;
+  onLocalUpdate: (
+    id: string,
+    patch: Partial<import('@/lib/tasks').TaskWithAssignee>,
+  ) => void;
+  onRefetch: () => void;
 }
 
-function ViewRenderer({ view, tasks, groupBy }: ViewRendererProps) {
+function ViewRenderer({
+  view,
+  tasks,
+  groupBy,
+  onLocalUpdate,
+  onRefetch,
+}: ViewRendererProps) {
   if (view === 'list') {
     return <ListView tasks={tasks} groupBy={groupBy} />;
   }
   if (view === 'kanban') {
     return (
-      <div className="border rounded-md p-8 bg-surface text-center">
-        <p className="text-sm text-muted-foreground">
-          Kanban view dibangun di Step 5.
-        </p>
-      </div>
+      <KanbanView
+        tasks={tasks}
+        onLocalUpdate={onLocalUpdate}
+        onRefetch={onRefetch}
+      />
     );
   }
   // gantt
