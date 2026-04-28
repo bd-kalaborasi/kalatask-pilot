@@ -1,0 +1,17 @@
+# Fixture: teams untuk RLS pgTAP testing (KalaTask pilot)
+# Tujuan : Cover 2 team isolation scenario (Team A vs Team B)
+# Bukan  : Data real organisasi. Murni fixture deterministik untuk test.
+# Generated: 2026-04-28
+# Refer  : .claude/skills/rls-tester, ADR-002 (RLS strategy), users.csv
+#
+# UUID convention (match users.csv team_id):
+#   Team A: 00000000-0000-0000-0000-00000000aaaa (4 user — admin/manager/2 member)
+#   Team B: 00000000-0000-0000-0000-00000000bbbb (4 user — manager/2 member/viewer)
+#
+# Schema match: 20260427130000_create_teams_table.sql (id, name, description)
+# created_at/updated_at omitted — defaults handle insert.
+#
+# Note: Untuk pgTAP test gunakan explicit INSERT (mirror pola users_rls.test.sql).
+id,name,description
+00000000-0000-0000-0000-00000000aaaa,Team Alpha,Tim pilot fixture A — admin + manager + 2 member
+00000000-0000-0000-0000-00000000bbbb,Team Beta,Tim pilot fixture B — manager + 2 member + viewer
