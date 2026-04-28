@@ -25,6 +25,7 @@ import {
 } from '@/components/project/ProjectStatusBadge';
 import { ProjectStatusSelect } from '@/components/project/ProjectStatusSelect';
 import { TasksFilterBar } from '@/components/task/TasksFilterBar';
+import { Tooltip } from '@/components/onboarding/Tooltip';
 import { lazy, Suspense } from 'react';
 import { ListView } from '@/components/views/ListView';
 import { KanbanView } from '@/components/views/KanbanView';
@@ -214,12 +215,17 @@ export function ProjectDetailPage() {
             <div className="space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <h3 className="text-xl font-semibold">Tasks</h3>
-                <ViewToggle
-                  current={view}
-                  onChange={(v) =>
-                    setSearchParams(writeViewToUrl(v, searchParams))
-                  }
-                />
+                <div className="relative">
+                  <Tooltip tooltipKey="view-toggle" anchor="below">
+                    Switch antara List / Kanban / Gantt — datanya sama, cuma cara lihatnya beda. 👀
+                  </Tooltip>
+                  <ViewToggle
+                    current={view}
+                    onChange={(v) =>
+                      setSearchParams(writeViewToUrl(v, searchParams))
+                    }
+                  />
+                </div>
               </div>
 
               {tasksLoading && (
