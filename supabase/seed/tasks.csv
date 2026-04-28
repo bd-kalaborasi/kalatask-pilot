@@ -1,0 +1,39 @@
+# Fixture: tasks untuk RLS pgTAP testing (KalaTask pilot)
+# Tujuan : Cover Member assignee-based + Manager project ownership +
+#          subtask + unassigned + status mix scenarios
+# Bukan  : Data real task. Murni fixture deterministik untuk test.
+# Generated: 2026-04-28
+# Refer  : ADR-002, PRD §7 (status: todo/in_progress/review/done/blocked,
+#          priority: low/medium/high/urgent)
+#
+# UUID convention untuk readability:
+#   t01-t12: 00000000-0000-0000-0000-100000000001..00c
+#   t03 = SUBTASK of t01 (parent_id = t01)
+#
+# Distribution per project (4 projects × 3 tasks each = 12 total):
+#   Project A1 (Sari): t01 (Andi), t02 (Dewi), t03 (subtask t01, Andi)
+#   Project A2 (Sari): t04 (UNASSIGNED), t05 (Dewi), t06 (UNASSIGNED)
+#   Project B1 (Rangga): t07 (Indah), t08 (Bayu, done), t09 (Indah, blocked)
+#   Project B2 (Rangga): t10 (Bayu, done), t11 (Indah, done), t12 (UNASSIGNED, done)
+#
+# Member assignment counts (untuk Member SELECT count test):
+#   Andi (Team A): t01, t03 = 2 tasks (1 project A1)
+#   Dewi (Team A): t02, t05 = 2 tasks (2 projects A1+A2)
+#   Indah (Team B): t07, t09, t11 = 3 tasks (2 projects B1+B2)
+#   Bayu (Team B): t08, t10 = 2 tasks (2 projects B1+B2)
+#
+# Schema match: 20260427150000_create_tasks_table.sql (18 columns).
+# Untuk pgTAP test gunakan explicit INSERT — CSV ini sebagai docs reference.
+id,project_id,parent_id,title,description,assignee_id,created_by,status,priority,deadline,estimated_hours,start_date,source,source_file_id,needs_review,completed_at
+00000000-0000-0000-0000-100000000001,00000000-0000-0000-0000-0000000000a1,,Draft onboarding deck,Slide deck untuk new hire onboarding,00000000-0000-0000-0000-000000000003,00000000-0000-0000-0000-000000000002,todo,high,2026-05-15,8,2026-05-01,manual,,false,
+00000000-0000-0000-0000-100000000002,00000000-0000-0000-0000-0000000000a1,,Review mentor handbook,Review materi mentor handbook,00000000-0000-0000-0000-000000000004,00000000-0000-0000-0000-000000000002,in_progress,medium,2026-05-20,4,,manual,,false,
+00000000-0000-0000-0000-100000000003,00000000-0000-0000-0000-0000000000a1,00000000-0000-0000-0000-100000000001,Slide template setup,Subtask: setup template Powerpoint,00000000-0000-0000-0000-000000000003,00000000-0000-0000-0000-000000000002,todo,low,2026-05-10,2,,manual,,false,
+00000000-0000-0000-0000-100000000004,00000000-0000-0000-0000-0000000000a2,,Define Q2 OKR,Sprint planning ritual untuk Q2,,00000000-0000-0000-0000-000000000002,todo,urgent,2026-05-05,16,2026-05-02,manual,,false,
+00000000-0000-0000-0000-100000000005,00000000-0000-0000-0000-0000000000a2,,Plan Q2 retrospective,Schedule retro session,00000000-0000-0000-0000-000000000004,00000000-0000-0000-0000-000000000002,review,high,2026-05-25,3,,manual,,false,
+00000000-0000-0000-0000-100000000006,00000000-0000-0000-0000-0000000000a2,,Setup velocity tracking,Implement velocity dashboard,,00000000-0000-0000-0000-000000000002,todo,medium,,,,manual,,false,
+00000000-0000-0000-0000-100000000007,00000000-0000-0000-0000-0000000000b1,,Distribute survey link,Send to 50 customers,00000000-0000-0000-0000-000000000006,00000000-0000-0000-0000-000000000005,todo,high,2026-05-12,2,,manual,,false,
+00000000-0000-0000-0000-100000000008,00000000-0000-0000-0000-0000000000b1,,Compile feedback report,Aggregate Q1 customer feedback,00000000-0000-0000-0000-000000000007,00000000-0000-0000-0000-000000000005,done,medium,2026-04-20,12,2026-04-10,manual,,false,2026-04-19 14:30:00+07
+00000000-0000-0000-0000-100000000009,00000000-0000-0000-0000-0000000000b1,,Address blocker dari vendor,Wait for vendor reply on integration,00000000-0000-0000-0000-000000000006,00000000-0000-0000-0000-000000000005,blocked,urgent,2026-05-01,,,manual,,false,
+00000000-0000-0000-0000-10000000000a,00000000-0000-0000-0000-0000000000b2,,Q1 retro doc finalization,Finalize retrospective document,00000000-0000-0000-0000-000000000007,00000000-0000-0000-0000-000000000005,done,high,2026-04-15,6,2026-04-05,manual,,false,2026-04-14 16:00:00+07
+00000000-0000-0000-0000-10000000000b,00000000-0000-0000-0000-0000000000b2,,Action items follow-up,Follow up post-retro action items,00000000-0000-0000-0000-000000000006,00000000-0000-0000-0000-000000000005,done,medium,2026-04-18,4,,manual,,false,2026-04-17 11:00:00+07
+00000000-0000-0000-0000-10000000000c,00000000-0000-0000-0000-0000000000b2,,Archive Q1 docs,Archive doc-doc Q1 ke shared drive,,00000000-0000-0000-0000-000000000005,done,low,2026-04-25,2,,manual,,false,2026-04-24 09:00:00+07
