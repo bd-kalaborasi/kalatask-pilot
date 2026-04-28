@@ -1,0 +1,22 @@
+# Fixture: projects untuk RLS pgTAP testing (KalaTask pilot)
+# Tujuan : Cover Manager ownership scope (ADR-002) + cross-team isolation
+# Bukan  : Data real project. Murni fixture deterministik untuk test.
+# Generated: 2026-04-28
+# Refer  : .claude/skills/rls-tester, ADR-002 (RLS ownership-based untuk Manager)
+#
+# UUID convention untuk readability:
+#   Project A1: 00000000-0000-0000-0000-0000000000a1 (owner: Sari, manager Team A)
+#   Project A2: 00000000-0000-0000-0000-0000000000a2 (owner: Sari, manager Team A)
+#   Project B1: 00000000-0000-0000-0000-0000000000b1 (owner: Rangga, manager Team B)
+#   Project B2: 00000000-0000-0000-0000-0000000000b2 (owner: Rangga, manager Team B)
+#
+# Schema match: 20260427140000_create_projects_table.sql
+# (id, name, description, owner_id, status, created_at, completed_at, updated_at)
+# created_at/updated_at omitted di CSV — defaults handle insert.
+#
+# Note: Untuk pgTAP test gunakan explicit INSERT (mirror users/teams pattern).
+id,name,description,owner_id,status,completed_at
+00000000-0000-0000-0000-0000000000a1,Pilot Onboarding Materials,Penyusunan materi onboarding pilot,00000000-0000-0000-0000-000000000002,planning,
+00000000-0000-0000-0000-0000000000a2,Q2 Sprint Planning,Roadmap dan task breakdown Q2,00000000-0000-0000-0000-000000000002,active,
+00000000-0000-0000-0000-0000000000b1,Customer Feedback Survey,Survey eksternal untuk product feedback,00000000-0000-0000-0000-000000000005,active,
+00000000-0000-0000-0000-0000000000b2,Q1 Retrospective Report,Hasil retro Q1 yang sudah final,00000000-0000-0000-0000-000000000005,completed,2026-04-15 10:00:00+07
