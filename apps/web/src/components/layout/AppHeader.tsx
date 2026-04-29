@@ -83,6 +83,7 @@ export function AppHeader() {
             <>
               <NavLink
                 to="/admin/mom-import"
+                title="Convert action items dari notulensi rapat (Plaud) jadi tugas otomatis"
                 className={({ isActive }) =>
                   cn(
                     'px-3 py-1.5 rounded-md transition-colors',
@@ -92,7 +93,21 @@ export function AppHeader() {
                   )
                 }
               >
-                Import MoM
+                Import Notulensi
+              </NavLink>
+              <NavLink
+                to="/admin/csv-import"
+                title="Bulk-create tugas dari spreadsheet (.csv)"
+                className={({ isActive }) =>
+                  cn(
+                    'px-3 py-1.5 rounded-md transition-colors',
+                    isActive
+                      ? 'bg-accent text-accent-foreground font-medium'
+                      : 'text-muted-foreground hover:text-foreground',
+                  )
+                }
+              >
+                Import Tugas (CSV)
               </NavLink>
               <NavLink
                 to="/admin/usage"
@@ -106,19 +121,6 @@ export function AppHeader() {
                 }
               >
                 Usage
-              </NavLink>
-              <NavLink
-                to="/admin/csv-import"
-                className={({ isActive }) =>
-                  cn(
-                    'px-3 py-1.5 rounded-md transition-colors',
-                    isActive
-                      ? 'bg-accent text-accent-foreground font-medium'
-                      : 'text-muted-foreground hover:text-foreground',
-                  )
-                }
-              >
-                Import CSV
               </NavLink>
             </>
           )}

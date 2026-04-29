@@ -202,11 +202,18 @@ export function AdminCsvImportPage() {
     <div className="min-h-screen bg-canvas">
       <AppHeader />
       <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
-        <div>
-          <h2 className="text-2xl font-semibold">Import CSV — Bulk Task</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Upload file CSV untuk bulk-create task. Maksimal 5 MB. Header
-            wajib: <code>{ALL_HEADERS.join(', ')}</code>.
+        <div className="space-y-2">
+          <h2 className="text-2xl font-semibold">Import Tugas (CSV)</h2>
+          <p className="text-sm text-muted-foreground">
+            Bulk-create tugas dari spreadsheet — upload <strong>.csv</strong> dengan kolom standard,
+            sistem validate per row, kamu konfirmasi sebelum import. Maksimal 5 MB.
+          </p>
+          <p className="text-xs text-muted-foreground">
+            <strong>Beda dengan Import Notulensi (MoM)?</strong> CSV untuk bulk planned tasks
+            (langsung jadi tugas). MoM untuk konversi rapat ke action items (review queue dulu).
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Header wajib: <code className="text-xs">{ALL_HEADERS.join(', ')}</code>
           </p>
         </div>
 

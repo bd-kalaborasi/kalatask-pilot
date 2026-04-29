@@ -125,10 +125,15 @@ export function AdminMoMImportPage() {
     <div className="min-h-screen bg-canvas">
       <AppHeader />
       <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
-        <div>
-          <h2 className="text-2xl font-semibold">Import MoM</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Upload notulensi rapat (Plaud Template v2 .md) — auto-parse action items, resolve PIC, review approval.
+        <div className="space-y-2">
+          <h2 className="text-2xl font-semibold">Import Notulensi (MoM)</h2>
+          <p className="text-sm text-muted-foreground">
+            Convert action items rapat jadi tugas otomatis — upload <strong>.md</strong> hasil
+            Plaud Template v2, sistem parse PIC + deadline, kamu review &amp; approve sebelum jadi tugas.
+          </p>
+          <p className="text-xs text-muted-foreground">
+            <strong>Beda dengan Import Tugas (CSV)?</strong> CSV untuk bulk-create tugas terencana
+            dari spreadsheet (langsung jadi tugas). MoM untuk konversi rapat ad-hoc (review queue dulu).
           </p>
         </div>
 
