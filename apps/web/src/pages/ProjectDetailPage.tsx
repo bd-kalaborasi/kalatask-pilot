@@ -343,7 +343,14 @@ function ViewRenderer({
   onRefetch,
 }: ViewRendererProps) {
   if (view === 'list') {
-    return <ListView tasks={tasks} groupBy={groupBy} />;
+    return (
+      <ListView
+        tasks={tasks}
+        groupBy={groupBy}
+        onLocalUpdate={onLocalUpdate}
+        onRefetch={onRefetch}
+      />
+    );
   }
   if (view === 'kanban') {
     return (
