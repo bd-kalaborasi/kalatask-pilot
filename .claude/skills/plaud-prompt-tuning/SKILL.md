@@ -1,13 +1,13 @@
 ---
-name: cowork-prompt-tuning
-description: Use this skill when iterating, testing, or fixing the Cowork agent prompt template that converts Meeting-of-Minutes (MoM) files into KalaTask actions (CREATE/UPDATE/SKIP). Trigger when the user mentions "tune Cowork prompt", "fix false positive", "Cowork agent salah parse", "test prompt dengan sample MoM", "evaluate fuzzy match score", or any iteration on `cowork-agent/prompt.md`. This skill enforces the strict JSON schema in PRD F9, prevents hallucination of action items not in the source, and provides an evaluation framework for adjusting threshold (0.85 fuzzy match) before pilot go-live.
+name: plaud-prompt-tuning
+description: Use this skill when iterating, testing, or fixing the Plaud.ai prompt template that generates KalaTask MoM files (Plaud Template v2 markdown). Trigger when the user mentions "tune Plaud prompt", "fix MoM parsing", "Plaud salah extract action", "test prompt dengan sample MoM", "evaluate confidence threshold", or any iteration on Plaud generation prompt. This skill enforces the strict Plaud Template v2 markdown schema (KALATASK_MOM_TEMPLATE_V1), prevents hallucination of action items not in the audio, and provides an evaluation framework for confidence calibration (HIGH=exact alias, MEDIUM=fuzzy ≤1, LOW=multi/distance 2, UNRESOLVED=no match) before pilot go-live.
 ---
 
-# Cowork Prompt Tuning — KalaTask
+# Plaud Prompt Tuning — KalaTask (renamed from cowork-prompt-tuning Sprint 5)
 
 ## Tujuan skill ini
 
-Skill ini membantu iterasi prompt template Cowork agent supaya:
+Skill ini membantu iterasi prompt template Plaud.ai supaya generated MoM markdown:
 
 1. **Tidak halusinasi** — agent tidak boleh invent action item, nama orang, atau deadline yang tidak ada di MoM
 2. **Konsisten output** — strict JSON schema, parse-able tanpa retry
