@@ -29,14 +29,18 @@ async function login(page: Page, email: string, password: string) {
 }
 
 test.describe('Sprint 5 — F9 MoM Import access', () => {
-  test('Admin sees Import MoM nav link', async ({ page }) => {
+  test('Admin sees Import Notulensi nav link', async ({ page }) => {
     await login(page, ADMIN.email, ADMIN.password);
-    await expect(page.getByRole('link', { name: 'Import MoM' })).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: /Import Notulensi/i }),
+    ).toBeVisible();
   });
 
-  test('Member doesnt see Import MoM nav link', async ({ page }) => {
+  test('Member doesnt see Import Notulensi nav link', async ({ page }) => {
     await login(page, ANDI.email, ANDI.password);
-    await expect(page.getByRole('link', { name: 'Import MoM' })).toBeHidden();
+    await expect(
+      page.getByRole('link', { name: /Import Notulensi/i }),
+    ).toBeHidden();
   });
 
   test('Member /admin/mom-import redirects to /', async ({ page }) => {

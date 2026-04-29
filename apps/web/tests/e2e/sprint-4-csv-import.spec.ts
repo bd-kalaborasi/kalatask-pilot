@@ -41,15 +41,17 @@ async function dismissWizardIfVisible(page: Page) {
 }
 
 test.describe('Sprint 4 — CSV Import admin-only', () => {
-  test('Admin sees Import CSV nav link', async ({ page }) => {
+  test('Admin sees Import Tugas (CSV) nav link', async ({ page }) => {
     await login(page, ADMIN.email, ADMIN.password);
-    await expect(page.getByRole('link', { name: 'Import CSV' })).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: /Import Tugas \(CSV\)/i }),
+    ).toBeVisible();
   });
 
-  test('Member does not see Import CSV nav link', async ({ page }) => {
+  test('Member does not see Import Tugas (CSV) nav link', async ({ page }) => {
     await login(page, MEMBER.email, MEMBER.password);
     await expect(
-      page.getByRole('link', { name: 'Import CSV' }),
+      page.getByRole('link', { name: /Import Tugas \(CSV\)/i }),
     ).toBeHidden();
   });
 
@@ -66,7 +68,7 @@ test.describe('Sprint 4 — CSV Import admin-only', () => {
     await login(page, ADMIN.email, ADMIN.password);
     await page.goto('/admin/csv-import');
     await expect(
-      page.getByRole('heading', { name: /Import CSV/i }),
+      page.getByRole('heading', { name: /Import Tugas \(CSV\)/i }),
     ).toBeVisible();
     await expect(page.getByText(/1\. Pilih file CSV/i)).toBeVisible();
   });
