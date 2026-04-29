@@ -6,6 +6,7 @@
  * per-project (di ProjectDetailPage). Phase 2 (cross-project task list)
  * bisa add 'project' option.
  */
+import { Link } from 'react-router-dom';
 import { TaskStatusBadge } from '@/components/task/TaskStatusBadge';
 import { TaskPriorityBadge } from '@/components/task/TaskPriorityBadge';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -48,37 +49,39 @@ export function ListView({ tasks, groupBy }: ListViewProps) {
           )}
           <ul className="border rounded-md divide-y bg-surface">
             {g.tasks.map((t) => (
-              <li
-                key={t.id}
-                className="px-4 py-3 flex flex-wrap items-center gap-3 hover:bg-accent/30 transition-colors"
-              >
-                <div className="flex-1 min-w-[200px]">
-                  <p className="font-medium leading-tight">{t.title}</p>
-                  {t.assignee && (
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                      {t.assignee.full_name}
-                    </p>
-                  )}
-                  {!t.assignee && (
-                    <p className="text-xs text-muted-foreground italic mt-0.5">
-                      Unassigned
-                    </p>
-                  )}
-                </div>
-                <TaskStatusBadge status={t.status} />
-                <TaskPriorityBadge priority={t.priority} />
-                <div className="text-xs text-muted-foreground font-mono min-w-[110px] text-right">
-                  {t.deadline ? (
-                    <>
-                      <div>{formatDateID(t.deadline)}</div>
-                      <div className="opacity-70">
-                        {formatDeadlineRelative(t.deadline)}
-                      </div>
-                    </>
-                  ) : (
-                    <span className="opacity-50">tanpa deadline</span>
-                  )}
-                </div>
+              <li key={t.id}>
+                <Link
+                  to={`/projects/${t.project_id}/tasks/${t.id}`}
+                  className="px-4 py-3 flex flex-wrap items-center gap-3 hover:bg-accent/30 transition-colors"
+                >
+                  <div className="flex-1 min-w-[200px]">
+                    <p className="font-medium leading-tight">{t.title}</p>
+                    {t.assignee && (
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {t.assignee.full_name}
+                      </p>
+                    )}
+                    {!t.assignee && (
+                      <p className="text-xs text-muted-foreground italic mt-0.5">
+                        Unassigned
+                      </p>
+                    )}
+                  </div>
+                  <TaskStatusBadge status={t.status} />
+                  <TaskPriorityBadge priority={t.priority} />
+                  <div className="text-xs text-muted-foreground font-mono min-w-[110px] text-right">
+                    {t.deadline ? (
+                      <>
+                        <div>{formatDateID(t.deadline)}</div>
+                        <div className="opacity-70">
+                          {formatDeadlineRelative(t.deadline)}
+                        </div>
+                      </>
+                    ) : (
+                      <span className="opacity-50">tanpa deadline</span>
+                    )}
+                  </div>
+                </Link>
               </li>
             ))}
           </ul>

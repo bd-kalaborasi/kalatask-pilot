@@ -25,6 +25,11 @@ const AdminCsvImportPage = lazy(() =>
     default: m.AdminCsvImportPage,
   })),
 );
+const TaskDetailPage = lazy(() =>
+  import('@/pages/TaskDetailPage').then((m) => ({
+    default: m.TaskDetailPage,
+  })),
+);
 
 function App() {
   return (
@@ -56,6 +61,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <ProjectDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/projects/:projectId/tasks/:taskId"
+            element={
+              <ProtectedRoute>
+                <Suspense
+                  fallback={
+                    <div className="min-h-screen flex items-center justify-center bg-canvas">
+                      <p className="text-sm text-muted-foreground">Memuat...</p>
+                    </div>
+                  }
+                >
+                  <TaskDetailPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />

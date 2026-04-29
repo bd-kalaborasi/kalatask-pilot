@@ -1,11 +1,15 @@
 /**
- * useNotifications — fetch + polling 30s notif unread count + list.
+ * useNotifications — Realtime subscription + polling fallback.
  *
- * Sprint 3 pattern: simple polling. Sprint 4+ upgrade ke Supabase
- * Realtime broadcast (subscribe 'notifications' channel via filter
- * user_id=eq.{auth.uid()}).
+ * Sprint 4.5 Step 8 (ADR-008): replaces 30s polling pattern dengan
+ * Supabase Realtime broadcast subscribed to user-scoped channel.
+ * Polling fallback retained kalau Realtime channel disconnect (graceful
+ * degradation). Polling interval increased ke 60s saat Realtime active
+ * (heartbeat only).
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   fetchNotifications,
   fetchUnreadCount,
@@ -14,7 +18,8 @@ import {
   type NotificationRow,
 } from '@/lib/notifications';
 
-const POLL_INTERVAL_MS = 30_000;
+// Heartbeat poll — Realtime is primary path, polling as safety net
+const POLL_INTERVAL_MS = 60_000;
 
 interface UseNotificationsResult {
   notifications: NotificationRow[];
@@ -27,6 +32,7 @@ interface UseNotificationsResult {
 }
 
 export function useNotifications(): UseNotificationsResult {
+  const { profile } = useAuth();
   const [notifications, setNotifications] = useState<NotificationRow[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -54,12 +60,64 @@ export function useNotifications(): UseNotificationsResult {
   useEffect(() => {
     mountedRef.current = true;
     void load();
+
+    // Heartbeat poll (60s) — safety net kalau Realtime disconnect
     const interval = setInterval(() => void load(), POLL_INTERVAL_MS);
+
+    // Realtime subscribe per ADR-008 (channel scoped per user)
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    if (profile) {
+      channel = supabase
+        .channel(`user:${profile.id}:notifications`)
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'notifications',
+            filter: `user_id=eq.${profile.id}`,
+          },
+          (payload) => {
+            if (!mountedRef.current) return;
+            const newRow = payload.new as NotificationRow;
+            setNotifications((prev) => {
+              if (prev.some((n) => n.id === newRow.id)) return prev;
+              return [newRow, ...prev].slice(0, 10);
+            });
+            if (!newRow.is_read) {
+              setUnreadCount((c) => c + 1);
+            }
+          },
+        )
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'notifications',
+            filter: `user_id=eq.${profile.id}`,
+          },
+          (payload) => {
+            if (!mountedRef.current) return;
+            const updated = payload.new as NotificationRow;
+            setNotifications((prev) =>
+              prev.map((n) => (n.id === updated.id ? updated : n)),
+            );
+            // Refetch unread count (cheaper than tracking diff)
+            void fetchUnreadCount().then((c) => {
+              if (mountedRef.current) setUnreadCount(c);
+            });
+          },
+        )
+        .subscribe();
+    }
+
     return () => {
       mountedRef.current = false;
       clearInterval(interval);
+      if (channel) void supabase.removeChannel(channel);
     };
-  }, [load]);
+  }, [load, profile]);
 
   const markRead = useCallback(
     async (id: string) => {

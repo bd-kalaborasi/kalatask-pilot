@@ -25,6 +25,7 @@ import {
   type DragEndEvent,
 } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
+import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import {
   TASK_STATUS_VALUES,
@@ -183,6 +184,7 @@ interface KanbanCardProps {
 }
 
 function KanbanCard({ task }: KanbanCardProps) {
+  const navigate = useNavigate();
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({ id: task.id });
 
@@ -197,9 +199,15 @@ function KanbanCard({ task }: KanbanCardProps) {
       style={style}
       {...listeners}
       {...attributes}
-      className="bg-background border rounded-md p-2 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-brand-sm space-y-1.5"
+      onClick={(e) => {
+        // Click fires only kalau dnd-kit tidak start drag (move < 6px).
+        // Prevent default + navigate ke task detail.
+        e.preventDefault();
+        navigate(`/projects/${task.project_id}/tasks/${task.id}`);
+      }}
+      className="bg-background border rounded-md p-2 cursor-pointer hover:shadow-brand-sm shadow-sm space-y-1.5"
       role="button"
-      aria-label={`Task ${task.title}, drag untuk pindah status`}
+      aria-label={`Task ${task.title}. Click untuk buka detail; drag untuk pindah status.`}
     >
       <p className="text-sm font-medium leading-tight line-clamp-2">
         {task.title}

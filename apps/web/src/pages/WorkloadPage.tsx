@@ -44,16 +44,22 @@ const INDICATOR_LABEL: Record<LoadIndicator, string> = {
 };
 
 export function WorkloadPage() {
-  const { profile } = useAuth();
-
-  if (profile && profile.role !== 'admin' && profile.role !== 'manager') {
-    return <Navigate to="/" replace />;
-  }
-
+  const { profile, loading: authLoading } = useAuth();
   const teamId = profile?.role === 'manager' ? profile.team_id : null;
   const { workload, loading, error, refetch } = useDashboardData(teamId, 30);
 
-  if (!profile) return null;
+  // Pattern Sprint 4 profile-resolved (Sprint 4.5 Step 0 housekeeping)
+  if (authLoading || !profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-canvas">
+        <p className="text-sm text-muted-foreground">Memuat...</p>
+      </div>
+    );
+  }
+
+  if (profile.role !== 'admin' && profile.role !== 'manager') {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-canvas">
