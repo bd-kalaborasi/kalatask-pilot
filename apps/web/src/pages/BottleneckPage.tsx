@@ -34,7 +34,7 @@ import { formatDateID } from '@/lib/formatDate';
 import type { TaskWithAssignee } from '@/lib/tasks';
 
 export function BottleneckPage() {
-  const { profile } = useAuth();
+  const { profile, loading: authLoading } = useAuth();
   const [threshold, setThreshold] = useState(3);
   const [tasks, setTasks] = useState<TaskWithAssignee[]>([]);
   const [loading, setLoading] = useState(true);
@@ -66,11 +66,18 @@ export function BottleneckPage() {
     };
   }, [profile]);
 
-  if (profile && profile.role === 'member') {
-    return <Navigate to="/" replace />;
+  // Pattern Sprint 4 profile-resolved (Sprint 4.5 Step 0 housekeeping)
+  if (authLoading || !profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-canvas">
+        <p className="text-sm text-muted-foreground">Memuat...</p>
+      </div>
+    );
   }
 
-  if (!profile) return null;
+  if (profile.role === 'member') {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-canvas">

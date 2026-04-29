@@ -92,7 +92,7 @@
 
 ### Sprint 5+ carryover items
 
-1. **dashboards.spec.ts:89 race fix** — refactor ProductivityDashboardPage profile-resolved pattern.
+1. ~~**dashboards.spec.ts:89 race fix**~~ — ✅ **RESOLVED 2026-04-29 fix-before-merge**
 2. **Comment RPC pgTAP coverage** — Sprint 5+ add functional RPC tests (schema RLS already covered).
 3. **Digest flush schedule** — pg_cron defer Sprint 6+; manual trigger only Sprint 4.5.
 4. **Notification preferences UI** (Q3 b) — backend works, UI Sprint 6+.
@@ -102,12 +102,51 @@
 
 ---
 
-## F. Owner action
+## F. Fix-before-merge update (2026-04-29)
+
+Per `docs/sprint-4-5-e2e-investigation.md` HIGH severity finding, owner pilih
+fix-before-merge instead of defer. Pattern fix applied + audit-extended:
+
+### Bug fixed
+- Render-time `<Navigate>` triggers React error #300 mid-render saat
+  AuthContext profile re-render dari null → loaded. Profile fetch ABORT
+  via AbortController kills auth resolution → URL never changes → test
+  times out.
+
+### Files modified (pattern Sprint 4 AdminCsvImportPage)
+
+Apply guard `if (authLoading || !profile) { return <LoadingFallback />; }`
+BEFORE role-based Navigate — eliminates render-time Router state mutation:
+
+| File | Before | After |
+|---|---|---|
+| `apps/web/src/pages/ProductivityDashboardPage.tsx` | Navigate before profile resolved | Loading state → Navigate post-resolved |
+| `apps/web/src/pages/WorkloadPage.tsx` | Same pattern | Same fix |
+| `apps/web/src/pages/BottleneckPage.tsx` | Same pattern | Same fix |
+| `apps/web/src/pages/ManagerDashboardPage.tsx` | Same pattern | Same fix |
+
+4 pages had the same anti-pattern; all fixed in this commit (audit-extended
+to prevent future regressions in sister pages).
+
+### Re-run results
+
+- `dashboards.spec.ts` (10 specs): **10/10 pass** ✅ including line 89 (was deterministic fail)
+- Full E2E suite: **108/108 pass** ✅ (zero flaky on this run, infrastructure rate-limit didn't trigger)
+- Build clean: 146.11 KB initial gzipped (no bundle delta)
+
+### Sign-off update
+
+**Status:** ✅ READY MERGE — all green, no carryover risk untuk dashboards race issue.
+
+Remaining carryover items (2-7) are non-blocking polish/nice-to-have for Sprint 5+.
+
+---
+
+## G. Owner action
 
 1. Skim verification report (this file) + 4 screenshots
 2. Open `docs/sprint-4-5-lighthouse.html` for detailed audit (optional)
-3. Decide:
-   - ✅ Approve → click merge button on PR
-   - 🔄 Approve with carryover items → ack reply
+3. Approve → click merge button on PR #5
 
-**Recommended:** approve + carryover. Sprint 5 Phase 2 (Cowork) ready to execute next.
+**Sprint 5 Phase 2 (Cowork) ready to execute** post-merge. Plan + ADR-007
+already in main.

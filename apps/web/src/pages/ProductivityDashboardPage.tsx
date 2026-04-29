@@ -30,13 +30,8 @@ const PERIOD_OPTIONS = [
 ];
 
 export function ProductivityDashboardPage() {
-  const { profile } = useAuth();
+  const { profile, loading: authLoading } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
-
-  // Permission: Member redirected; Manager + Viewer + Admin allowed
-  if (profile && profile.role === 'member') {
-    return <Navigate to="/" replace />;
-  }
 
   const periodDays = Number.parseInt(searchParams.get('period') ?? '30', 10) || 30;
   const teamId = profile?.role === 'manager' ? profile.team_id : null;
@@ -46,7 +41,23 @@ export function ProductivityDashboardPage() {
     periodDays,
   );
 
-  if (!profile) return null;
+  // Pattern Sprint 4 (AdminCsvImportPage): wait until profile resolved sebelum
+  // render redirect logic. Tanpa guard ini, mid-render <Navigate> trigger
+  // Router state update saat re-render dari profile=null → resolved =
+  // React error #300 + AbortController kills profile fetch (race kunci
+  // dashboards.spec.ts:89 Sprint 4.5 investigation).
+  if (authLoading || !profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-canvas">
+        <p className="text-sm text-muted-foreground">Memuat dashboard...</p>
+      </div>
+    );
+  }
+
+  // Permission: Member redirected; Manager + Viewer + Admin allowed
+  if (profile.role === 'member') {
+    return <Navigate to="/" replace />;
+  }
 
   function setPeriod(days: number) {
     const next = new URLSearchParams(searchParams);

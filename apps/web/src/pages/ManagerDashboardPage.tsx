@@ -21,12 +21,7 @@ import { useDashboardData } from '@/hooks/useDashboardData';
 import { summarize } from '@/lib/dashboardMetrics';
 
 export function ManagerDashboardPage() {
-  const { profile } = useAuth();
-
-  // Permission guard
-  if (profile && profile.role !== 'admin' && profile.role !== 'manager') {
-    return <Navigate to="/" replace />;
-  }
+  const { profile, loading: authLoading } = useAuth();
 
   // Manager scoped ke own team via RLS — pass team_id null,
   // RLS auto-filter. Admin bisa pilih team scope di future iteration.
@@ -37,7 +32,19 @@ export function ManagerDashboardPage() {
     30,
   );
 
-  if (!profile) return null;
+  // Pattern Sprint 4 profile-resolved (Sprint 4.5 Step 0 housekeeping)
+  if (authLoading || !profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-canvas">
+        <p className="text-sm text-muted-foreground">Memuat...</p>
+      </div>
+    );
+  }
+
+  // Permission guard
+  if (profile.role !== 'admin' && profile.role !== 'manager') {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-canvas">
