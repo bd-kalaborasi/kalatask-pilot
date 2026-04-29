@@ -103,3 +103,40 @@ export async function updateTaskStatus({
     .eq('id', id);
   if (error) throw error;
 }
+
+export interface CreateTaskArgs {
+  projectId: string;
+  title: string;
+  description?: string;
+  priority?: TaskPriority;
+  deadline?: string | null;
+  assigneeId?: string | null;
+}
+
+export async function createTask(
+  args: CreateTaskArgs,
+): Promise<TaskWithAssignee> {
+  const { data: authData } = await supabase.auth.getUser();
+  const uid = authData.user?.id;
+  if (!uid) throw new Error('Tidak ada session aktif');
+
+  const payload = {
+    project_id: args.projectId,
+    title: args.title.trim(),
+    description: args.description?.trim() || null,
+    priority: args.priority ?? 'medium',
+    deadline: args.deadline ?? null,
+    assignee_id: args.assigneeId ?? null,
+    created_by: uid,
+    source: 'manual' as const,
+  };
+
+  const { data, error } = await supabase
+    .from('tasks')
+    .insert(payload)
+    .select(TASK_SELECT_COLUMNS)
+    .single();
+
+  if (error) throw error;
+  return data as unknown as TaskWithAssignee;
+}

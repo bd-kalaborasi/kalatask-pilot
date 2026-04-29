@@ -6,7 +6,7 @@
  *
  * Filter persistent via URL query string (`f.status`, `f.team`).
  */
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProjectsList } from '@/hooks/useProjectsList';
@@ -22,15 +22,20 @@ import {
 } from '@/lib/filterUrlState';
 import { ProjectStatusBadge } from '@/components/project/ProjectStatusBadge';
 import { ProjectsFilterBar } from '@/components/project/ProjectsFilterBar';
+import { CreateProjectModal } from '@/components/project/CreateProjectModal';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
 import { AppHeader } from '@/components/layout/AppHeader';
+import { ACTION } from '@/lib/labels';
 
 export function ProjectsPage() {
   const { profile } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const { projects, loading, error, refetch } = useProjectsList();
   const { teams } = useTeamsList();
+  const [createOpen, setCreateOpen] = useState(false);
+
+  const canCreate = profile?.role === 'admin' || profile?.role === 'manager';
 
   const filter = useMemo(
     () => readProjectsFilterFromUrl(searchParams),
@@ -52,13 +57,23 @@ export function ProjectsPage() {
     <div className="min-h-screen bg-canvas">
       <AppHeader />
       <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
-        <div>
-          <h2 className="text-2xl font-semibold">Projects</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            {projects.length === 0
-              ? 'Belum ada project visible untuk kamu.'
-              : `${filteredProjects.length} dari ${projects.length} project`}
-          </p>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 className="text-2xl font-semibold">Projects</h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              {projects.length === 0
+                ? 'Belum ada project visible untuk kamu.'
+                : `${filteredProjects.length} dari ${projects.length} project`}
+            </p>
+          </div>
+          {canCreate && (
+            <Button
+              onClick={() => setCreateOpen(true)}
+              data-testid="create-project-button"
+            >
+              + {ACTION.CREATE_PROJECT}
+            </Button>
+          )}
         </div>
 
         <ProjectsFilterBar
@@ -90,7 +105,13 @@ export function ProjectsPage() {
               <EmptyState
                 icon="📋"
                 title="Belum ada project di sini"
-                body="Admin atau Manager bisa bikin project baru. Sample 'Project Contoh' juga sudah disiapin di onboarding."
+                body={
+                  canCreate
+                    ? 'Yuk bikin project pertama untuk mulai kerja bareng tim.'
+                    : 'Admin atau Manager bisa bikin project baru. Sample "Project Contoh" juga sudah disiapin di onboarding.'
+                }
+                ctaLabel={canCreate ? 'Buat project pertama' : undefined}
+                ctaOnClick={canCreate ? () => setCreateOpen(true) : undefined}
               />
             ) : (
               <EmptyState
@@ -134,6 +155,13 @@ export function ProjectsPage() {
           </ul>
         )}
       </main>
+      {canCreate && (
+        <CreateProjectModal
+          open={createOpen}
+          onClose={() => setCreateOpen(false)}
+          onCreated={() => void refetch()}
+        />
+      )}
     </div>
   );
 }

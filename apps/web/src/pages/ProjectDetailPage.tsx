@@ -29,6 +29,8 @@ import { Tooltip } from '@/components/onboarding/Tooltip';
 import { lazy, Suspense } from 'react';
 import { ListView } from '@/components/views/ListView';
 import { KanbanView } from '@/components/views/KanbanView';
+import { CreateTaskModal } from '@/components/task/CreateTaskModal';
+import { ACTION } from '@/lib/labels';
 // Lazy-load GanttView untuk code-split frappe-gantt + CSS. Initial bundle
 // stays slim; chunk loads saat user toggle ke Gantt view (R3 mitigation
 // per Sprint 2 plan).
@@ -58,6 +60,10 @@ export function ProjectDetailPage() {
   const [projectLoading, setProjectLoading] = useState(true);
   const [projectError, setProjectError] = useState<Error | null>(null);
   const [statusUpdating, setStatusUpdating] = useState(false);
+  const [createTaskOpen, setCreateTaskOpen] = useState(false);
+
+  const canCreateTask =
+    profile?.role === 'admin' || profile?.role === 'manager';
 
   const {
     tasks,
@@ -215,16 +221,26 @@ export function ProjectDetailPage() {
             <div className="space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <h3 className="text-xl font-semibold">Tasks</h3>
-                <div className="relative">
-                  <Tooltip tooltipKey="view-toggle" anchor="below">
-                    Switch antara List / Kanban / Gantt — datanya sama, cuma cara lihatnya beda. 👀
-                  </Tooltip>
-                  <ViewToggle
-                    current={view}
-                    onChange={(v) =>
-                      setSearchParams(writeViewToUrl(v, searchParams))
-                    }
-                  />
+                <div className="flex items-center gap-2">
+                  {canCreateTask && (
+                    <Button
+                      onClick={() => setCreateTaskOpen(true)}
+                      data-testid="create-task-button"
+                    >
+                      + {ACTION.CREATE_TASK}
+                    </Button>
+                  )}
+                  <div className="relative">
+                    <Tooltip tooltipKey="view-toggle" anchor="below">
+                      Switch antara List / Kanban / Gantt — datanya sama, cuma cara lihatnya beda. 👀
+                    </Tooltip>
+                    <ViewToggle
+                      current={view}
+                      onChange={(v) =>
+                        setSearchParams(writeViewToUrl(v, searchParams))
+                      }
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -260,6 +276,14 @@ export function ProjectDetailPage() {
           </>
         )}
       </main>
+      {canCreateTask && project && (
+        <CreateTaskModal
+          open={createTaskOpen}
+          onClose={() => setCreateTaskOpen(false)}
+          projectId={project.id}
+          onCreated={() => void refetchTasks()}
+        />
+      )}
     </div>
   );
 }

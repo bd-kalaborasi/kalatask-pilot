@@ -3,6 +3,7 @@
  *
  * Sprint 2: AppHeader shared dengan ProjectsPage. Quick link ke Projects.
  */
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useOnboarding } from '@/hooks/useOnboarding';
@@ -15,6 +16,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { CreateProjectModal } from '@/components/project/CreateProjectModal';
+import { ACTION } from '@/lib/labels';
 import type { UserRole } from '@/lib/auth';
 
 const ROLE_DESCRIPTION: Record<UserRole, string> = {
@@ -31,6 +34,10 @@ const ROLE_DESCRIPTION: Record<UserRole, string> = {
 export function DashboardPage() {
   const { profile } = useAuth();
   const { reopenWizard } = useOnboarding();
+  const [createProjectOpen, setCreateProjectOpen] = useState(false);
+
+  const canCreateProject =
+    profile?.role === 'admin' || profile?.role === 'manager';
 
   if (!profile) {
     return (
@@ -64,7 +71,15 @@ export function DashboardPage() {
               {ROLE_DESCRIPTION[profile.role]}
             </p>
             <div className="flex flex-wrap items-center gap-3">
-              <Button asChild>
+              {canCreateProject && (
+                <Button
+                  onClick={() => setCreateProjectOpen(true)}
+                  data-testid="dashboard-create-project-button"
+                >
+                  + {ACTION.CREATE_PROJECT}
+                </Button>
+              )}
+              <Button asChild variant={canCreateProject ? 'outline' : 'default'}>
                 <Link to="/projects">Buka Projects</Link>
               </Button>
               <button
@@ -79,6 +94,13 @@ export function DashboardPage() {
           </CardContent>
         </Card>
       </main>
+      {canCreateProject && (
+        <CreateProjectModal
+          open={createProjectOpen}
+          onClose={() => setCreateProjectOpen(false)}
+          onCreated={() => setCreateProjectOpen(false)}
+        />
+      )}
     </div>
   );
 }
