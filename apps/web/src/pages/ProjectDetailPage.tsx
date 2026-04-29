@@ -181,44 +181,77 @@ export function ProjectDetailPage() {
 
         {project && (
           <>
-            <div className="space-y-3">
-              <div className="flex flex-wrap items-center gap-3">
-                <h2 className="text-2xl font-semibold">{project.name}</h2>
-                <ProjectStatusBadge status={project.status} />
-              </div>
-              {project.description && (
-                <p className="text-sm text-muted-foreground">
-                  {project.description}
-                </p>
-              )}
-            </div>
+            <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+              {/* Sidebar context panel — Sprint 6-rev Stitch redesign */}
+              <aside
+                className="space-y-4 lg:sticky lg:top-6 lg:self-start"
+                aria-label="Konteks project"
+              >
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-semibold leading-tight">
+                    {project.name}
+                  </h2>
+                  <ProjectStatusBadge status={project.status} />
+                </div>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Status Project</CardTitle>
-                <CardDescription>
-                  {profile.role === 'admin' || profile.role === 'manager'
-                    ? 'Update lifecycle project — UI hint, DB lenient (Q2 design decision)'
-                    : 'Read-only — hanya admin & manager yang bisa update status'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex items-center gap-3">
-                <ProjectStatusSelect
-                  value={project.status}
-                  onChange={handleStatusChange}
-                  userRole={profile.role}
-                  disabled={statusUpdating}
-                  id="project-status-select"
-                />
-                {statusUpdating && (
-                  <span className="text-xs text-muted-foreground">
-                    Memuat...
-                  </span>
+                {project.description && (
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {project.description}
+                  </p>
                 )}
-              </CardContent>
-            </Card>
 
-            <div className="space-y-4">
+                <Card>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm">Status</CardTitle>
+                    <CardDescription className="text-xs">
+                      {profile.role === 'admin' || profile.role === 'manager'
+                        ? 'Atur lifecycle project'
+                        : 'Read-only'}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-0 space-y-2">
+                    <ProjectStatusSelect
+                      value={project.status}
+                      onChange={handleStatusChange}
+                      userRole={profile.role}
+                      disabled={statusUpdating}
+                      id="project-status-select"
+                    />
+                    {statusUpdating && (
+                      <span className="text-xs text-muted-foreground">
+                        Memuat...
+                      </span>
+                    )}
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm">Ringkasan tugas</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <ProjectTaskSummary tasks={tasks} />
+                  </CardContent>
+                </Card>
+
+                <div className="text-xs text-muted-foreground space-y-1 px-1">
+                  <p>
+                    Dibuat:{' '}
+                    {new Date(project.created_at).toLocaleDateString('id-ID')}
+                  </p>
+                  {project.completed_at && (
+                    <p>
+                      Selesai:{' '}
+                      {new Date(project.completed_at).toLocaleDateString(
+                        'id-ID',
+                      )}
+                    </p>
+                  )}
+                </div>
+              </aside>
+
+              {/* Main content — tasks views */}
+              <div className="space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <h3 className="text-xl font-semibold">Tasks</h3>
                 <div className="flex items-center gap-2">
@@ -272,6 +305,7 @@ export function ProjectDetailPage() {
                   />
                 </>
               )}
+              </div>
             </div>
           </>
         )}
@@ -283,6 +317,78 @@ export function ProjectDetailPage() {
           projectId={project.id}
           onCreated={() => void refetchTasks()}
         />
+      )}
+    </div>
+  );
+}
+
+function ProjectTaskSummary({
+  tasks,
+}: {
+  tasks: import('@/lib/tasks').TaskWithAssignee[];
+}) {
+  const counts = tasks.reduce<Record<string, number>>(
+    (acc, t) => {
+      acc[t.status] = (acc[t.status] ?? 0) + 1;
+      return acc;
+    },
+    { todo: 0, in_progress: 0, review: 0, done: 0, blocked: 0 },
+  );
+  const total = tasks.length;
+  const donePct = total > 0 ? Math.round((counts.done / total) * 100) : 0;
+  return (
+    <div className="space-y-2">
+      <div className="flex items-baseline justify-between gap-2">
+        <span className="text-2xl font-semibold tabular-nums">{total}</span>
+        <span className="text-xs text-muted-foreground">total tugas</span>
+      </div>
+      {total > 0 && (
+        <>
+          <div
+            className="h-1.5 rounded-full bg-zinc-100 overflow-hidden"
+            role="progressbar"
+            aria-valuenow={donePct}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`${donePct} persen selesai`}
+          >
+            <div
+              className="h-full bg-emerald-500 transition-all"
+              style={{ width: `${donePct}%` }}
+            />
+          </div>
+          <p className="text-xs text-muted-foreground">{donePct}% selesai</p>
+          <ul className="text-xs space-y-0.5 pt-1 border-t mt-2">
+            {counts.in_progress > 0 && (
+              <li className="flex justify-between">
+                <span>Sedang dikerjakan</span>
+                <span className="font-mono tabular-nums">
+                  {counts.in_progress}
+                </span>
+              </li>
+            )}
+            {counts.review > 0 && (
+              <li className="flex justify-between">
+                <span>Cek ulang</span>
+                <span className="font-mono tabular-nums">{counts.review}</span>
+              </li>
+            )}
+            {counts.todo > 0 && (
+              <li className="flex justify-between">
+                <span>Belum mulai</span>
+                <span className="font-mono tabular-nums">{counts.todo}</span>
+              </li>
+            )}
+            {counts.blocked > 0 && (
+              <li className="flex justify-between text-red-700">
+                <span>Tertahan</span>
+                <span className="font-mono tabular-nums">
+                  {counts.blocked}
+                </span>
+              </li>
+            )}
+          </ul>
+        </>
       )}
     </div>
   );

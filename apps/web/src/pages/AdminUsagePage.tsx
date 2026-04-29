@@ -61,11 +61,14 @@ export function AdminUsagePage() {
   }
   if (profile.role !== 'admin') return <Navigate to="/" replace />;
 
+  // Overall health (worst-case across known metrics)
+  const overallHealth = computeOverallHealth(summary);
+
   return (
     <div className="min-h-screen bg-canvas">
       <AppHeader />
       <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-3">
           <div>
             <h2 className="text-2xl font-semibold">Usage Monitoring</h2>
             <p className="text-sm text-muted-foreground mt-1">
@@ -76,6 +79,29 @@ export function AdminUsagePage() {
             {loading ? 'Refreshing...' : '↻ Refresh'}
           </Button>
         </div>
+
+        {summary && overallHealth && (
+          <div
+            className={`rounded-lg border-l-4 px-4 py-3 ${HEALTH_BANNER_CLASS[overallHealth.tone]}`}
+            role="status"
+            aria-live="polite"
+            data-testid="usage-health-banner"
+          >
+            <div className="flex items-start gap-3">
+              <span className="text-2xl leading-none" aria-hidden="true">
+                {HEALTH_ICON[overallHealth.tone]}
+              </span>
+              <div className="flex-1">
+                <p className="text-sm font-semibold">
+                  {overallHealth.headline}
+                </p>
+                <p className="text-xs mt-0.5 opacity-80">
+                  {overallHealth.detail}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {summary && (
           <>
@@ -159,6 +185,55 @@ export function AdminUsagePage() {
       </main>
     </div>
   );
+}
+
+type HealthTone = 'normal' | 'warning' | 'critical';
+
+const HEALTH_BANNER_CLASS: Record<HealthTone, string> = {
+  normal: 'border-emerald-500 bg-emerald-50 text-emerald-900',
+  warning: 'border-amber-500 bg-amber-50 text-amber-900',
+  critical: 'border-red-500 bg-red-50 text-red-900',
+};
+
+const HEALTH_ICON: Record<HealthTone, string> = {
+  normal: '✅',
+  warning: '⚠️',
+  critical: '🚨',
+};
+
+interface OverallHealth {
+  tone: HealthTone;
+  headline: string;
+  detail: string;
+}
+
+function computeOverallHealth(s: UsageSummary | null): OverallHealth | null {
+  if (!s) return null;
+  const pcts = [s.database.utilization_pct];
+  if (s.storage.utilization_pct !== null) pcts.push(s.storage.utilization_pct);
+  if (s.mau_current_month !== null) {
+    pcts.push(Math.round((s.mau_current_month / s.mau_limit) * 1000) / 10);
+  }
+  const max = pcts.length > 0 ? Math.max(...pcts) : 0;
+  if (max >= 90) {
+    return {
+      tone: 'critical',
+      headline: 'Resource hampir penuh — perlu perhatian segera',
+      detail: `Utilisasi tertinggi ${max}%. Cek alert di bawah, plan upgrade atau cleanup.`,
+    };
+  }
+  if (max >= 70) {
+    return {
+      tone: 'warning',
+      headline: 'Resource mendekati limit',
+      detail: `Utilisasi tertinggi ${max}%. Aman untuk sekarang, tapi mulai monitor lebih sering.`,
+    };
+  }
+  return {
+    tone: 'normal',
+    headline: 'Semua resource dalam batas aman',
+    detail: `Utilisasi tertinggi ${max}%. Free tier masih lega — keep going.`,
+  };
 }
 
 interface UsageCardProps {

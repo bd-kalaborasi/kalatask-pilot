@@ -37,6 +37,9 @@ export function AdminMoMReviewPage() {
   const [decisions, setDecisions] = useState<Record<string, Decision>>({});
   const [picOverrides, setPicOverrides] = useState<Record<string, string | null>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [activeTab, setActiveTab] = useState<
+    'all' | 'HIGH' | 'MEDIUM' | 'LOW' | 'UNRESOLVED'
+  >('all');
 
   const reload = useCallback(async () => {
     if (!id) return;
@@ -134,6 +137,11 @@ export function AdminMoMReviewPage() {
     LOW: items.filter((i) => i.pic_confidence === 'LOW'),
     UNRESOLVED: items.filter((i) => i.pic_confidence === 'UNRESOLVED'),
   };
+  const visibleGroups = (
+    activeTab === 'all'
+      ? (['HIGH', 'MEDIUM', 'LOW', 'UNRESOLVED'] as const)
+      : ([activeTab] as const)
+  ).filter((conf) => groups[conf].length > 0);
 
   return (
     <div className="min-h-screen bg-canvas">
@@ -197,8 +205,65 @@ export function AdminMoMReviewPage() {
           </CardContent>
         </Card>
 
-        {(['HIGH', 'MEDIUM', 'LOW', 'UNRESOLVED'] as const).map((conf) =>
-          groups[conf].length > 0 ? (
+        {/* Filter tabs — Sprint 6-rev redesign per Stitch principle */}
+        <div
+          role="tablist"
+          aria-label="Filter berdasarkan confidence"
+          className="flex flex-wrap gap-1 border-b"
+        >
+          {(
+            [
+              { key: 'all', label: 'Semua', count: items.length },
+              { key: 'HIGH', label: 'HIGH', count: groups.HIGH.length },
+              {
+                key: 'MEDIUM',
+                label: 'MEDIUM',
+                count: groups.MEDIUM.length,
+              },
+              { key: 'LOW', label: 'LOW', count: groups.LOW.length },
+              {
+                key: 'UNRESOLVED',
+                label: 'UNRESOLVED',
+                count: groups.UNRESOLVED.length,
+              },
+            ] as const
+          ).map((tab) => {
+            const active = activeTab === tab.key;
+            return (
+              <button
+                key={tab.key}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => setActiveTab(tab.key)}
+                className={`px-3 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
+                  active
+                    ? 'border-brand-deep text-brand-deep'
+                    : 'border-transparent text-muted-foreground hover:text-foreground'
+                }`}
+                data-testid={`mom-tab-${tab.key}`}
+              >
+                {tab.label}
+                <span
+                  className={`ml-1.5 inline-flex items-center justify-center rounded-full px-1.5 text-[10px] font-mono ${
+                    active
+                      ? 'bg-brand-deep text-white'
+                      : 'bg-zinc-100 text-zinc-600'
+                  }`}
+                >
+                  {tab.count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {visibleGroups.length === 0 ? (
+          <div className="rounded-md border bg-surface p-8 text-center text-sm text-muted-foreground">
+            Tidak ada item di kategori ini.
+          </div>
+        ) : (
+          visibleGroups.map((conf) => (
             <ItemGroup
               key={conf}
               confidence={conf}
@@ -209,7 +274,7 @@ export function AdminMoMReviewPage() {
               onPicChange={setItemPic}
               disabled={isApproved}
             />
-          ) : null,
+          ))
         )}
 
         {!isApproved && (
