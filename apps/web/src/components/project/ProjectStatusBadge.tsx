@@ -28,12 +28,13 @@ export const PROJECT_STATUS_VALUES: readonly ProjectStatus[] = [
   'archived',
 ] as const;
 
+// Refined Indonesian labels (Sprint 6)
 const STATUS_LABEL: Record<ProjectStatus, string> = {
-  planning: 'Planning',
-  active: 'Active',
-  on_hold: 'On Hold',
-  completed: 'Completed',
-  archived: 'Archived',
+  planning: 'Perencanaan',
+  active: 'Aktif',
+  on_hold: 'Ditahan',
+  completed: 'Selesai',
+  archived: 'Diarsipkan',
 };
 
 const STATUS_CLASS: Record<ProjectStatus, string> = {

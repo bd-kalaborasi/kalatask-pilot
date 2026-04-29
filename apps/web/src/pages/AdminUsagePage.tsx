@@ -188,25 +188,32 @@ function UsageCard({ label, current, limit, pct, unit, note }: UsageCardProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
-          <p className="text-2xl font-semibold font-mono">
-            {current ?? '—'} <span className="text-sm font-normal text-muted-foreground">/ {limit} {unit}</span>
-          </p>
-          <div className="h-2 rounded-full bg-zinc-100 overflow-hidden">
-            <div
-              className={`h-full ${barColor[tone]} transition-all`}
-              style={{ width: `${Math.min(100, pct ?? 0)}%` }}
-            />
+        {current === null && note ? (
+          // Friendly placeholder for unavailable metric (Sprint 6 polish)
+          <div className="space-y-2">
+            <p className="text-base font-medium text-zinc-700">Segera tersedia</p>
+            <p className="text-xs text-muted-foreground leading-relaxed">{note}</p>
           </div>
-          <p
-            className={`text-xs font-mono ${
-              tone === 'critical' ? 'text-red-700' : tone === 'warning' ? 'text-amber-700' : 'text-muted-foreground'
-            }`}
-          >
-            {pct !== null ? `${pct}%` : 'n/a'}
-          </p>
-          {note && <p className="text-xs italic text-muted-foreground">{note}</p>}
-        </div>
+        ) : (
+          <div className="space-y-2">
+            <p className="text-2xl font-semibold font-mono">
+              {current ?? '—'} <span className="text-sm font-normal text-muted-foreground">/ {limit} {unit}</span>
+            </p>
+            <div className="h-2 rounded-full bg-zinc-100 overflow-hidden">
+              <div
+                className={`h-full ${barColor[tone]} transition-all`}
+                style={{ width: `${Math.min(100, pct ?? 0)}%` }}
+              />
+            </div>
+            <p
+              className={`text-xs font-mono ${
+                tone === 'critical' ? 'text-red-700' : tone === 'warning' ? 'text-amber-700' : 'text-zinc-600'
+              }`}
+            >
+              {pct !== null ? `${pct}%` : '—'}
+            </p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

@@ -4,13 +4,10 @@
  */
 import { cn } from '@/lib/utils';
 import type { TaskPriority } from '@/lib/tasks';
+import { TASK_PRIORITY_LABEL } from '@/lib/labels';
 
-const LABEL: Record<TaskPriority, string> = {
-  low: 'Low',
-  medium: 'Medium',
-  high: 'High',
-  urgent: 'Urgent',
-};
+// Refined Indonesian labels (Sprint 6)
+const LABEL: Record<TaskPriority, string> = TASK_PRIORITY_LABEL;
 
 const CLASS: Record<TaskPriority, string> = {
   low: 'bg-zinc-50 text-zinc-600 ring-1 ring-zinc-200',

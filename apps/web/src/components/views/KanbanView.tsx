@@ -36,6 +36,7 @@ import {
 import { TaskPriorityBadge } from '@/components/task/TaskPriorityBadge';
 import { Tooltip } from '@/components/onboarding/Tooltip';
 import { formatDateID } from '@/lib/formatDate';
+import { TASK_STATUS_LABEL } from '@/lib/labels';
 import { useOptimisticMutation } from '@/hooks/useOptimisticMutation';
 
 interface KanbanViewProps {
@@ -46,13 +47,8 @@ interface KanbanViewProps {
   onRefetch: () => void;
 }
 
-const COLUMN_LABEL: Record<TaskStatus, string> = {
-  todo: 'Todo',
-  in_progress: 'In Progress',
-  review: 'Review',
-  done: 'Done',
-  blocked: 'Blocked',
-};
+// Refined Asana/Monday-style Indonesian labels (Sprint 6)
+const COLUMN_LABEL: Record<TaskStatus, string> = TASK_STATUS_LABEL;
 
 const COLUMN_HEADER_CLASS: Record<TaskStatus, string> = {
   todo: 'bg-zinc-100 text-zinc-700 border-zinc-200',

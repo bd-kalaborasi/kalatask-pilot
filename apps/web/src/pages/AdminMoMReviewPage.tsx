@@ -154,9 +154,9 @@ export function AdminMoMReviewPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Ringkasan Resolution</CardTitle>
+            <CardTitle className="text-base">Ringkasan resolusi</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-4">
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
               <Stat label="Total" value={summary.total ?? 0} />
               <Stat label="HIGH" value={summary.high ?? 0} tone="success" />
@@ -164,6 +164,36 @@ export function AdminMoMReviewPage() {
               <Stat label="LOW" value={summary.low ?? 0} tone="orange" />
               <Stat label="UNRESOLVED" value={summary.unresolved ?? 0} tone="danger" />
             </div>
+
+            {!isApproved && (summary.high ?? 0) > 0 && (
+              <div className="border-t pt-4">
+                <Button
+                  size="lg"
+                  onClick={() => {
+                    // Approve only HIGH-confidence items (auto-default decision)
+                    const highOnly: Record<string, Decision> = {};
+                    for (const item of items) {
+                      if (item.pic_confidence === 'HIGH') {
+                        highOnly[item.id] = 'create';
+                      } else {
+                        highOnly[item.id] = 'skip';
+                      }
+                    }
+                    setDecisions(highOnly);
+                    void handleApprove();
+                  }}
+                  className="w-full"
+                  disabled={submitting}
+                >
+                  {submitting
+                    ? 'Memproses...'
+                    : `Approve HIGH saja (${summary.high} item) — auto-buat tugas`}
+                </Button>
+                <p className="text-xs text-muted-foreground mt-2 text-center">
+                  Item MEDIUM, LOW, UNRESOLVED akan di-skip. Edit per item dulu kalau mau dimasukkan.
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -185,7 +215,7 @@ export function AdminMoMReviewPage() {
         {!isApproved && (
           <div className="sticky bottom-4 flex justify-end">
             <Button onClick={() => void handleApprove()} disabled={submitting}>
-              {submitting ? 'Memproses...' : 'Approve & Commit Tasks'}
+              {submitting ? 'Memproses...' : 'Approve & buat tugas'}
             </Button>
           </div>
         )}
@@ -193,7 +223,7 @@ export function AdminMoMReviewPage() {
         {isApproved && (
           <div className="rounded-md border bg-emerald-50 p-4">
             <p className="text-sm font-medium text-emerald-800">
-              ✅ Sudah di-approve. Task yang ter-create dapat di-track via Projects view.
+              ✅ Sudah ter-approve. Tugas yang dibuat bisa kamu lihat di halaman project.
             </p>
           </div>
         )}

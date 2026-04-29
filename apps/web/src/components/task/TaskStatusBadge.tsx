@@ -8,14 +8,10 @@
  */
 import { cn } from '@/lib/utils';
 import type { TaskStatus } from '@/lib/tasks';
+import { TASK_STATUS_LABEL } from '@/lib/labels';
 
-const STATUS_LABEL: Record<TaskStatus, string> = {
-  todo: 'Todo',
-  in_progress: 'In Progress',
-  review: 'Review',
-  done: 'Done',
-  blocked: 'Blocked',
-};
+// Refined Asana/Monday-style Indonesian labels (Sprint 6)
+const STATUS_LABEL: Record<TaskStatus, string> = TASK_STATUS_LABEL;
 
 const STATUS_CLASS: Record<TaskStatus, string> = {
   todo: 'bg-zinc-100 text-zinc-700 ring-1 ring-zinc-200',
