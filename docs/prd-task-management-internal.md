@@ -120,10 +120,14 @@ Pricing di-verify dari sumber resmi & review independen per April 2026:
   - H-1 sebelum deadline → notif urgent (orange)
   - Overdue → notif critical (merah), eskalasi ke manager assignee setelah 2 hari overdue
 - **F8.** Manager dashboard: task tim mereka per status, completion rate, overdue count, workload distribution.
-- **F9.** **Integrasi Cowork (perluas dari v0.1):** scheduled daily job baca folder Drive berisi MoM. Tiga jenis aksi:
-  - **(a) Create:** action item baru → insert task baru
-  - **(b) Update:** mention progress task existing → tambah comment otomatis dengan excerpt MoM, OPSIONAL update status jika ada keyword eksplisit (e.g., "selesai", "blocked")
-  - **(c) Skip:** action item duplikat (fuzzy match > 0.85) → skip dengan log
+- **F9.** **MoM Import (renamed v0.3 dari "Cowork integration"):** Sprint 5 ships **manual admin upload UI** + backend RPC. Post-launch automation = Claude Code scheduled task reads Drive folder, reuses same backend RPC (zero throwaway code).
+  - **Master alias mapping (`user_aliases` table):** auto-populated dari `users.full_name` + first_name + 4 honorifics via DB trigger; seed-able dari `MAPPING_KARYAWAN_FINAL_V2.csv` master file.
+  - **4-tier confidence ketat:** HIGH=exact alias, MEDIUM=single fuzzy Levenshtein ≤1, LOW=multi-candidate atau distance 2, UNRESOLVED=no match (atau `[NAMA_TIDAK_JELAS_at_HH:MM]` escape hatch).
+  - **Exception-only auto-approve:** semua HIGH → `auto_approved`; ada MEDIUM/LOW/UNRESOLVED → admin review queue.
+  - **Decision per item:** create / skip / reject — admin commits via Approve & Commit button.
+  - **(a) Create:** action item HIGH atau admin-decision=create → insert task `source='mom-import'`, `source_mom_import_id` + `source_action_id` composite dedup.
+  - **(b) Update:** UPDATE flow defer (Sprint 6+). Sprint 5 cover Create + Skip.
+  - **(c) Skip:** admin pilih skip → no task created, audit di `mom_import_items.decision='skip'`.
 - **F10.** Onboarding pertama kali untuk first-time user, terdiri dari:
   - **(a)** Sample project + 5 sample task pre-populated otomatis (bisa di-delete)
   - **(b)** Wizard tour 5 langkah: bikin task, ubah view, komen, attach file, lihat workload
@@ -1084,6 +1088,13 @@ jobs:
 
 ## Changelog
 
+- **v0.3 (2026-04-29)** — Sprint 5 execution + naming refresh:
+  - **F9 renamed**: "Cowork integration" → "MoM Import". Sprint 5 ships manual admin upload UI + RPC backend. Post-launch automation = Claude Code scheduled task (deferred, reuses RPC). Naming locked: skill `cowork-prompt-tuning` → `plaud-prompt-tuning`; ADR-007 v2 supersedes v1.
+  - **F9 confidence threshold ketat**: HIGH=exact alias, MEDIUM=fuzzy Levenshtein ≤1 single, LOW=multi-candidate atau distance 2, UNRESOLVED=no match. Exception-only auto-approve flow (semua HIGH → auto; ada MEDIUM/LOW → admin queue).
+  - **F9 schema**: 4 tabel baru (`user_aliases`, `mom_imports`, `mom_import_items`, `usage_snapshots`); `tasks.source` enum extended dengan `'mom-import'`; trigger `users_auto_create_aliases` auto-populate alias master.
+  - **F16 RPC variant**: `get_usage_summary()` SECURITY DEFINER RPC menggantikan Edge Function path (free-tier alignment per ADR-001).
+  - Master alias mapping seed: `docs/sample-mom/MAPPING_KARYAWAN_FINAL_V2.csv` (239 employees) — IN_MOM_SAMPLE=YES filter (27 users seeded sebagai reference data).
+  - Sample MoM real Plaud Template v2: `04-23_Rapat_Mingguan_v2.md` (47 actions), `04-24_SCRUM_v2.md` (60 actions). Escape hatch `[NAMA_TIDAK_JELAS_at_HH:MM]` untuk audio yang tidak jelas.
 - **v0.2 (2026-04-27)** — Audit & gap-filling pasca review:
   - Cowork integration (F9): perluas dari hanya CREATE → CREATE + UPDATE + SKIP, sequence diagram updated
   - **F13 baru:** Productivity & Management Dashboard (completion rate, velocity, on-time delivery, cycle time)

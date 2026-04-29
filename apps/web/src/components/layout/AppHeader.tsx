@@ -80,19 +80,47 @@ export function AppHeader() {
             </NavLink>
           )}
           {profile?.role === 'admin' && (
-            <NavLink
-              to="/admin/csv-import"
-              className={({ isActive }) =>
-                cn(
-                  'px-3 py-1.5 rounded-md transition-colors',
-                  isActive
-                    ? 'bg-accent text-accent-foreground font-medium'
-                    : 'text-muted-foreground hover:text-foreground',
-                )
-              }
-            >
-              Import CSV
-            </NavLink>
+            <>
+              <NavLink
+                to="/admin/mom-import"
+                className={({ isActive }) =>
+                  cn(
+                    'px-3 py-1.5 rounded-md transition-colors',
+                    isActive
+                      ? 'bg-accent text-accent-foreground font-medium'
+                      : 'text-muted-foreground hover:text-foreground',
+                  )
+                }
+              >
+                Import MoM
+              </NavLink>
+              <NavLink
+                to="/admin/usage"
+                className={({ isActive }) =>
+                  cn(
+                    'px-3 py-1.5 rounded-md transition-colors',
+                    isActive
+                      ? 'bg-accent text-accent-foreground font-medium'
+                      : 'text-muted-foreground hover:text-foreground',
+                  )
+                }
+              >
+                Usage
+              </NavLink>
+              <NavLink
+                to="/admin/csv-import"
+                className={({ isActive }) =>
+                  cn(
+                    'px-3 py-1.5 rounded-md transition-colors',
+                    isActive
+                      ? 'bg-accent text-accent-foreground font-medium'
+                      : 'text-muted-foreground hover:text-foreground',
+                  )
+                }
+              >
+                Import CSV
+              </NavLink>
+            </>
           )}
         </nav>
 

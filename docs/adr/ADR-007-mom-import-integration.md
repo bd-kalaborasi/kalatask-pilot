@@ -1,9 +1,15 @@
-# ADR-007: Cowork Integration Architecture
+# ADR-007: MoM Import Integration Architecture (v2)
 
-- **Status:** Accepted
-- **Date:** 2026-04-28
+- **Status:** Accepted (v2 — supersedes v1 Cowork Integration)
+- **Date:** 2026-04-28 (v1) / 2026-04-29 (v2 — naming + scope refresh)
 - **Deciders:** Claude Code (proposer), Owner BD (approver)
-- **Context:** Pre-Sprint 5 — F9 Cowork agent ⟷ KalaTask integration butuh keputusan API contract, parser location, dedup tracking, schedule mechanism, dan security boundary. ADR-005 (CSV Import) menetapkan pattern client-parser → batch RPC; ADR-007 evaluate apakah F9 reuse atau pivot.
+- **Context:** Sprint 5 execution — F9 MoM Import (renamed dari "Cowork integration"). v1 architecture decision PINNED; v2 update naming + clarify split: Sprint 5 = manual upload UI + backend RPCs. Post-launch automation = Claude Code scheduled task (deferred, reuses same RPC backend — zero throwaway).
+
+### Naming changes locked v2:
+- "Cowork integration" → **"MoM Import"**
+- "Cowork agent" → **"Claude Code scheduled task"** (post-launch, deferred)
+- Skill `cowork-prompt-tuning` → `plaud-prompt-tuning`
+- `tasks.source` enum value `'cowork-agent'` retained untuk back-compat; new value `'mom-import'` ditambah
 
 ---
 
@@ -171,6 +177,48 @@ ADR-007 harus di-evaluate ulang kalau salah satu kondisi:
 - ADR-001 (Supabase managed) — free-tier philosophy
 - PRD §3.2 Feature 5 (line 225-241) — F9 acceptance criteria
 - PRD §3.2 Feature 9 (line 298-307) — F16 (sister Sprint 5 scope, separate ADR not required — usage dashboard is read-only metering)
+
+---
+
+## v2 Implementation Log (Sprint 5 — 2026-04-29)
+
+Sprint 5 shipped F9 sebagai **manual admin upload UI**. Post-launch automation (scheduled task reading Drive folder) deferred — same RPC backend reuses, zero throwaway code.
+
+### Architecture refinements v2
+
+1. **Master alias mapping table `user_aliases`** (vs v1 jsonb-only approach):
+   - Auto-populated via trigger `users_auto_create_aliases` (full_name, first_name, 4 honorifics)
+   - Seed-able dari `MAPPING_KARYAWAN_FINAL_V2.csv` master file
+   - Resolver pakai SQL JOIN + `levenshtein` (fuzzystrmatch extension) untuk 4-tier confidence
+
+2. **4-tier confidence ketat** (v2 KEY DECISION):
+   - **HIGH** = exact alias match (case-insensitive, single user)
+   - **MEDIUM** = single fuzzy match Levenshtein ≤1 (typo tolerance)
+   - **LOW** = multi-candidate exact OR fuzzy distance 2 OR ambiguous
+   - **UNRESOLVED** = no match OR `[NAMA_TIDAK_JELAS_at_HH:MM]` escape hatch
+
+3. **Exception-only auto-approve flow**:
+   - Semua items HIGH → `mom_imports.approval_status='auto_approved'`
+   - Ada MEDIUM/LOW/UNRESOLVED → `pending_review` (admin queue)
+
+4. **Plaud Template v2** (master spec di `docs/cowork-mom-template-v1.md`):
+   - Tidak pakai email placeholder di PIC field (raw display name only, e.g., "Pak Joko")
+   - Escape hatch `[NAMA_TIDAK_JELAS_at_HH:MM]` untuk audio yang tidak jelas
+
+5. **Edge Function path NOT taken**:
+   - `parse-mom` Edge Function from v1 Spec → **client-side parser** in `lib/momImport.ts`
+   - `usage-snapshot` Edge Function → **`get_usage_summary()` RPC** (free-tier alignment)
+   - Both reasons: ADR-001 free-tier, RLS auto-enforced, pgTAP testable
+
+6. **Sample MoM real (Plaud output)**:
+   - 04-23 sample: 47 ACTION items (Daily Stand-up Cipondo)
+   - 04-24 sample: 60 ACTION items (SCRUM Kelistrikan-OEE)
+   - Mapping CSV: 239 employees (27 IN_MOM_SAMPLE=YES seeded sebagai reference users)
+
+### Deferred ke post-launch (NOT Sprint 5)
+
+- Drive folder watch + scheduled trigger (Claude Code scheduled task via OS scheduler atau Anthropic Cowork desktop). Backend RPC `process_mom_upload` reuses unchanged.
+- Notification ke admin saat exception detected — owner config email Sprint 5 atau Sprint 6+.
 - PRD §13 line 580-606 — `/functions/v1/cowork-sync` Edge Function spec (superseded by ADR-007 RPC)
 - PRD §12.1 line 847-940 — Cowork agent setup + prompt template (informational)
 - `docs/cowork-mom-template-v1.md` — MoM Template V1 spec (parser contract)
