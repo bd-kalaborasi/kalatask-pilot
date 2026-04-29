@@ -30,6 +30,21 @@ const TaskDetailPage = lazy(() =>
     default: m.TaskDetailPage,
   })),
 );
+const AdminMoMImportPage = lazy(() =>
+  import('@/pages/AdminMoMImportPage').then((m) => ({
+    default: m.AdminMoMImportPage,
+  })),
+);
+const AdminMoMReviewPage = lazy(() =>
+  import('@/pages/AdminMoMReviewPage').then((m) => ({
+    default: m.AdminMoMReviewPage,
+  })),
+);
+const AdminUsagePage = lazy(() =>
+  import('@/pages/AdminUsagePage').then((m) => ({
+    default: m.AdminUsagePage,
+  })),
+);
 
 function App() {
   return (
@@ -142,6 +157,54 @@ function App() {
                   }
                 >
                   <AdminCsvImportPage />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/mom-import"
+            element={
+              <ProtectedRoute>
+                <Suspense
+                  fallback={
+                    <div className="min-h-screen flex items-center justify-center bg-canvas">
+                      <p className="text-sm text-muted-foreground">Memuat...</p>
+                    </div>
+                  }
+                >
+                  <AdminMoMImportPage />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/mom-import/:id"
+            element={
+              <ProtectedRoute>
+                <Suspense
+                  fallback={
+                    <div className="min-h-screen flex items-center justify-center bg-canvas">
+                      <p className="text-sm text-muted-foreground">Memuat...</p>
+                    </div>
+                  }
+                >
+                  <AdminMoMReviewPage />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/usage"
+            element={
+              <ProtectedRoute>
+                <Suspense
+                  fallback={
+                    <div className="min-h-screen flex items-center justify-center bg-canvas">
+                      <p className="text-sm text-muted-foreground">Memuat...</p>
+                    </div>
+                  }
+                >
+                  <AdminUsagePage />
                 </Suspense>
               </ProtectedRoute>
             }
