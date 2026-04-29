@@ -1,0 +1,705 @@
+# 04-24 Rapat Harian Internal: Update Produksi, Operasional, Engineering, QA/QC & Procurement
+
+# Notulensi Rapat
+## Metadata
+- Judul Rapat: Rapat Internal Harian — Update Produksi, Operasional, Engineering, QA/QC & Procurement
+- Tanggal: 2026-04-24
+- Waktu: N/A
+- Project Terkait: Umum
+- Peserta:
+  - Mas Yudi
+  - Mas Bagus
+  - Mas Dimek
+  - Mas Imam
+  - Mas Ilham
+  - Mas Gimeng
+  - Mas Arya
+  - Mas Yogi
+  - Mas Rizky Hace
+  - Mas Dewa
+  - Mbak Sofi
+  - Mbak Femi
+  - Pak Heri
+  - Mas Omi
+  - Pak Agung (disebut, tidak aktif bicara)
+  - Pak Joko (disebut, tidak aktif bicara)
+  - Mbak Dian (disebut, tidak aktif bicara)
+  - Mbak Safri (disebut, tidak aktif bicara)
+  - Mbak Cio
+  - Mas Dime
+  - [NAMA_TIDAK_JELAS_at_00:00] (Speaker 2 — tim olahan)
+  - [NAMA_TIDAK_JELAS_at_00:00] (Speaker 3 — moderator/PPIC/fasilitator, kemungkinan Pak Imam berdasarkan konteks)
+  - [NAMA_TIDAK_JELAS_at_00:00] (Speaker 4 — tim repack)
+  - [NAMA_TIDAK_JELAS_at_06:10] (Speaker 7 — engineering/PLN)
+  - [NAMA_TIDAK_JELAS_at_00:03] (Speaker — diduga tim GA/Engineering, terkait Mas Joko)
+  - [NAMA_TIDAK_JELAS_at_QA] (Speaker 10 — HC/GA)
+  - [NAMA_TIDAK_JELAS_at_QA/QC] (Speaker 11 — QA/QC, R&D)
+  - [NAMA_TIDAK_JELAS_at_QC] (Speaker 12 — QC/QA operasional/DOC)
+  - [NAMA_TIDAK_JELAS_at_Speaker3]
+  - [NAMA_TIDAK_JELAS_at_Speaker10]
+---
+## Ringkasan Eksekutif
+Rapat internal harian tanggal 24 April 2026 mencakup empat klaster pembahasan utama: (1) update produksi dan operasional lini olahan, repack, dan inventory termasuk kendala mesin, staging, dan OEE rendah; (2) update engineering dan maintenance terkait mesin kurma, mesin fill pack, isu PLN/P2TL yang sudah clear, dan penjadwalan preventif maintenance; (3) update QA/QC mencakup temuan hama tikus di ruang mixing, CCTV offline 7 hari, NCR Form yang belum kembali, dan SOP pemisahan produk retur; serta (4) update procurement dan operasional fulfillment terkait pengadaan mesin cooker/mixer yang masih indent, kasus beras merah berkutu, kenaikan harga flavor musli, dan kondisi pending granola di Joglo. Beberapa action item strategis ditetapkan terkait pengadaan rak dan mesin, analisa OEE, monitoring stok Joglo, perbaikan CCTV, dan penguatan tim Engineering.
+---
+## Pembahasan Utama
+- **DSM Cipondo Offline:** Para leader/manager akan membahas PP bersama setelah DSM berlangsung.
+- **Update Kelistrikan & Genset Assessment:** Diminta update progress terkini dari tim terkait.
+- **Mesin Field Pack / Fill Pack:** Update status mesin dan kaitannya dengan schedule produksi minggu depan (Musli, coko, beri). Kemasan Musli 500g dan 1 kg bisa jalan; oat 1 kg tidak bisa karena kemasan terlalu lebar. Kecepatan aktual ~19 pcs/menit, target 25–30 pcs/menit.
+- **Proyek Ranking Sanyang:** Pak Agung meminta data kasar perhitungan ranking hari ini; Mas Dimek diminta melakukan pengukuran awal.
+- **Pengadaan Kukar, Mixer, Cooker, dan Mesin Lain:** Cooker dan mixer masih indent ~2 bulan. Hasil kunjungan vendor diminta dirangkum dalam satu tabel perbandingan; informasi dimensi mesin diteruskan ke tim engineering dan maintenance.
+- **Update Harga Material:** Mas Imang diminta menyampaikan update harga plastik, gas, dan material lain yang sempat disounding oleh Mas Gemma.
+- **Kenaikan Harga Flavor Musli:** Harga naik mulai Mei 2026; disarankan stock-up dengan PO bulan April. Lead time supply flavor sekitar 2 tahun.
+- **Production Daily Report:** Report Sanyang dan PIRT sudah berjalan; diminta konsisten dan fokus ke analisa OEE rendah (bukan sekadar laporan angka).
+- **OEE Rendah:** Mas Yudi menekankan OEE rendah (54–60%) harus segera diidentifikasi penyebabnya dan jadi isu prioritas — bisa dari staging, kodifikasi, atau proses.
+- **Staging Area:** Tim produksi diminta kalkulasi stok staging sampai posisi aman (bukan sekadar titik minimum); perlu pemisahan jadwal staging dan jadwal produksi.
+- **Pengadaan Rak:** Kebutuhan rak di Dipondo sudah dihitung; butuh harga per unit dari Mas Imam. Kebutuhan rak di Sanyang butuh data layout/luas area gudang inventory. Rak yang dikaji sudah powder coating anti-karat.
+- **Gudang D Sanyang & Content River:** Sudah dikosongkan; sisa kemasan lama perlu BAP dan pengecekan — koordinasi dengan tim Panas dan Kiusu.
+- **Kasus Almond Retur:** Sudah terselesaikan; supplier melakukan fumigasi dan mengirim ulang produk, namun label QC reject sempat tidak dilepas — sudah ditangani.
+- **Perbantuan Tim Inventory di Luar Jam Kerja:** Mas Dimek koordinasi dengan Pak Gema terkait upah/mekanisme pembayaran sebelum tim bisa digerakkan.
+- **Proyek Pengerjaan Garam (Mbak Femi):** Butuh hitungan dari finance untuk pembanding biaya pengerjaan tim internal vs. proyek.
+- **Kanal Penonton Skopop (Email Mbak Dian):** Masing-masing lini (Repack, PST, DPR, Sanyang, tim Mbak Femi) diminta merespons; format jadah sehari lebih diutamakan.
+- **Hopper 1 SIP 2 Patah Roda:** Satu roda sudah diperbaiki sebelumnya, satu lagi rusak; maintenance diharapkan selesai hari ini.
+- **Kurma:** Mas Yogi diharapkan bisa proses pemesanan kurma hari ini agar tidak ada keterlambatan di produksi.
+- **Line Repack — Serbuk & Olahan Serbuk:** Diminta pemisahan jadwal agar tidak ada change over berlebihan antara olahan serbuk dan serbuk khusus Moringa.
+- **Line Makanan Kering:** Masih ada hutang produksi CAC 70 dan Garam 310 yang belum dikerjakan, dikejar terlebih dahulu.
+- **Update PLN & P2TL:** Status P2TL sudah bebas/clear setelah pengecekan ke UP3 Serpong. Penambahan daya sudah clear. Input ke panel distribusi belum terpasang, direncanakan dikerjakan hari Sabtu 2026-04-26.
+- **Mesin Kurma (area Jepondo):** Trial satu jalur menghasilkan ±25 kg dalam 45 menit, bersih 22,04 kg. Rencana relayout mesin agar kedua jalur bisa digunakan sekaligus.
+- **Isu Kontaminasi di PIRT:** Proses pengupasan zuriat dengan sistem gerinda berpotensi menghasilkan debu kontaminasi silang — perlu improvement dengan penggunaan plat.
+- **CCTV Offline 7 Hari:** CCTV offline sejak Sabtu 2026-04-18 akibat reset pasca mati listrik dua kali. Password ada di Avrijel. Mas Rizky Hace ditugaskan koordinasi hari ini.
+- **Scope of Work Engineering vs. Maintenance vs. GA:** Mas Yudi menegaskan Engineering fokus ke permesinan dan mapping spare part kritis — bukan urusan bangunan/utilitas. Perlu one-on-one dengan tim HC untuk finalisasi pembagian jobdesk.
+- **NCR Form:** Form dari Pak Agung sudah diberikan dua hari lalu namun belum dikembalikan ke QA.
+- **Temuan Hama Tikus di Ruang Mixing:** Tikus masuk dari lubang di dekat AC standing. Sudah didokumentasikan. Tim Maintenance/GA diminta segera menambal lubang.
+- **SOP Pemisahan Produk Retur:** Ditemukan ketidaksesuaian antara praktik lapangan dan SOP. Perlu revisi SOP dan pengadaan plastik bening untuk kemasan retur.
+- **Insiden Fumigasi Almon:** Miskomunikasi karena tidak ada dokumentasi resmi fumigasi dari supplier. Diusulkan SOP dokumentasi aktivitas supplier ke depannya.
+- **Beras Merah Berkutu (129 karung):** Vendor akan datang mengecek dan mengganti barang.
+- **Monitoring Suhu Ruangan Penyimpanan:** Mas Yudi menyarankan monitoring suhu 2–3 kali per ruangan mengacu praktik pabrik Etawa. Mas Bagus diminta memetakan area kritis.
+- **Operasional Fulfillment Meruya:** Order drop dari 17 ribu menjadi 13 ribu; 18 orang diliburkan. Laporan per jam mulai hari ini. Isu retur sudah mulai rapi setelah QC labeling diterapkan.
+- **Pending Granola — Joglo:** Terjadi akibat produksi tidak mengejar di tanggal 17 dan 22 April. Granola milky ada stok ~500–600 pcs tanpa stiker. Koordinasi stok Joglo dinilai tidak terstruktur; diusulkan Pak Hari wajib submit stock on hand harian dan ikut TSM mulai Senin.
+- **Update HC:** Rekrutmen aktif; 15+ posisi perlu diisi setelah Ramadan. Form performance review banyak yang belum diisi. Framework tes teknikal sedang dikembangkan untuk level supervisor–manajerial.
+- **Update CPTOB Gedung Besar:** Mas Yudi meminta konfirmasi email update yang belum terkirim.
+---
+## ACTION ITEMS
+### [ACTION-001]
+- Tugas: Bahas PP bersama para leader/manager setelah DSM Cipondo offline
+- PIC: Mas Yudi
+- Deadline: 2026-04-24
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi membuka agenda bahwa setelah DSM Cipondo offline, para leader dan manager akan mengadakan pembahasan PP bersama di hari yang sama.
+- Status Awal: Todo
+---
+### [ACTION-002]
+- Tugas: Sampaikan update progress kelistrikan dan genset assessment terkini
+- PIC: N/A
+- Deadline: 2026-04-24
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi meminta update kelistrikan dan genset assessment sudah sampai mana, sebagai agenda tetap rapat harian.
+- Status Awal: Todo
+---
+### [ACTION-003]
+- Tugas: Update status mesin field pack dan plotkan schedule trial Musli/beri/coko untuk minggu depan
+- PIC: Mas Dimek
+- Deadline: 2026-04-24
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Update mesin field pack berkaitan langsung dengan schedule produksi mingguan berikutnya. Mas Yudi berharap Musli bisa jalan kontinu minggu depan, sehingga perlu ditentukan hari trial bersama Mas Bagus dan Pak Joko.
+- Status Awal: Todo
+---
+### [ACTION-004]
+- Tugas: Lakukan pengukuran kasar posisi/area untuk perhitungan ranking di Sanyang, siapkan data untuk diskusi sore
+- PIC: Mas Dimek
+- Deadline: 2026-04-24
+- Prioritas: High
+- Project: Sanyang
+- Estimasi Jam: N/A
+- Konteks: Pak Agung meminta data kasar perhitungan ranking di Sanyang setidaknya secara gambaran awal hari ini. Mas Yudi meminta Mas Dimek untuk mulai mengukur sebagai bahan diskusi sore.
+- Status Awal: Todo
+---
+### [ACTION-005]
+- Tugas: Buat tabel perbandingan hasil kunjungan vendor kukar, mixer, dan mesin lain dalam satu dokumen
+- PIC: Mas Imam
+- Deadline: 2026-04-24
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi dan tim sudah melakukan kunjungan vendor. Tabel perbandingan diperlukan sebagai dasar rekomendasi ke tim engineering dan maintenance terkait kelistrikan dan dimensi mesin yang akan dibeli.
+- Status Awal: Todo
+---
+### [ACTION-006]
+- Tugas: Koordinasi bersama Pak Joko dan Mas Imam untuk melengkapi tabel perbandingan vendor kukar/mixer
+- PIC: Mas Bagus
+- Deadline: 2026-04-24
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi meminta Mas Bagus, Pak Joko, dan Mas Imam berkolaborasi menyusun tabel perbandingan vendor agar informasi bisa segera diteruskan ke tim engineering dan maintenance.
+- Status Awal: Todo
+---
+### [ACTION-007]
+- Tugas: Update harga material (plastik, gas, dll.) yang sebelumnya disounding Mas Gemma
+- PIC: [NAMA_TIDAK_JELAS_at_00:00]
+- Deadline: 2026-04-24
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi menyebut "Mas Imang" untuk menyampaikan update harga beberapa material termasuk plastik dan gas yang sempat disounding oleh Mas Gemma sebelumnya. Nama tidak dapat dikonfirmasi identitasnya secara jelas dari rekaman.
+- Status Awal: Todo
+---
+### [ACTION-008]
+- Tugas: Konsistenkan production daily report Sanyang dan PIRT; fokus ke analisa penyebab OEE rendah
+- PIC: [NAMA_TIDAK_JELAS_at_00:00]
+- Deadline: TBD
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi menekankan report bukan sekadar angka, tapi harus disertai analisa mengapa OEE bisa serendah 54–60%. Jika penyebabnya butuh keputusan dari atas, langsung jadwalkan meeting segera.
+- Status Awal: Todo
+---
+### [ACTION-009]
+- Tugas: Kalkulasi kebutuhan stok staging sampai posisi aman (bukan hanya titik minimum) untuk area olahan
+- PIC: [NAMA_TIDAK_JELAS_at_00:00]
+- Deadline: TBD
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi dan Pak Gemma menekankan staging harus punya stok yang aman dan terkalkulasi. Saat ini staging baru bisa nyetok untuk 1 shift; perlu strategi agar staging selalu tercukupi.
+- Status Awal: Todo
+---
+### [ACTION-010]
+- Tugas: Ajukan kebutuhan equipment rak (spesifikasi anti-karat, ukuran, dll.) ke Mas Bagus/Mas Imam/Pak Joko/Mas Dimek
+- PIC: [NAMA_TIDAK_JELAS_at_00:00]
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi mendorong tim produksi untuk proaktif mengajukan kebutuhan equipment termasuk rak. Rak harus anti-karat dan bisa dicat sesuai spesifikasi.
+- Status Awal: Todo
+---
+### [ACTION-011]
+- Tugas: Perbaiki hopper 1 SIP 2 yang patah rodanya hari ini
+- PIC: Mas Bagus
+- Deadline: 2026-04-24
+- Prioritas: Urgent
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Tim olahan melaporkan hopper 1 di SIP 2 patah rodanya. Satu sudah diperbaiki sebelumnya, satu lagi baru rusak. Maintenance diharapkan selesai hari ini.
+- Status Awal: Todo
+---
+### [ACTION-012]
+- Tugas: Proses pemesanan kurma hari ini agar tidak ada keterlambatan bahan baku di produksi
+- PIC: Mas Yogi
+- Deadline: 2026-04-24
+- Prioritas: Urgent
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Tim olahan menyampaikan ada keterlambatan kurma di produksi. Mas Yogi diharapkan sudah bisa memproses pemesanan kurma hari ini.
+- Status Awal: Todo
+---
+### [ACTION-013]
+- Tugas: Share data stok staging ke Mas Dimek agar PPIC bisa monitor dan koordinasi penyiapan bahan baku
+- PIC: [NAMA_TIDAK_JELAS_at_00:00]
+- Deadline: 2026-04-24
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Tim olahan menyebutkan stok staging sudah ada dan akan di-share ke Mas Dimek agar PPIC tahu bahan baku apa yang tersedia di staging untuk koordinasi lebih lanjut.
+- Status Awal: Todo
+---
+### [ACTION-014]
+- Tugas: Buat pemisahan jadwal staging dan jadwal produksi untuk menghindari kebingungan terkait nomor batch
+- PIC: Mas Dimek
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Tim lapangan masih kebingungan membedakan kodifikasi untuk SIP 1 dan SIP 2 karena jadwal staging dan produksi masih bercampur. Mas Dimek akan mengatur secara bertahap agar tidak ada penumpukan bahan baku.
+- Status Awal: Todo
+---
+### [ACTION-015]
+- Tugas: Pisahkan jadwal pengerjaan olahan serbuk dan serbuk khusus Moringa di lini repack agar tidak ada change over berlebihan
+- PIC: Mas Dimek
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Tim repack melaporkan pengerjaan gabungan olahan serbuk dan serbuk khusus Moringa dalam satu hari menyebabkan change over yang makan waktu dan menghambat stok SKU.
+- Status Awal: Todo
+---
+### [ACTION-016]
+- Tugas: Kejar hutang produksi CAC 70 dan Garam 310 di line makanan kering sebelum lanjut ke list produksi normal
+- PIC: [NAMA_TIDAK_JELAS_at_00:00]
+- Deadline: 2026-04-24
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Tim repack melaporkan CAC 70 dan Garam 310 masih belum dikerjakan karena kemarin difokuskan ke garam olah SKU. Mas Dimek meminta hutang produksi diselesaikan terlebih dahulu.
+- Status Awal: Todo
+---
+### [ACTION-017]
+- Tugas: Koordinasi pengangkutan barang dari content river Sanyang yang sudah dikosongkan
+- PIC: Mas Imam
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Sanyang
+- Estimasi Jam: N/A
+- Konteks: Mas Dimek melaporkan content river di Sanyang sudah dikosongkan dan sudah menginformasikan ke Mas Imam agar segera diangkut.
+- Status Awal: Todo
+---
+### [ACTION-018]
+- Tugas: Lakukan BAP dan pengecekan ulang sisa kemasan lama di gudang D Sanyang — koordinasi dengan tim Panas dan Kiusu
+- PIC: Mas Dimek
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Sanyang
+- Estimasi Jam: N/A
+- Konteks: Gudang D Sanyang sudah selesai dibersihkan, namun masih ada sisa kemasan lama/tidak terpakai yang merupakan geseran dari Dipondo. Perlu BAP dan pengecekan apakah masih bisa digunakan atau harus dimusnahkan.
+- Status Awal: Todo
+---
+### [ACTION-019]
+- Tugas: Dapatkan harga per unit rak dari Mas Imam untuk kalkulasi nilai investasi pengadaan rak di Dipondo
+- PIC: Mas Imam
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Dimek melaporkan kebutuhan rak di Dipondo sudah dihitung. Namun perlu harga per unit dari Mas Imam agar nilai investasi bisa dikalkulasi sebelum pengadaan.
+- Status Awal: Todo
+---
+### [ACTION-020]
+- Tugas: Dapatkan data layout dan luas area gudang inventory di Sanyang untuk kebutuhan perhitungan rak
+- PIC: Mas Dimek
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Sanyang
+- Estimasi Jam: N/A
+- Konteks: Mas Dimek membutuhkan data layout gudang inventory Sanyang karena tidak melanjutkan penggunaan gudang D. Data ini diperlukan untuk menghitung jumlah dan dimensi rak yang dibutuhkan.
+- Status Awal: Todo
+---
+### [ACTION-021]
+- Tugas: Selesaikan koordinasi upah/mekanisme pembayaran tim inventory di luar jam kerja bersama Pak Gema hari ini
+- PIC: Mas Dimek
+- Deadline: 2026-04-24
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Dimek sudah komunikasi dengan Pak Gema terkait perbantuan tim inventory di luar jam kerja namun belum tuntas. Hari ini Pak Gema akan menginformasikan upah/mekanisme pembayaran agar tim bisa segera digerakkan.
+- Status Awal: Todo
+---
+### [ACTION-022]
+- Tugas: Dapatkan hitungan biaya dari finance untuk proyek pengerjaan garam (Mbak Femi) sebagai pembanding biaya tim internal
+- PIC: Mas Dimek
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Dimek membutuhkan angka dari finance mengenai biaya per kilo pengerjaan garam agar ada pembanding yang jelas antara pengerjaan internal versus menggunakan skema proyek.
+- Status Awal: Todo
+---
+### [ACTION-023]
+- Tugas: Koordinasi respons kanal penonton Skopop dari masing-masing lini (Repack, PST, DPR, Sanyang) ke tim BFB Production
+- PIC: Mbak Femi
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Ada email dari Mbak Dian terkait kanal penonton Skopop. Masing-masing lini diminta merespons dan berkoordinasi dengan tim BFB Production. Format jadah sehari lebih diutamakan daripada format full.
+- Status Awal: Todo
+---
+### [ACTION-024]
+- Tugas: Pasang input ke panel distribusi panel BOK — dijadwalkan hari Sabtu 2026-04-26
+- PIC: [NAMA_TIDAK_JELAS_at_06:10]
+- Deadline: 2026-04-26
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Panel BOK sudah terpasang di depan, namun input ke panel distribusi belum terinstall. Disepakati dikerjakan hari Sabtu 2026-04-26.
+- Status Awal: Todo
+---
+### [ACTION-025]
+- Tugas: Sampaikan update status P2TL bebas ke seluruh tim terkait
+- PIC: [NAMA_TIDAK_JELAS_at_06:10]
+- Deadline: 2026-04-24
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Moderator meminta update P2TL yang sudah clear dari UP3 Serpong disebarkan ke seluruh tim agar semua mengetahui status terkini.
+- Status Awal: Todo
+---
+### [ACTION-026]
+- Tugas: Relayout posisi mesin kurma di Jepondo agar kedua jalur (kiri-kanan) dapat dioperasikan sekaligus
+- PIC: Mas Dewa
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Trial dengan satu jalur menghasilkan 22 kg bersih per 45 menit. Jalur kanan tidak bisa dipakai karena mepet tembok — rencana diluruskan ke arah produksi seperti posisi mesin mixer.
+- Status Awal: Todo
+---
+### [ACTION-027]
+- Tugas: Buat SOP/panduan pembersihan mesin kurma dan sampaikan ke tim produksi
+- PIC: Mas Dewa
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Cara pembersihan mesin kurma (alkohol, kain kering, angin) belum disampaikan ke tim produksi sebelumnya, menyebabkan isu kebersihan saat operasi.
+- Status Awal: Todo
+---
+### [ACTION-028]
+- Tugas: Identifikasi kebutuhan plat untuk improvement mesin/fasilitas di area PIRT guna cegah kontaminasi silang
+- PIC: Mas Dewa
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Proses pengupasan zuriat dengan sistem gerinda menghasilkan debu yang berpotensi kontaminasi silang ke produk. Tim engineering membutuhkan plat sebagai solusi improvement.
+- Status Awal: Todo
+---
+### [ACTION-029]
+- Tugas: Buat timeline paralel jadwal improvement mesin vs pekerjaan lapangan rutin
+- PIC: Mas Dewa
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Moderator menegaskan pekerjaan improvement dan pekerjaan on-the-table bisa dipararelkan, asal ada timeline jelas dari engineer kapan masing-masing dikerjakan.
+- Status Awal: Todo
+---
+### [ACTION-030]
+- Tugas: Atur jadwal review kalender kerja dan preventif maintenance bersama moderator
+- PIC: Mas Dewa
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Moderator sudah membaca email schedule preventif maintenance, tapi ingin membahas bersama. Koordinasi jadwal meeting dilakukan oleh Mas Dewa dan Siovi.
+- Status Awal: Todo
+---
+### [ACTION-031]
+- Tugas: Buat panduan/buku setting mesin fill pack untuk setiap gramasi kemasan (2,5 kg / 500g / 1 kg)
+- PIC: Pak Heri
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Moderator meminta panduan setting fill pack dibakukan agar tim produksi bisa membaca karakter setting masing-masing gramasi tanpa bergantung pada satu orang.
+- Status Awal: Todo
+---
+### [ACTION-032]
+- Tugas: Koordinasi dengan Mas Dime untuk terapkan skema schedule fill pack — samakan gramasi dalam satu hari produksi
+- PIC: Pak Heri
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Usulan agar hari yang sama menjalankan gramasi sama (misal: cassit 2,5 kg & oat 2,5 kg) untuk meminimalkan downtime akibat perubahan setting gramasi di mesin fill pack.
+- Status Awal: Todo
+---
+### [ACTION-033]
+- Tugas: Tingkatkan kecepatan operasi mesin fill pack dari ~19 pcs/menit ke target 25–30 pcs/menit
+- PIC: Pak Heri
+- Deadline: TBD
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Moderator menghitung dari data reket jam yang sudah diinput, kecepatan aktual hanya sekitar 19 pcs/menit. Target ditingkatkan ke 25–30 pcs/menit.
+- Status Awal: Todo
+---
+### [ACTION-034]
+- Tugas: Koordinasi dengan Avrijel untuk cek status CCTV — pastikan rekaman masih ada dan identifikasi langkah perbaikan hari ini
+- PIC: Mas Rizky Hace
+- Deadline: 2026-04-24
+- Prioritas: Urgent
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: CCTV sudah offline 7 hari sejak 2026-04-18 akibat reset pasca mati listrik. Password ada di Avrijel. Ada risiko keamanan terkait material/produk tanpa pengawasan CCTV.
+- Status Awal: Todo
+---
+### [ACTION-035]
+- Tugas: Update hasil koordinasi CCTV ke seluruh tim setelah diskusi dengan Avrijel — termasuk status rekaman dan rencana perbaikan
+- PIC: Mas Rizky Hace
+- Deadline: 2026-04-24
+- Prioritas: Urgent
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi meminta konfirmasi apakah rekaman masih tersimpan di memori perangkat dan langkah selanjutnya, termasuk jika ada kebutuhan pembelian atau eksekusi tambahan.
+- Status Awal: Todo
+---
+### [ACTION-036]
+- Tugas: Lakukan one-on-one dengan Mas Arandas (HC) untuk finalisasi pembagian scope of work Engineering vs. Maintenance, didampingi agar terdokumentasi
+- PIC: [NAMA_TIDAK_JELAS_at_00:03]
+- Deadline: TBD
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi dan tim HC menyoroti adanya tumpang tindih scope antara Engineering, Maintenance, dan GA. Pembagian perlu diformalkan agar ada kejelasan jobdesk dan tidak saling ketergantungan tidak terstruktur.
+- Status Awal: Todo
+---
+### [ACTION-037]
+- Tugas: Mapping spare part kritis untuk mesin-mesin yang akan datang sebagai langkah preventif sebelum penambahan mesin besar
+- PIC: [NAMA_TIDAK_JELAS_at_00:03]
+- Deadline: TBD
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi menekankan pentingnya kesiapan spare part kritis sejak awal agar saat mesin bertambah dan ada kerusakan, SLA tidak terdampak. Tim Engineering diminta berpikir preventif, bukan reaktif.
+- Status Awal: Todo
+---
+### [ACTION-038]
+- Tugas: Jadwalkan diskusi terpisah antara Mas Yudi, Pak Joko, dan Mas Rizky Hace terkait penguatan tim Engineering dari sisi HC dan responsibility matrix
+- PIC: Mas Yudi
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi ingin melihat responsibility matrix, control program, dan metode HC yang baik untuk Engineering. Diskusi ini perlu diagendakan terpisah dari rapat rutin.
+- Status Awal: Todo
+---
+### [ACTION-039]
+- Tugas: Eksekusi penambalan lubang di dekat AC standing ruang mixing yang menjadi jalur masuk tikus
+- PIC: [SPEAKER_TIDAK_DIKENALI_role:Maintenance/GA]
+- Deadline: TBD
+- Prioritas: Urgent
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: QC menemukan tikus masuk dari lubang di atas dan bawah AC standing ruang mixing. Sudah didokumentasikan dengan foto oleh Pak Agung QE. Ini berpotensi mencemari produk makanan di area mixing.
+- Status Awal: Todo
+---
+### [ACTION-040]
+- Tugas: Isi dan kembalikan NCR Form yang diberikan Pak Agung ke tim QA untuk direkap temuan audit 5R
+- PIC: Mas Omi
+- Deadline: 2026-04-24
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: NCR Form sudah diserahkan oleh Pak Agung dua hari lalu (2026-04-22) namun belum dikembalikan ke QA. QC meminta semua departemen yang ada temuan audit 5R segera mengisi dan mengembalikan form tersebut.
+- Status Awal: Todo
+---
+### [ACTION-041]
+- Tugas: Revisi SOP pemisahan produk retur — sesuaikan dengan ketentuan per jenis produk (bukan per lini produksi)
+- PIC: [NAMA_TIDAK_JELAS_at_QC]
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Ditemukan ketidaksesuaian antara SOP (per jenis produk) dan praktik lapangan (per lini produksi). SOP perlu direvisi dan disosialisasikan agar tidak ada pencampuran produk retur yang tidak sesuai.
+- Status Awal: Todo
+---
+### [ACTION-042]
+- Tugas: Ajukan pengadaan plastik bening (bukan kresek hitam) untuk pembungkus produk retur ke Mas Fajar atau Mas Ipam
+- PIC: Mbak Sofi
+- Deadline: TBD
+- Prioritas: Low
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: QC meminta produk retur yang akan diretur ke plan — terutama liquid — dibungkus plastik bening agar tidak mengontaminasi produk lain jika ada kebocoran. Saat ini masih menggunakan plastik kresek hitam bekas kemasan GoJek.
+- Status Awal: Todo
+---
+### [ACTION-043]
+- Tugas: Kirim email update CPTOB Gedung Besar ke pihak terkait (Putarjen)
+- PIC: [NAMA_TIDAK_JELAS_at_QC]
+- Deadline: 2026-04-24
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi menanyakan apakah email update CPTOB Gedung Besar sudah dikirim. Speaker 12 menyanggupi untuk mengirimkan di hari yang sama saat rapat berlangsung.
+- Status Awal: Todo
+---
+### [ACTION-044]
+- Tugas: Koordinasi jumlah kebutuhan toples kaca dari tim staging (Mbak Nia, Mbak Joko, dan area staging) untuk pengadaan lanjutan
+- PIC: Mas Imam
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Pembelian toples kaca sudah dilakukan. Mas Imam membutuhkan data jumlah kebutuhan dari tim staging sebelum bisa melakukan pengadaan berikutnya.
+- Status Awal: Todo
+---
+### [ACTION-045]
+- Tugas: Koordinasi kedatangan vendor untuk cek & ganti beras merah berkutu (129 karung) dan konsultasi cara penyimpanan yang benar
+- PIC: Mas Imam
+- Deadline: TBD
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Sebanyak 129 karung beras merah ditemukan berkutu. Vendor akan datang untuk mengecek, mengganti barang, dan memberikan panduan penyimpanan yang proper.
+- Status Awal: Todo
+---
+### [ACTION-046]
+- Tugas: Kirimkan data jumlah kebutuhan rak ke Mas Imam untuk proses negosiasi harga dan perbandingan vendor
+- PIC: Mas Imam
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Imam sudah menginfokan harga rak ke Pak Ardiansyah. Data jumlah rak yang dibutuhkan diperlukan agar negosiasi harga dan perbandingan vendor bisa dilakukan, memanfaatkan daya tawar pembelian dalam jumlah besar.
+- Status Awal: Todo
+---
+### [ACTION-047]
+- Tugas: Hitung kebutuhan flavor musli dan ajukan PO bulan April 2026 sebelum kenaikan harga Mei
+- PIC: Mas Imam
+- Deadline: 2026-04-30
+- Prioritas: Urgent
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Flavor musli akan mengalami kenaikan harga mulai Mei 2026. Mas Imam meminta bantuan Mas Yudi dan Pak Joko untuk menghitung kebutuhan agar PO bisa masuk di April dengan harga lama. Lead time supply flavor sekitar 2 tahun.
+- Status Awal: Todo
+---
+### [ACTION-048]
+- Tugas: Bantu Mas Imam hitung estimasi kebutuhan flavor musli untuk stock-up sebelum kenaikan harga Mei
+- PIC: Mas Yudi
+- Deadline: 2026-04-30
+- Prioritas: Urgent
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Imam secara eksplisit meminta bantuan Mas Yudi dan Pak Joko untuk menentukan berapa banyak flavor musli yang perlu di-stock sebelum harga naik di bulan Mei.
+- Status Awal: Todo
+---
+### [ACTION-049]
+- Tugas: Petakan area penyimpanan yang wajib dikontrol suhu dan terapkan monitoring suhu ruangan minimal 2–3x per hari
+- PIC: Mas Bagus
+- Deadline: TBD
+- Prioritas: High
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi menyarankan monitoring suhu ruangan mengacu pada praktik pabrik Etawa (2–3 kali cek per ruangan). Mas Bagus selaku penanggung jawab QA/QC diminta memetakan area-area kritis yang wajib dikontrol.
+- Status Awal: Todo
+---
+### [ACTION-050]
+- Tugas: Buat SOP dokumentasi aktivitas supplier (fumigasi, dll): wajib sertakan bukti tertulis resmi, nomor lot, dan kuantiti
+- PIC: Mas Imam
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Umum
+- Estimasi Jam: N/A
+- Konteks: Insiden almon terjadi karena tidak ada dokumentasi resmi fumigasi dari supplier sehingga barang dikira reject. Ke depannya setiap aktivitas supplier harus disertai bukti tertulis resmi dengan detail lot dan kuantiti.
+- Status Awal: Todo
+---
+### [ACTION-051]
+- Tugas: Buat tabel summary mesin (cooker, mixer, dll) lengkap dengan harga dan kapasitas, lalu diskusikan dengan Mas Bagus & Pak Joko
+- PIC: Mas Imam
+- Deadline: TBD
+- Prioritas: High
+- Project: Pengadaan Mesin
+- Estimasi Jam: N/A
+- Konteks: Dibutuhkan untuk menentukan kapasitas minimal mesin yang akan dibeli (misal cooker minimal 200 liter), sebelum mengunci pilihan vendor. Cooker dan mixer saat ini masih indent ~2 bulan.
+- Status Awal: Todo
+---
+### [ACTION-052]
+- Tugas: Kirim laporan fulfillment per jam setiap hari mulai hari ini (mulai pukul 08:30–09:00)
+- PIC: Mbak Sofi
+- Deadline: 2026-04-24
+- Prioritas: High
+- Project: Operasional Fulfillment
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi meminta laporan fulfillment dikirim rutin per jam agar bisa di-review dan ada visibilitas progres harian secara real-time.
+- Status Awal: Todo
+---
+### [ACTION-053]
+- Tugas: Koordinasi dengan Mas Ramza terkait estimasi target output untuk 2026-04-25 (hari PID/Sabtu) agar tim yang masuk bisa disesuaikan
+- PIC: Mbak Sofi
+- Deadline: 2026-04-24
+- Prioritas: High
+- Project: Operasional Fulfillment
+- Estimasi Jam: N/A
+- Konteks: 2026-04-25 adalah hari PID sekaligus Sabtu sehingga SLA lebih fleksibel, namun jumlah tim yang masuk perlu disesuaikan dengan kondisi order yang sedang turun.
+- Status Awal: Todo
+---
+### [ACTION-054]
+- Tugas: WA Mas Hari untuk minta stock on hand update harian dari Joglo dan koordinasikan agar Mas Hari ikut TSM mulai Senin 2026-04-27
+- PIC: Mbak Sofi
+- Deadline: 2026-04-27
+- Prioritas: High
+- Project: Operasional Fulfillment
+- Estimasi Jam: N/A
+- Konteks: Tidak adanya laporan stok harian dari Joglo menyebabkan tim produksi dan distribusi tidak bisa mengantisipasi lonjakan order; dibutuhkan early warning system seperti yang sudah berjalan di Meruya.
+- Status Awal: Todo
+---
+### [ACTION-055]
+- Tugas: Telepon Mas Hari untuk meminta komitmen laporan stock on hand harian dari Joglo
+- PIC: Mas Yudi
+- Deadline: 2026-04-24
+- Prioritas: High
+- Project: Operasional Fulfillment
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi ingin ada stock update setiap hari dari Joglo sebagai early warning system, khususnya untuk produk-produk Pareto, agar tim bisa lebih antisipatif.
+- Status Awal: Todo
+---
+### [ACTION-056]
+- Tugas: Manuver 200 pcs granola hari ini untuk menutup pending order dari 2026-04-22, prioritas granola milky
+- PIC: Mas Dimek
+- Deadline: 2026-04-24
+- Prioritas: Urgent
+- Project: Operasional Fulfillment
+- Estimasi Jam: N/A
+- Konteks: Pending granola terjadi karena produksi tidak mengejar di tanggal 17 dan 22 April. Granola milky ~500–600 pcs tersedia tanpa stiker; perlu dikonfirmasi ketersediaan stiker agar bisa segera dikirim.
+- Status Awal: Todo
+---
+### [ACTION-057]
+- Tugas: Konfirmasi ketersediaan stiker granola milky agar stok yang sudah ada (~500 pcs) bisa segera dikirim
+- PIC: Mas Bagus
+- Deadline: 2026-04-24
+- Prioritas: Urgent
+- Project: Operasional Fulfillment
+- Estimasi Jam: N/A
+- Konteks: Ada stok granola milky tanpa stiker sekitar 500–600 pcs; pengiriman bisa langsung dilakukan begitu stiker tersedia untuk menutup pending order Joglo.
+- Status Awal: Todo
+---
+### [ACTION-058]
+- Tugas: Lengkapi soal tes teknikal rekrutmen untuk departemen R&D/QC menggunakan template yang sudah ada
+- PIC: Mas Bagus
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Rekrutmen & HC
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi sudah menyiapkan 8 soal untuk production manager sebagai contoh. Setiap departemen perlu membuat soal teknikal sendiri; level supervisor dan manajerial akan berbeda soalnya. Studi kasus dari masalah nyata perusahaan akan dimasukkan ke dalam tes.
+- Status Awal: Todo
+---
+### [ACTION-059]
+- Tugas: Review dan isi form performance review (probation, perpanjangan kontrak) untuk anggota tim masing-masing di platform Talent
+- PIC: Mas Yudi
+- Deadline: TBD
+- Prioritas: High
+- Project: Rekrutmen & HC
+- Estimasi Jam: N/A
+- Konteks: HC melaporkan cukup banyak form performance yang belum diisi oleh manager/user terkait, khususnya untuk probation dan kontrak yang akan berakhir. Keterlambatan bisa merugikan karyawan karena tidak ada notifikasi tepat waktu.
+- Status Awal: Todo
+---
+### [ACTION-060]
+- Tugas: Jadwalkan dan adakan meeting recap perjalanan OIM dan pengadaan mesin bersama Mas Bagus, Pak Joko, dan Mas Imam
+- PIC: Mas Yudi
+- Deadline: TBD
+- Prioritas: Medium
+- Project: Pengadaan Mesin
+- Estimasi Jam: N/A
+- Konteks: Mas Yudi menyampaikan perlunya meeting khusus untuk merekap hasil kunjungan/perjalanan OIM dan update status pengadaan mesin-mesin produksi.
+- Status Awal: Todo
+---
+## CATATAN TAMBAHAN
+- **Kasus Almond Retur:** Sudah selesai. Supplier melakukan fumigasi dan mengirim ulang produk. Label QC reject dari internal tidak dilepas oleh supplier — sudah ditangani oleh Mas Dimek dan dikonfirmasi Mas Imam. Dijadikan bahan evaluasi tim Procurement ke depan.
+- **OEE rendah sebagai isu prioritas:** Mas Yudi menekankan bahwa OEE di bawah target (54–60%) bukan hanya masalah laporan, tapi harus jadi trigger untuk meeting darurat dan eskalasi cepat ke level manajemen jika penyebabnya butuh keputusan di atas.
+- **Blocker pengadaan rak Dipondo:** Menunggu harga per unit dari Mas Imam sebelum nilai investasi bisa dihitung dan proses pengadaan dimulai.
+- **Blocker perbantuan tim inventory luar jam kerja:** Menunggu konfirmasi mekanisme upah dari Pak Gema hari ini sebelum tim Mas Dimek bisa digerakkan.
+- **Dependency schedule Musli minggu depan:** Bergantung pada hasil update mesin field pack hari ini dan koordinasi trial antara Mas Dimek, Mas Bagus, dan Pak Joko.
+- **Dependency tabel perbandingan vendor:** Menunggu hasil kunjungan ke vendor di Jakbar (Mas Imam) sebelum summary final bisa dilengkapi dan diserahkan ke engineering/maintenance.
+- **Dependency flavor musli:** ACTION-047 bergantung pada hasil kalkulasi dari ACTION-048. Keduanya harus diselesaikan sebelum 2026-04-30.
+- **Blocker CCTV:** Kendala utama adalah password perangkat CCTV yang hanya ada di Avrijel. Tanpa koordinasi dengan Avrijel, tidak ada yang bisa akses untuk reset dan verifikasi rekaman.
+- **Dependency Engineering Scope:** Finalisasi jobdesk Engineering-Maintenance-GA bergantung pada jadwal one-on-one dengan Mas Arandas. Sampai ini selesai, risiko tumpang tindih pekerjaan masih ada.
+- **Keputusan Strategis — Arah Engineering:** Manajemen (Mas Yudi) secara eksplisit menyatakan Engineering harus berorientasi permesinan dan preventif maintenance, bukan pekerjaan bangunan/utilitas. Ini menjadi arahan strategis ke depan.
+- **Staging Sanyang:** Pemisahan jadwal staging dan produksi perlu diimplementasikan secara bertahap dengan monitoring ketat untuk menghindari penumpukan dan kekacauan bahan baku di lapangan.
+- **Blocker pengadaan rak (procurement):** Proses negosiasi harga rak belum bisa dilanjutkan sebelum data jumlah kebutuhan dari Pak Ardiansyah masuk ke Mas Imam.
+- **Blocker Joglo:** Sistem input order Joglo tidak real-time — ada mekanisme approval sebelum data masuk ke sistem, sehingga monitoring pending per SLA belum bisa dilakukan. Perlu solusi integrasi atau workaround jangka pendek.
+- **Distribusi suplai Joglo tidak merata:** Koordinasi lewat Mbak Helga dinilai tidak terstruktur; stok lama berpotensi tidak habis karena rotasi tidak diatur (FIFO tidak diterapkan).
+- **Framework tes rekrutmen:** Tes teknikal berlaku mulai level supervisor ke atas. Level supervisor: 2 soft kompetensi; level manajerial: 3 soft kompetensi + soal teknikal + studi kasus masalah nyata perusahaan. Pengerjaan wajib offline (laptop tanpa internet) untuk level manager. Durasi 3 jam.
+- **Oat 1 kg tidak bisa jalan di mesin fill pack** karena kemasan terlalu lebar — keputusan teknis ini perlu dicatat di dokumentasi produk/mesin.
+- **Speaker 3 (moderator rapat Engineering)** dipanggil "Pak Imam" oleh Pak Heri di akhir sesi — namun karena tidak konsisten disebut sepanjang rapat, nama ini perlu diverifikasi admin sebelum di-assign ke sistem.
+- **Produk Retur Fulfillment:** Area penyimpanan retur di Meruya saat ini masih aman. Namun perlu diantisipasi jika volume retur meningkat.
+- **Firing/hiring aktif:** Perusahaan sedang dalam fase ekspansi manpower signifikan — ada 15+ posisi yang perlu diisi di divisi solusi pangan, lebih banyak lagi di divisi kolaborasi.
+---
+## REFERENSI
+- Recording: N/A
+- Slide/Materi: N/A
