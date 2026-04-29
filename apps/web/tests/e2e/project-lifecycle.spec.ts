@@ -62,12 +62,12 @@ test.describe('F14 Project lifecycle — projects page render per role', () => {
       page.getByRole('heading', { name: 'Projects' }),
     ).toBeVisible();
 
-    // Status filter chips visible (5 enum)
-    await expect(page.getByRole('button', { name: 'Planning' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Active' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'On Hold' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Completed' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Archived' })).toBeVisible();
+    // Status filter chips visible (5 enum, refined Indonesian Sprint 6)
+    await expect(page.getByRole('button', { name: 'Perencanaan' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Aktif' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Ditahan' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Selesai' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Diarsipkan' })).toBeVisible();
 
     // Team filter visible untuk admin (cross-team scope)
     await expect(page.locator('#filter-team')).toBeVisible();
@@ -96,7 +96,7 @@ test.describe('F14 Project lifecycle — projects page render per role', () => {
     await expect(
       page.getByRole('heading', { name: 'Projects' }),
     ).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Active' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Aktif' })).toBeVisible();
     await expect(page.locator('#filter-team')).toBeHidden();
   });
 
@@ -122,7 +122,7 @@ test.describe('Filter URL state', () => {
     await login(page, ADMIN);
     await page.goto('/projects');
 
-    await page.getByRole('button', { name: 'Active' }).click();
+    await page.getByRole('button', { name: 'Aktif' }).click();
     await expect(page).toHaveURL(/f\.status=active/);
   });
 
@@ -132,8 +132,8 @@ test.describe('Filter URL state', () => {
     await login(page, ADMIN);
     await page.goto('/projects');
 
-    await page.getByRole('button', { name: 'Active' }).click();
-    await page.getByRole('button', { name: 'Planning' }).click();
+    await page.getByRole('button', { name: 'Aktif' }).click();
+    await page.getByRole('button', { name: 'Perencanaan' }).click();
     // Order may vary; assert both present
     await expect(page).toHaveURL(/f\.status=.*active.*/);
     await expect(page).toHaveURL(/f\.status=.*planning.*/);
@@ -145,7 +145,7 @@ test.describe('Filter URL state', () => {
     await login(page, ADMIN);
     await page.goto('/projects?f.status=active');
 
-    const activeChip = page.getByRole('button', { name: 'Active' });
+    const activeChip = page.getByRole('button', { name: 'Aktif' });
     await expect(activeChip).toHaveAttribute('aria-pressed', 'true');
   });
 

@@ -154,7 +154,7 @@ test.describe('S2: F14 project list page render per role', () => {
     await page.goto('/projects');
 
     await expect(page.getByRole('heading', { name: 'Projects' })).toBeVisible();
-    for (const status of ['Planning', 'Active', 'On Hold', 'Completed', 'Archived']) {
+    for (const status of ['Perencanaan', 'Aktif', 'Ditahan', 'Selesai', 'Diarsipkan']) {
       await expect(page.getByRole('button', { name: status })).toBeVisible();
     }
   });
@@ -174,7 +174,7 @@ test.describe('S2: F14 project list page render per role', () => {
   test('member Andi: no Team filter, status chips visible', async ({ page }) => {
     await login(page, ANDI);
     await page.goto('/projects');
-    await expect(page.getByRole('button', { name: 'Active' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Aktif' })).toBeVisible();
     await expect(page.locator('#filter-team')).toBeHidden();
   });
 
@@ -194,7 +194,7 @@ test.describe('S3: Project status filter URL persistence', () => {
   test('click status chip update URL f.status', async ({ page }) => {
     await login(page, ADMIN);
     await page.goto('/projects');
-    await page.getByRole('button', { name: 'Active' }).click();
+    await page.getByRole('button', { name: 'Aktif' }).click();
     await expect(page).toHaveURL(/f\.status=active/);
   });
 
@@ -202,7 +202,7 @@ test.describe('S3: Project status filter URL persistence', () => {
     await login(page, ADMIN);
     await page.goto('/projects?f.status=active');
     await expect(
-      page.getByRole('button', { name: 'Active' }),
+      page.getByRole('button', { name: 'Aktif' }),
     ).toHaveAttribute('aria-pressed', 'true');
   });
 
@@ -219,7 +219,7 @@ test.describe('S3: Project status filter URL persistence', () => {
       `/projects?f.status=active&f.team=00000000-0000-0000-0000-00000000aaaa`,
     );
     await expect(
-      page.getByRole('button', { name: 'Active' }),
+      page.getByRole('button', { name: 'Aktif' }),
     ).toHaveAttribute('aria-pressed', 'true');
     await expect(page.locator('#filter-team')).toHaveValue(
       '00000000-0000-0000-0000-00000000aaaa',
@@ -339,7 +339,7 @@ test.describe('S5: F3 view toggle + URL persist', () => {
 // Scenario 6 — Kanban 5 columns + Blocked visual urgency (REQUIRES SEED)
 // ============================================================
 test.describe('S6: Kanban 5 kolom + Blocked red urgency (Q1)', () => {
-  test('5 column header visible: Todo / In Progress / Review / Done / Blocked', async ({
+  test('5 column header visible: refined Indonesian labels (Sprint 6)', async ({
     page,
   }) => {
     await login(page, ADMIN);
@@ -352,7 +352,7 @@ test.describe('S6: Kanban 5 kolom + Blocked red urgency (Q1)', () => {
     await page.waitForLoadState('networkidle');
 
     // Kanban column headers (uppercase di componentm but case-insensitive match)
-    const labels = ['Todo', 'In Progress', 'Review', 'Done', 'Blocked'];
+    const labels = ['Belum mulai', 'Sedang dikerjakan', 'Cek ulang', 'Selesai', 'Tertahan'];
     for (const label of labels) {
       // Each column has a header dengan label
       await expect(

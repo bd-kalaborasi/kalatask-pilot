@@ -87,7 +87,7 @@ test.describe('Projects filter URL state', () => {
     );
 
     // Status chip pre-pressed
-    const activeChip = page.getByRole('button', { name: 'Active' });
+    const activeChip = page.getByRole('button', { name: 'Aktif' });
     await expect(activeChip).toHaveAttribute('aria-pressed', 'true');
 
     // Team filter dropdown shows selected value (admin role visible)

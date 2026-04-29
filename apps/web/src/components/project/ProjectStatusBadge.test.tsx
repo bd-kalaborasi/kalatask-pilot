@@ -8,12 +8,12 @@ import {
 } from './ProjectStatusBadge';
 
 describe('projectStatusLabel', () => {
-  it('returns human-readable label per status enum', () => {
-    expect(projectStatusLabel('planning')).toBe('Planning');
-    expect(projectStatusLabel('active')).toBe('Active');
-    expect(projectStatusLabel('on_hold')).toBe('On Hold');
-    expect(projectStatusLabel('completed')).toBe('Completed');
-    expect(projectStatusLabel('archived')).toBe('Archived');
+  it('returns refined Indonesian label per status enum (Sprint 6)', () => {
+    expect(projectStatusLabel('planning')).toBe('Perencanaan');
+    expect(projectStatusLabel('active')).toBe('Aktif');
+    expect(projectStatusLabel('on_hold')).toBe('Ditahan');
+    expect(projectStatusLabel('completed')).toBe('Selesai');
+    expect(projectStatusLabel('archived')).toBe('Diarsipkan');
   });
 });
 
