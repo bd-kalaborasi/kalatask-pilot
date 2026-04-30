@@ -86,8 +86,11 @@ Pakai zinc scale dari Tailwind default (zinc-50 sampai zinc-900). Zinc dipilih k
 
 | Role | Font | Fallback | Weight |
 |---|---|---|---|
+| Display (page heads, hero numbers) | **Inter Display** *(v2.2)* | Inter, Helvetica Neue, Arial | 600, 700 |
 | Sans (UI default) | **Inter** | Helvetica Neue, Arial, system-ui | 400, 500, 600, 700, 800 |
 | Mono (timestamp, ID, code) | **JetBrains Mono** | SF Mono, Consolas | 400, 500 |
+
+**v2.2 (Sprint 6 final, ADR-010):** Inter Display split out for editorial feel on `text-display` + `text-headline` aliases. Same family family at runtime — Inter falls back if Display payload not yet loaded. Tailwind utility: `font-display`.
 
 Dua-duanya free, hosted di Google Fonts. Inter dipilih karena:
 - Geometric sans-serif yang dekat dengan custom typeface Kalaborasi
@@ -399,6 +402,7 @@ Untuk membedakan task dari `manual` vs `cowork-agent` vs `csv-import` (PRD F9, F
 | v1.0 | 2026-04-27 | Initial brand kit untuk pilot — palette, logo, typography, voice |
 | v2.0 | 2026-04-29 | Sprint 6 polish — Stitch MCP collab. Refined Asana/Monday-style microcopy guidelines (§13), Indonesian status labels locked, Stitch-derived hybrid tokens NOTED (surface tonal scale, M3-inspired typography) but **paper-only — never landed in code** (post-revision audit confirmed). |
 | **v2.1** | **2026-04-30** | **Sprint 6 holistic overhaul — v2 tokens LAND IN CODE. theme.css §8b surface tonal scale (5 levels), §8c semantic feedback colors, §9b M3 typography (display/headline/title/body/label), §10b semantic spacing (gap-card/section/page), §14 motion tokens (fast/base/slow + ease-brand). tailwind.config.ts maps all to utility classes. PRODUCT.md + DESIGN.md companion docs added (manual Impeccable equivalent — external skill install blocked by sandbox). All raw bg-zinc-*, bg-emerald-*, bg-amber-*, bg-red-* refs eliminated from pages + components (103→0). Card / Dialog / Toast / Notifications / Status badges all consume v2.1 tokens.** |
+| **v2.2** | **2026-04-30** | **Sprint 6 final overhaul — Stitch v1 + research (Asana/Monday/ClickUp) consolidated per docs/design-system-final-spec.md (ADR-010). theme.css §15 v2.2 block adds: 9-level surface scale (replaces 5-level), M3 color triads (D4 split: primary darker `#00487A` for AA + primary-container `#0060A0` for fill), tertiary warm orange `#6F3600` (D1 net-new accent), full M3 typography hierarchy (display/headline/title/body/label × lg/md/sm + caption) with Inter Display family (D3, ~10 KB), Stitch spacing (gutter/container/margins), brand-tinted 4-level elevation with Deep Blue alpha 0.08–0.10, granular animation tokens (5 durations × 5 easings + 3 reusable @keyframes). Modal radius 12 → 16 px (D2). Source-csv violet `#8B5CF6` retained as legacy (D5 dual-accent). Status badge `-bg` swapped to rgb(R G B / 0.1) for cleaner blends. Primitives: Button gains brand/brand-secondary/ghost-brand variants + active scale-[0.98]; Card → surface-container-lowest + brand shadows + hover lift; Dialog → 16 px radius + scale-in entrance; Input → outline-variant border + primary focus ring. 12 page roots gain `animate-fade-in` (200 ms ease-out). EmptyState v2.2 with secondary-action API. Bundle 146.57 → 150.73 KB gzip (+4.16 KB, ≤ 5 KB target). Lighthouse a11y 93 retained.** |
 
 ### v2 — what changed
 
