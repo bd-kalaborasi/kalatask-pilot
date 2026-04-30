@@ -88,6 +88,43 @@ const config: Config = {
         canvas:  'var(--kt-bg)',
 
         // ============================================================
+        // v2.1 Surface tonal scale (Sprint 6 holistic overhaul)
+        // Use these instead of raw bg-zinc-* refs.
+        // ============================================================
+        'surface-bright':         'var(--kt-surface-bright)',
+        'surface-container':      'var(--kt-surface-container)',
+        'surface-container-low':  'var(--kt-surface-container-low)',
+        'surface-container-high': 'var(--kt-surface-container-high)',
+        'surface-dim':            'var(--kt-surface-dim)',
+
+        // ============================================================
+        // v2.1 Semantic feedback colors (replaces raw emerald/amber/red)
+        // Pattern: bg-feedback-success, bg-feedback-success-bg, etc
+        // ============================================================
+        feedback: {
+          success: {
+            DEFAULT: 'var(--kt-success)',
+            bg:      'var(--kt-success-bg)',
+            border:  'var(--kt-success-border)',
+          },
+          warning: {
+            DEFAULT: 'var(--kt-warning)',
+            bg:      'var(--kt-warning-bg)',
+            border:  'var(--kt-warning-border)',
+          },
+          danger: {
+            DEFAULT: 'var(--kt-danger)',
+            bg:      'var(--kt-danger-bg)',
+            border:  'var(--kt-danger-border)',
+          },
+          info: {
+            DEFAULT: 'var(--kt-info)',
+            bg:      'var(--kt-info-bg)',
+            border:  'var(--kt-info-border)',
+          },
+        },
+
+        // ============================================================
         // shadcn/ui semantic tokens (HSL CSS vars di globals.css)
         // Dipakai oleh komponen yang di-generate via `npx shadcn add`.
         // KalaTask custom components tetap pakai brand-deep / brand-sky.
@@ -133,6 +170,45 @@ const config: Config = {
       fontFamily: {
         sans: ['Inter', 'Helvetica Neue', 'Arial', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'SF Mono', 'Consolas', 'monospace'],
+      },
+
+      // ============================================================
+      // v2.1 M3-INSPIRED SEMANTIC TYPE SCALE
+      // Each: [size, { lineHeight, fontWeight }]. Use semantic names.
+      // ============================================================
+      fontSize: {
+        'display':  ['var(--kt-text-display)',  { lineHeight: 'var(--kt-text-display-lh)',  fontWeight: '700' }],
+        'headline': ['var(--kt-text-headline)', { lineHeight: 'var(--kt-text-headline-lh)', fontWeight: '600' }],
+        'title':    ['var(--kt-text-title)',    { lineHeight: 'var(--kt-text-title-lh)',    fontWeight: '600' }],
+        'body':     ['var(--kt-text-body)',     { lineHeight: 'var(--kt-text-body-lh)',     fontWeight: '400' }],
+        'label':    ['var(--kt-text-label)',    { lineHeight: 'var(--kt-text-label-lh)',    fontWeight: '500' }],
+      },
+
+      // ============================================================
+      // v2.1 SEMANTIC SPACING (paired with Tailwind 4px scale)
+      // Use for layout-level rhythm: gap-section, p-card, etc.
+      // ============================================================
+      spacing: {
+        'card':    'var(--kt-pad-card)',
+        'page':    'var(--kt-pad-page)',
+        'section': 'var(--kt-gap-section)',
+      },
+      gap: {
+        'card':    'var(--kt-gap-card)',
+        'section': 'var(--kt-gap-section)',
+        'page':    'var(--kt-gap-page)',
+      },
+
+      // ============================================================
+      // v2.1 MOTION TOKENS (Emil Kowalski-aligned, ≤ 300ms, eased)
+      // ============================================================
+      transitionDuration: {
+        'fast': 'var(--kt-motion-fast)',
+        'base': 'var(--kt-motion-base)',
+        'slow': 'var(--kt-motion-slow)',
+      },
+      transitionTimingFunction: {
+        'brand': 'var(--kt-ease-brand)',
       },
 
       // ============================================================

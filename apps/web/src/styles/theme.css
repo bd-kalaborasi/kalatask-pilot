@@ -88,6 +88,37 @@
   --kt-border-strong: #D4D4D8; /* zinc-300 — focus ring, divider */
 
   /* ============================================================
+   * 8b. SURFACE TONAL SCALE (v2.1 — Sprint 6 holistic overhaul)
+   * 5-level depth scale, M3-inspired, replaces raw bg-zinc-* refs.
+   * ============================================================ */
+  --kt-surface-bright:           #FFFFFF; /* lifted: modal, dialog, popover */
+  --kt-surface-container:        #FAFAFA; /* zinc-50 — subtle container */
+  --kt-surface-container-low:    #F4F4F5; /* zinc-100 — recessed track, tab strip bg */
+  --kt-surface-container-high:   #E4E4E7; /* zinc-200 — card hover, divider zone */
+  --kt-surface-dim:              #D4D4D8; /* zinc-300 — disabled, placeholder zones */
+
+  /* ============================================================
+   * 8c. SEMANTIC FEEDBACK COLORS (v2.1)
+   * Used by: health banners, toasts, alerts, system messaging.
+   * Aligned with status palette but separated for semantic clarity.
+   * ============================================================ */
+  --kt-success:        #16A34A; /* green-600 — also used as status-done */
+  --kt-success-bg:     #DCFCE7; /* green-100 */
+  --kt-success-border: #86EFAC; /* green-300 — for border-l-4 hint */
+
+  --kt-warning:        #F59E0B; /* amber-500 — also used as status-review */
+  --kt-warning-bg:     #FEF3C7; /* amber-100 */
+  --kt-warning-border: #FCD34D; /* amber-300 */
+
+  --kt-danger:         #DC2626; /* red-600 */
+  --kt-danger-bg:      #FEE2E2; /* red-100 */
+  --kt-danger-border:  #FCA5A5; /* red-300 */
+
+  --kt-info:           #00A0E0; /* brand sky alias */
+  --kt-info-bg:        #D6F0FA; /* sky-100 */
+  --kt-info-border:    #7AD1F0; /* sky-300 */
+
+  /* ============================================================
    * 9. TYPOGRAPHY (BRAND.md §3)
    * ============================================================ */
   --kt-font-sans: 'Inter', 'Helvetica Neue', Arial, system-ui, sans-serif;
@@ -105,6 +136,22 @@
   --kt-text-4xl:  36px;
 
   /* ============================================================
+   * 9b. M3-INSPIRED SEMANTIC TYPE SCALE (v2.1)
+   * Use semantic names (display/headline/title/body/label) over raw
+   * Tailwind text-* sizes for consistency across the product.
+   * ============================================================ */
+  --kt-text-display:        36px;  /* hero numbers (rare in product) */
+  --kt-text-display-lh:     44px;
+  --kt-text-headline:       28px;  /* page <h1> */
+  --kt-text-headline-lh:    36px;
+  --kt-text-title:          20px;  /* card titles, section <h2> */
+  --kt-text-title-lh:       28px;
+  --kt-text-body:           14px;  /* default paragraph */
+  --kt-text-body-lh:        22px;
+  --kt-text-label:          12px;  /* caption, chip, metadata */
+  --kt-text-label-lh:       16px;
+
+  /* ============================================================
    * 10. SPACING SCALE (BRAND.md §8.1, 4px-based)
    * ============================================================ */
   --kt-space-1:  4px;
@@ -115,6 +162,16 @@
   --kt-space-8:  32px;
   --kt-space-12: 48px;
   --kt-space-16: 64px;
+
+  /* ============================================================
+   * 10b. SEMANTIC SPACING (v2.1)
+   * Layout-level decisions, paired with raw scale for fine-grain.
+   * ============================================================ */
+  --kt-gap-card:     12px; /* inner card content gap */
+  --kt-gap-section:  24px; /* between sections within a page */
+  --kt-gap-page:     40px; /* major page-level rhythm */
+  --kt-pad-card:     16px; /* card body padding */
+  --kt-pad-page:     24px; /* page main padding */
 
   /* ============================================================
    * 11. BORDER RADIUS (BRAND.md §8.2)
@@ -137,6 +194,15 @@
   --kt-shadow-sm: 0 1px 2px 0 rgba(0, 96, 160, 0.05);
   --kt-shadow-md: 0 4px 6px -1px rgba(0, 96, 160, 0.10), 0 2px 4px -2px rgba(0, 96, 160, 0.05);
   --kt-shadow-lg: 0 10px 15px -3px rgba(0, 96, 160, 0.10), 0 4px 6px -4px rgba(0, 96, 160, 0.05);
+
+  /* ============================================================
+   * 14. MOTION TOKENS (v2.1 — Emil Kowalski-aligned)
+   * Purposeful, ≤ 300ms, eased. Anti-decorative.
+   * ============================================================ */
+  --kt-motion-fast:   150ms;
+  --kt-motion-base:   200ms;
+  --kt-motion-slow:   300ms;
+  --kt-ease-brand:    cubic-bezier(0.16, 1, 0.3, 1); /* ease-out-expo soft */
 }
 
 /* ============================================================
@@ -157,6 +223,19 @@
   --kt-surface:   #27272A; /* zinc-800 */
   --kt-border:    #3F3F46; /* zinc-700 */
   --kt-border-strong: #52525B; /* zinc-600 */
+
+  /* v2.1 surface tonal scale — dark mode */
+  --kt-surface-bright:           #3F3F46; /* zinc-700 */
+  --kt-surface-container:        #27272A; /* zinc-800 (= --kt-surface) */
+  --kt-surface-container-low:    #1F1F23; /* between zinc-800 and zinc-900 */
+  --kt-surface-container-high:   #3F3F46; /* zinc-700 */
+  --kt-surface-dim:              #52525B; /* zinc-600 */
+
+  /* v2.1 feedback bg shifted darker for dark mode */
+  --kt-success-bg:     #052E16; /* green-950 */
+  --kt-warning-bg:     #451A03; /* amber-950 */
+  --kt-danger-bg:      #450A0A; /* red-950 */
+  --kt-info-bg:        #082F49; /* sky-950 */
 
   /* Status bg jadi lebih gelap di dark mode supaya tidak terlalu mencolok */
   --kt-status-todo-bg:     #27272A;

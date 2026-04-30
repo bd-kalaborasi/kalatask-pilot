@@ -76,6 +76,49 @@
   .animate-wizard-in {
     animation: wizard-in 220ms cubic-bezier(0.16, 1, 0.3, 1);
   }
+
+  /* ============================================================
+   * v2.1 MOTION RECIPES (Sprint 6 holistic overhaul)
+   * Purposeful, ≤ 300ms, ease-brand. Prefers-reduced-motion respected.
+   * ============================================================ */
+  @keyframes kt-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes kt-slide-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes kt-scale-in {
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes kt-shake {
+    0%, 100% { transform: translateX(0); }
+    25%      { transform: translateX(-4px); }
+    75%      { transform: translateX(4px); }
+  }
+  @keyframes kt-pulse-attention {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.02); }
+  }
+
+  .kt-fade-in        { animation: kt-fade-in       var(--kt-motion-base) var(--kt-ease-brand); }
+  .kt-slide-up       { animation: kt-slide-up      var(--kt-motion-base) var(--kt-ease-brand); }
+  .kt-scale-in       { animation: kt-scale-in      var(--kt-motion-base) var(--kt-ease-brand); }
+  .kt-shake          { animation: kt-shake         250ms ease-out; }
+  .kt-pulse-attention{ animation: kt-pulse-attention 600ms var(--kt-ease-brand); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .kt-fade-in,
+    .kt-slide-up,
+    .kt-scale-in,
+    .kt-shake,
+    .kt-pulse-attention,
+    .animate-wizard-in {
+      animation: none !important;
+    }
+  }
 }
 
 /* ============================================================
