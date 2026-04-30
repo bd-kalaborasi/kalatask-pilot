@@ -83,10 +83,10 @@ test.describe('Sprint 6 FINAL — visual evidence', () => {
     });
   });
 
-  test('06 /productivity', async ({ page }) => {
+  test('06 /dashboard/productivity', async ({ page }) => {
     test.skip(onlyFinalPhase, 'phase != I → only dashboard captured');
     await login(page);
-    await page.goto('/productivity');
+    await page.goto('/dashboard/productivity');
     await page.waitForLoadState('networkidle');
     await page.screenshot({
       path: `docs/sprint-6-final-screenshots/06-productivity-${SUFFIX}.png`,
