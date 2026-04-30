@@ -203,7 +203,7 @@ export function AdminCsvImportPage() {
       <AppHeader />
       <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
         <div className="space-y-2">
-          <h2 className="text-2xl font-semibold">Import Tugas (CSV)</h2>
+          <h2 className="text-headline font-semibold">Import Tugas (CSV)</h2>
           <p className="text-sm text-muted-foreground">
             Bulk-create tugas dari spreadsheet — upload <strong>.csv</strong> dengan kolom standard,
             sistem validate per row, kamu konfirmasi sebelum import. Maksimal 5 MB.
@@ -277,7 +277,7 @@ export function AdminCsvImportPage() {
                 ) : (
                   <div className="overflow-x-auto rounded-md border">
                     <table className="min-w-full text-sm">
-                      <thead className="bg-zinc-50 text-left text-xs uppercase tracking-wide text-zinc-600">
+                      <thead className="bg-surface-container text-left text-xs uppercase tracking-wide text-muted-foreground">
                         <tr>
                           <th className="px-3 py-2">#</th>
                           <th className="px-3 py-2">Status</th>
@@ -296,12 +296,12 @@ export function AdminCsvImportPage() {
                               <StatusIcon status={v.status} />
                             </td>
                             <td className="px-3 py-2">
-                              {v.data.title ?? <em className="text-zinc-400">—</em>}
+                              {v.data.title ?? <em className="text-muted-foreground/70">—</em>}
                             </td>
                             <td className="px-3 py-2">
-                              {v.data.project_name ?? <em className="text-zinc-400">—</em>}
+                              {v.data.project_name ?? <em className="text-muted-foreground/70">—</em>}
                             </td>
-                            <td className="px-3 py-2 text-xs text-zinc-600">
+                            <td className="px-3 py-2 text-xs text-muted-foreground">
                               {v.issues.length === 0
                                 ? '—'
                                 : v.issues
@@ -383,9 +383,9 @@ export function AdminCsvImportPage() {
 
 function StatusIcon({ status }: { status: string }) {
   const map: Record<string, { emoji: string; color: string }> = {
-    valid: { emoji: '✅', color: 'text-emerald-600' },
-    warning: { emoji: '⚠️', color: 'text-amber-600' },
-    error: { emoji: '❌', color: 'text-red-600' },
+    valid:   { emoji: '✅', color: 'text-feedback-success' },
+    warning: { emoji: '⚠️', color: 'text-feedback-warning' },
+    error:   { emoji: '❌', color: 'text-feedback-danger' },
   };
   const m = map[status] ?? map.valid;
   return (
@@ -406,9 +406,9 @@ function Stat({
   tone?: 'success' | 'warning' | 'danger';
 }) {
   const toneClass: Record<NonNullable<typeof tone>, string> = {
-    success: 'text-emerald-700',
-    warning: 'text-amber-700',
-    danger: 'text-red-700',
+    success: 'text-feedback-success',
+    warning: 'text-feedback-warning',
+    danger:  'text-feedback-danger',
   };
   return (
     <div className="rounded-md border bg-surface p-3">

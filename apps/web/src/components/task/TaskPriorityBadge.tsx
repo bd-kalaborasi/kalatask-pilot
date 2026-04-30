@@ -10,10 +10,10 @@ import { TASK_PRIORITY_LABEL } from '@/lib/labels';
 const LABEL: Record<TaskPriority, string> = TASK_PRIORITY_LABEL;
 
 const CLASS: Record<TaskPriority, string> = {
-  low: 'bg-zinc-50 text-zinc-600 ring-1 ring-zinc-200',
-  medium: 'bg-blue-50 text-blue-700 ring-1 ring-blue-200',
-  high: 'bg-orange-50 text-orange-700 ring-1 ring-orange-200',
-  urgent: 'bg-red-50 text-red-700 ring-1 ring-red-200',
+  low:    'bg-surface-container text-muted-foreground ring-1 ring-border',
+  medium: 'bg-feedback-info-bg text-brand-deep-700 ring-1 ring-feedback-info-border',
+  high:   'bg-feedback-warning-bg text-feedback-warning ring-1 ring-feedback-warning-border',
+  urgent: 'bg-feedback-danger-bg text-feedback-danger ring-1 ring-feedback-danger-border',
 };
 
 interface TaskPriorityBadgeProps {

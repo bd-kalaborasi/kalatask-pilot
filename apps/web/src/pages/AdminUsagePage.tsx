@@ -70,7 +70,7 @@ export function AdminUsagePage() {
       <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <h2 className="text-2xl font-semibold">Usage Monitoring</h2>
+            <h2 className="text-headline font-semibold">Usage Monitoring</h2>
             <p className="text-sm text-muted-foreground mt-1">
               Konsumsi resource Supabase free tier — DB, Storage, MAU.
             </p>
@@ -112,8 +112,8 @@ export function AdminUsagePage() {
                     key={i}
                     className={`rounded-md border p-3 ${
                       a.level === 'critical'
-                        ? 'border-red-300 bg-red-50 text-red-900'
-                        : 'border-amber-300 bg-amber-50 text-amber-900'
+                        ? 'border-feedback-danger-border bg-feedback-danger-bg text-feedback-danger'
+                        : 'border-feedback-warning-border bg-feedback-warning-bg text-feedback-warning'
                     }`}
                   >
                     <p className="text-sm font-medium">
@@ -190,9 +190,9 @@ export function AdminUsagePage() {
 type HealthTone = 'normal' | 'warning' | 'critical';
 
 const HEALTH_BANNER_CLASS: Record<HealthTone, string> = {
-  normal: 'border-emerald-500 bg-emerald-50 text-emerald-900',
-  warning: 'border-amber-500 bg-amber-50 text-amber-900',
-  critical: 'border-red-500 bg-red-50 text-red-900',
+  normal:   'border-feedback-success bg-feedback-success-bg text-feedback-success',
+  warning:  'border-feedback-warning bg-feedback-warning-bg text-feedback-warning',
+  critical: 'border-feedback-danger bg-feedback-danger-bg text-feedback-danger',
 };
 
 const HEALTH_ICON: Record<HealthTone, string> = {
@@ -249,10 +249,10 @@ function UsageCard({ label, current, limit, pct, unit, note }: UsageCardProps) {
   const tone = pct === null ? 'muted' : pct >= 90 ? 'critical' : pct >= 70 ? 'warning' : 'normal';
 
   const barColor: Record<typeof tone, string> = {
-    normal: 'bg-emerald-500',
-    warning: 'bg-amber-500',
-    critical: 'bg-red-500',
-    muted: 'bg-zinc-300',
+    normal:   'bg-feedback-success',
+    warning:  'bg-feedback-warning',
+    critical: 'bg-feedback-danger',
+    muted:    'bg-surface-dim',
   };
 
   return (
@@ -266,7 +266,7 @@ function UsageCard({ label, current, limit, pct, unit, note }: UsageCardProps) {
         {current === null && note ? (
           // Friendly placeholder for unavailable metric (Sprint 6 polish)
           <div className="space-y-2">
-            <p className="text-base font-medium text-zinc-700">Segera tersedia</p>
+            <p className="text-base font-medium text-foreground">Segera tersedia</p>
             <p className="text-xs text-muted-foreground leading-relaxed">{note}</p>
           </div>
         ) : (
@@ -274,15 +274,15 @@ function UsageCard({ label, current, limit, pct, unit, note }: UsageCardProps) {
             <p className="text-2xl font-semibold font-mono">
               {current ?? '—'} <span className="text-sm font-normal text-muted-foreground">/ {limit} {unit}</span>
             </p>
-            <div className="h-2 rounded-full bg-zinc-100 overflow-hidden">
+            <div className="h-2 rounded-full bg-surface-container-low overflow-hidden">
               <div
-                className={`h-full ${barColor[tone]} transition-all`}
+                className={`h-full ${barColor[tone]} transition-all duration-base ease-brand`}
                 style={{ width: `${Math.min(100, pct ?? 0)}%` }}
               />
             </div>
             <p
               className={`text-xs font-mono ${
-                tone === 'critical' ? 'text-red-700' : tone === 'warning' ? 'text-amber-700' : 'text-zinc-600'
+                tone === 'critical' ? 'text-feedback-danger' : tone === 'warning' ? 'text-feedback-warning' : 'text-muted-foreground'
               }`}
             >
               {pct !== null ? `${pct}%` : '—'}

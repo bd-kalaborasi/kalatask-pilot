@@ -154,7 +154,7 @@ export function AdminMoMReviewPage() {
         </div>
 
         <div>
-          <h2 className="text-2xl font-semibold">{parent.title || parent.file_name}</h2>
+          <h2 className="text-headline font-semibold">{parent.title || parent.file_name}</h2>
           <p className="text-sm text-muted-foreground mt-1 font-mono">
             {parent.file_name} · {parent.mom_date ?? '—'}
           </p>
@@ -236,7 +236,7 @@ export function AdminMoMReviewPage() {
                 role="tab"
                 aria-selected={active}
                 onClick={() => setActiveTab(tab.key)}
-                className={`px-3 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
+                className={`px-3 py-2 text-sm font-medium border-b-2 -mb-px transition-colors duration-fast ease-brand ${
                   active
                     ? 'border-brand-deep text-brand-deep'
                     : 'border-transparent text-muted-foreground hover:text-foreground'
@@ -248,7 +248,7 @@ export function AdminMoMReviewPage() {
                   className={`ml-1.5 inline-flex items-center justify-center rounded-full px-1.5 text-[10px] font-mono ${
                     active
                       ? 'bg-brand-deep text-white'
-                      : 'bg-zinc-100 text-zinc-600'
+                      : 'bg-surface-container-low text-muted-foreground'
                   }`}
                 >
                   {tab.count}
@@ -286,8 +286,8 @@ export function AdminMoMReviewPage() {
         )}
 
         {isApproved && (
-          <div className="rounded-md border bg-emerald-50 p-4">
-            <p className="text-sm font-medium text-emerald-800">
+          <div className="rounded-md border border-feedback-success-border bg-feedback-success-bg p-4">
+            <p className="text-sm font-medium text-feedback-success">
               ✅ Sudah ter-approve. Tugas yang dibuat bisa kamu lihat di halaman project.
             </p>
           </div>
@@ -403,10 +403,10 @@ function Stat({
   tone?: 'success' | 'warning' | 'orange' | 'danger';
 }) {
   const cls: Record<NonNullable<typeof tone>, string> = {
-    success: 'text-emerald-700',
-    warning: 'text-amber-700',
-    orange: 'text-orange-700',
-    danger: 'text-red-700',
+    success: 'text-feedback-success',
+    warning: 'text-feedback-warning',
+    orange:  'text-feedback-warning',
+    danger:  'text-feedback-danger',
   };
   return (
     <div className="rounded-md border bg-surface p-3">

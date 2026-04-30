@@ -130,6 +130,7 @@ const config: Config = {
         // KalaTask custom components tetap pakai brand-deep / brand-sky.
         // ============================================================
         border: 'hsl(var(--border))',
+        'border-strong': 'var(--kt-border-strong)',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',

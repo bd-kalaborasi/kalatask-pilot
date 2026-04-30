@@ -84,7 +84,7 @@ export function BottleneckPage() {
       <AppHeader />
       <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
         <div>
-          <h2 className="text-2xl font-semibold">Bottleneck View</h2>
+          <h2 className="text-headline font-semibold">Bottleneck View</h2>
           <p className="text-sm text-muted-foreground mt-1">
             Task non-final yang stuck &gt; {threshold} hari tanpa update
           </p>
@@ -169,8 +169,8 @@ export function BottleneckPage() {
                         <span
                           className={
                             stuckDays > threshold * 2
-                              ? 'text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-mono'
-                              : 'text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-mono'
+                              ? 'text-xs px-2 py-0.5 rounded-full bg-feedback-danger-bg text-feedback-danger font-mono'
+                              : 'text-xs px-2 py-0.5 rounded-full bg-feedback-warning-bg text-feedback-warning font-mono'
                           }
                         >
                           {stuckDays} hari stuck

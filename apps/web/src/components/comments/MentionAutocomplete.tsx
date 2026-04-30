@@ -32,10 +32,10 @@ const ROLE_LABEL: Record<MentionUser['role'], string> = {
 };
 
 const ROLE_BADGE: Record<MentionUser['role'], string> = {
-  admin: 'bg-red-100 text-red-700',
-  manager: 'bg-blue-100 text-blue-700',
-  member: 'bg-green-100 text-green-700',
-  viewer: 'bg-zinc-100 text-zinc-700',
+  admin:   'bg-feedback-danger-bg text-feedback-danger',
+  manager: 'bg-brand-deep-100 text-brand-deep-700',
+  member:  'bg-feedback-success-bg text-feedback-success',
+  viewer:  'bg-surface-container-low text-foreground',
 };
 
 export function MentionAutocomplete({

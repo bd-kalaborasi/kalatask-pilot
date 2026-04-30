@@ -188,7 +188,7 @@ export function ProjectDetailPage() {
                 aria-label="Konteks project"
               >
                 <div className="space-y-2">
-                  <h2 className="text-2xl font-semibold leading-tight">
+                  <h2 className="text-headline font-semibold leading-tight">
                     {project.name}
                   </h2>
                   <ProjectStatusBadge status={project.status} />
@@ -345,7 +345,7 @@ function ProjectTaskSummary({
       {total > 0 && (
         <>
           <div
-            className="h-1.5 rounded-full bg-zinc-100 overflow-hidden"
+            className="h-1.5 rounded-full bg-surface-container-low overflow-hidden"
             role="progressbar"
             aria-valuenow={donePct}
             aria-valuemin={0}
@@ -353,7 +353,7 @@ function ProjectTaskSummary({
             aria-label={`${donePct} persen selesai`}
           >
             <div
-              className="h-full bg-emerald-500 transition-all"
+              className="h-full bg-feedback-success transition-all duration-base ease-brand"
               style={{ width: `${donePct}%` }}
             />
           </div>
@@ -380,7 +380,7 @@ function ProjectTaskSummary({
               </li>
             )}
             {counts.blocked > 0 && (
-              <li className="flex justify-between text-red-700">
+              <li className="flex justify-between text-feedback-danger">
                 <span>Tertahan</span>
                 <span className="font-mono tabular-nums">
                   {counts.blocked}

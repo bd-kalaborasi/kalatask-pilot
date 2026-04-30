@@ -62,7 +62,7 @@ export function EmptyState({
         {title}
       </h3>
       {body && (
-        <p className="text-sm leading-relaxed text-zinc-500 max-w-md">
+        <p className="text-sm leading-relaxed text-muted-foreground max-w-md">
           {body}
         </p>
       )}

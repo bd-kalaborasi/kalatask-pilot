@@ -5,10 +5,10 @@ import { useToast, type ToastTone } from '@/contexts/ToastContext';
 import { cn } from '@/lib/utils';
 
 const TONE_CLASS: Record<ToastTone, string> = {
-  info: 'bg-sky-50 border-sky-200 text-sky-900',
-  success: 'bg-emerald-50 border-emerald-200 text-emerald-900',
-  warning: 'bg-amber-50 border-amber-200 text-amber-900',
-  error: 'bg-red-50 border-red-200 text-red-900',
+  info:    'bg-feedback-info-bg border-feedback-info-border text-brand-deep-700',
+  success: 'bg-feedback-success-bg border-feedback-success-border text-feedback-success',
+  warning: 'bg-feedback-warning-bg border-feedback-warning-border text-feedback-warning',
+  error:   'bg-feedback-danger-bg border-feedback-danger-border text-feedback-danger',
 };
 
 export function ToastContainer() {
@@ -27,7 +27,7 @@ export function ToastContainer() {
           key={t.id}
           role="alert"
           className={cn(
-            'border rounded-md px-3 py-2 text-sm shadow-brand-md flex items-start gap-2',
+            'border rounded-md px-3 py-2 text-sm shadow-brand-md flex items-start gap-2 kt-slide-up',
             TONE_CLASS[t.tone],
           )}
         >

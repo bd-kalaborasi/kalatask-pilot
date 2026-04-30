@@ -53,7 +53,7 @@ export function DashboardPage() {
       <main className="max-w-dashboard mx-auto px-6 py-10 space-y-6">
         <div className="space-y-2">
           <p className="text-sm text-muted-foreground">Selamat datang,</p>
-          <h2 className="text-3xl font-semibold">{profile.full_name}</h2>
+          <h2 className="text-display font-semibold">{profile.full_name}</h2>
           <p className="text-xs text-muted-foreground font-mono">
             {profile.email}
           </p>

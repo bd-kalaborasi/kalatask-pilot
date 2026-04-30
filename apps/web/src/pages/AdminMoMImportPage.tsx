@@ -32,10 +32,10 @@ const APPROVAL_LABEL: Record<string, string> = {
 };
 
 const APPROVAL_STYLE: Record<string, string> = {
-  pending_review: 'bg-amber-100 text-amber-800',
-  auto_approved: 'bg-emerald-100 text-emerald-800',
-  approved: 'bg-emerald-100 text-emerald-800',
-  rejected: 'bg-red-100 text-red-800',
+  pending_review: 'bg-feedback-warning-bg text-feedback-warning',
+  auto_approved:  'bg-feedback-success-bg text-feedback-success',
+  approved:       'bg-feedback-success-bg text-feedback-success',
+  rejected:       'bg-feedback-danger-bg text-feedback-danger',
 };
 
 export function AdminMoMImportPage() {
@@ -126,7 +126,7 @@ export function AdminMoMImportPage() {
       <AppHeader />
       <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
         <div className="space-y-2">
-          <h2 className="text-2xl font-semibold">Import Notulensi (MoM)</h2>
+          <h2 className="text-headline font-semibold">Import Notulensi (MoM)</h2>
           <p className="text-sm text-muted-foreground">
             Convert action items rapat jadi tugas otomatis — upload <strong>.md</strong> hasil
             Plaud Template v2, sistem parse PIC + deadline, kamu review &amp; approve sebelum jadi tugas.
@@ -206,7 +206,7 @@ export function AdminMoMImportPage() {
             {!loading && imports.length > 0 && (
               <div className="overflow-x-auto rounded-md border">
                 <table className="min-w-full text-sm">
-                  <thead className="bg-zinc-50 text-left text-xs uppercase tracking-wide text-zinc-600">
+                  <thead className="bg-surface-container text-left text-xs uppercase tracking-wide text-muted-foreground">
                     <tr>
                       <th className="px-3 py-2">Tanggal MoM</th>
                       <th className="px-3 py-2">File</th>

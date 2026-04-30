@@ -12,10 +12,10 @@ import { cn } from '@/lib/utils';
 import type { UserRole } from '@/lib/auth';
 
 const ROLE_BADGE_CLASS: Record<UserRole, string> = {
-  admin: 'bg-red-100 text-red-700 ring-1 ring-red-200',
-  manager: 'bg-blue-100 text-blue-700 ring-1 ring-blue-200',
-  member: 'bg-green-100 text-green-700 ring-1 ring-green-200',
-  viewer: 'bg-zinc-100 text-zinc-700 ring-1 ring-zinc-200',
+  admin:   'bg-feedback-danger-bg text-feedback-danger ring-1 ring-feedback-danger-border',
+  manager: 'bg-brand-deep-100 text-brand-deep-700 ring-1 ring-brand-deep-200',
+  member:  'bg-feedback-success-bg text-feedback-success ring-1 ring-feedback-success-border',
+  viewer:  'bg-surface-container-low text-foreground ring-1 ring-border',
 };
 
 const ROLE_LABEL: Record<UserRole, string> = {

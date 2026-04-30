@@ -77,8 +77,8 @@ export function Dialog({
       ref={ref}
       onClick={handleBackdropClick}
       className={cn(
-        'rounded-lg border bg-surface p-0 shadow-brand-lg backdrop:bg-black/40 backdrop:backdrop-blur-sm',
-        'open:animate-in open:fade-in-0 open:zoom-in-95',
+        'rounded-lg border bg-surface-bright p-0 shadow-brand-lg backdrop:bg-black/40 backdrop:backdrop-blur-sm',
+        'open:kt-scale-in',
         'w-full max-w-md',
         className,
       )}

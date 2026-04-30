@@ -59,7 +59,7 @@ export function ProjectsPage() {
       <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h2 className="text-2xl font-semibold">Projects</h2>
+            <h2 className="text-headline font-semibold">Projects</h2>
             <p className="text-sm text-muted-foreground mt-1">
               {projects.length === 0
                 ? 'Belum ada project visible untuk kamu.'

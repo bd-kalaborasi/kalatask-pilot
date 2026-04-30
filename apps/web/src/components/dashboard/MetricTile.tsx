@@ -7,17 +7,17 @@ import { cn } from '@/lib/utils';
 type Tone = 'neutral' | 'positive' | 'warning' | 'critical';
 
 const TONE_CLASS: Record<Tone, string> = {
-  neutral: 'border-border bg-surface',
-  positive: 'border-emerald-200 bg-emerald-50',
-  warning: 'border-amber-200 bg-amber-50',
-  critical: 'border-red-200 bg-red-50',
+  neutral:  'border-border bg-surface',
+  positive: 'border-feedback-success-border bg-feedback-success-bg',
+  warning:  'border-feedback-warning-border bg-feedback-warning-bg',
+  critical: 'border-feedback-danger-border bg-feedback-danger-bg',
 };
 
 const VALUE_CLASS: Record<Tone, string> = {
-  neutral: 'text-foreground',
-  positive: 'text-emerald-700',
-  warning: 'text-amber-700',
-  critical: 'text-red-700',
+  neutral:  'text-foreground',
+  positive: 'text-feedback-success',
+  warning:  'text-feedback-warning',
+  critical: 'text-feedback-danger',
 };
 
 interface MetricTileProps {
