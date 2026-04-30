@@ -111,6 +111,17 @@ export const ACTION = {
   PREV_STEP: 'Mundur',
   SKIP_TUTORIAL: 'Lewati tutorial',
   FINISH_TUTORIAL: 'Selesai',
+
+  // v2.2: spec §8.3 generic action coverage
+  OK_GOT_IT: 'Mengerti',
+  SKIP_FOR_NOW: 'Lewati dulu',
+  CONTINUE: 'Lanjut',
+  BACK: 'Kembali',
+  YES_CONTINUE: 'Ya, lanjutkan',
+  SAVE_CHANGES: 'Simpan perubahan',
+  EDIT: 'Ubah',
+  ADD: 'Tambah',
+  DONE: 'Selesai',
 } as const;
 
 // ============================================================
@@ -215,6 +226,19 @@ export const ERROR = {
     title: 'Format file tidak didukung',
     body: 'Pastikan file dalam format yang sesuai (.md untuk MoM, .csv untuk import bulk).',
   },
+  // v2.2: spec §8.2 additions
+  SERVER: {
+    title: 'Ada yang gak beres di server',
+    body: 'Tim kami sudah dapat notifikasi. Coba lagi sebentar lagi.',
+  },
+  VALIDATION_EMAIL: {
+    title: 'Email belum sesuai format',
+    body: 'Contoh format: nama@kalaborasi.com',
+  },
+  VALIDATION_REQUIRED: {
+    title: 'Field ini wajib diisi',
+    body: 'Lengkapi data sebelum lanjut.',
+  },
 } as const;
 
 // ============================================================
@@ -233,6 +257,15 @@ export const TOAST = {
   IMPORT_SUCCESS: 'Import selesai',
   COPIED: 'Tersalin ke clipboard',
   STATUS_UPDATED: 'Status diupdate',
+  // v2.2: spec §8.4 expansion
+  SAVE_FAILED: 'Gagal simpan. Coba lagi.',
+  DELETE_FAILED: 'Gagal hapus. Coba lagi.',
+  STATUS_FAILED: 'Gagal update status.',
+  COMMENT_FAILED: 'Komen gagal terkirim.',
+  UPLOAD_SUCCESS: 'File berhasil di-upload',
+  UPLOAD_FAILED: 'Upload gagal. Coba upload ulang.',
+  INVITE_SENT: (email: string) => `Undangan terkirim ke ${email}`,
+  INVITE_FAILED: 'Undangan gagal kirim. Cek email tujuan.',
 } as const;
 
 // ============================================================
@@ -281,6 +314,20 @@ export const PLACEHOLDER = {
   SEARCH_PROJECTS: 'Cari project...',
   EMAIL: 'kamu@kalaborasi.com',
   PASSWORD: 'Kata sandi',
+  // v2.2 spec §8.5
+  DEADLINE: 'Pilih tanggal...',
+  MENTION: 'Tag rekan dengan @nama',
+  GENERIC_SEARCH: 'Cari tugas, project, atau orang...',
+} as const;
+
+// ============================================================
+// v2.2: Helper text & form hints (spec §8.5)
+// ============================================================
+export const HELPER = {
+  EMAIL_BUSINESS: 'Email perusahaan kamu',
+  TASK_TITLE: 'Singkat dan jelas, max 200 karakter',
+  TASK_DESCRIPTION: 'Markdown didukung',
+  DEADLINE_OPTIONAL: 'Bisa dikosongkan kalau belum ada deadline',
 } as const;
 
 // ============================================================
