@@ -241,9 +241,11 @@ const config: Config = {
       // Use full *-lg/-md/-sm hierarchy for new code.
       // ============================================================
       fontSize: {
-        // Backward-compat v2.1 aliases (resolve to -md tier)
-        'display':  ['var(--kt-text-display)',  { lineHeight: 'var(--kt-text-display-lh)',  fontWeight: '700' }],
-        'headline': ['var(--kt-text-headline)', { lineHeight: 'var(--kt-text-headline-lh)', fontWeight: '600' }],
+        // Backward-compat v2.1 aliases — v2.2 upgrade: display + headline now
+        // inherit Inter Display family automatically. Pages using text-headline
+        // get the editorial typeface without per-component edits.
+        'display':  ['var(--kt-text-display)',  { lineHeight: 'var(--kt-text-display-lh)',  fontWeight: '700', fontFamily: 'var(--kt-font-display)' }],
+        'headline': ['var(--kt-text-headline)', { lineHeight: 'var(--kt-text-headline-lh)', fontWeight: '600', fontFamily: 'var(--kt-font-display)' }],
         'title':    ['var(--kt-text-title)',    { lineHeight: 'var(--kt-text-title-lh)',    fontWeight: '600' }],
         'body':     ['var(--kt-text-body)',     { lineHeight: 'var(--kt-text-body-lh)',     fontWeight: '400' }],
         'label':    ['var(--kt-text-label)',    { lineHeight: 'var(--kt-text-label-lh)',    fontWeight: '500' }],

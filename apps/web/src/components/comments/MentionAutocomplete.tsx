@@ -97,7 +97,7 @@ export function MentionAutocomplete({
     <div
       role="listbox"
       aria-label="Mention user autocomplete"
-      className="absolute z-40 mt-1 w-72 max-h-64 overflow-auto rounded-md border bg-white shadow-lg"
+      className="absolute z-40 mt-1 w-72 max-h-64 overflow-auto rounded-kt-md border border-outline-variant bg-surface-container-lowest shadow-brand-lg animate-fade-up"
     >
       {loading && (
         <p className="p-3 text-xs text-muted-foreground">Mencari user...</p>

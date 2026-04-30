@@ -201,7 +201,7 @@ function KanbanCard({ task }: KanbanCardProps) {
         e.preventDefault();
         navigate(`/projects/${task.project_id}/tasks/${task.id}`);
       }}
-      className="bg-background border rounded-md p-2 cursor-pointer hover:shadow-brand-sm shadow-sm space-y-1.5"
+      className="bg-surface-container-lowest border border-outline-variant rounded-kt-md p-2 cursor-pointer shadow-brand-sm hover:shadow-brand-md transition-shadow duration-base ease-brand space-y-1.5"
       role="button"
       aria-label={`Task ${task.title}. Click untuk buka detail; drag untuk pindah status.`}
     >
