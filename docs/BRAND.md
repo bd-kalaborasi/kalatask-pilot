@@ -397,7 +397,8 @@ Untuk membedakan task dari `manual` vs `cowork-agent` vs `csv-import` (PRD F9, F
 | Version | Date | Notes |
 |---|---|---|
 | v1.0 | 2026-04-27 | Initial brand kit untuk pilot — palette, logo, typography, voice |
-| **v2.0** | **2026-04-29** | **Sprint 6 polish — Stitch MCP collab. New: refined Asana/Monday-style microcopy guidelines (§13), Indonesian status labels locked, Stitch-derived hybrid tokens noted (surface tonal scale, M3-inspired typography optional adoption). All Sprint 6 UI changes consume `apps/web/src/lib/labels.ts` for consistency.** |
+| v2.0 | 2026-04-29 | Sprint 6 polish — Stitch MCP collab. Refined Asana/Monday-style microcopy guidelines (§13), Indonesian status labels locked, Stitch-derived hybrid tokens NOTED (surface tonal scale, M3-inspired typography) but **paper-only — never landed in code** (post-revision audit confirmed). |
+| **v2.1** | **2026-04-30** | **Sprint 6 holistic overhaul — v2 tokens LAND IN CODE. theme.css §8b surface tonal scale (5 levels), §8c semantic feedback colors, §9b M3 typography (display/headline/title/body/label), §10b semantic spacing (gap-card/section/page), §14 motion tokens (fast/base/slow + ease-brand). tailwind.config.ts maps all to utility classes. PRODUCT.md + DESIGN.md companion docs added (manual Impeccable equivalent — external skill install blocked by sandbox). All raw bg-zinc-*, bg-emerald-*, bg-amber-*, bg-red-* refs eliminated from pages + components (103→0). Card / Dialog / Toast / Notifications / Status badges all consume v2.1 tokens.** |
 
 ### v2 — what changed
 

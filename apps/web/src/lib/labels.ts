@@ -59,10 +59,12 @@ export const ACTION = {
   // Task primary actions
   CREATE_TASK: 'Buat tugas',
   CREATE_TASK_FIRST: 'Buat tugas pertama',
+  ADD_TASK: 'Tambah tugas',
   EDIT_TASK: 'Edit tugas',
   DELETE_TASK: 'Hapus tugas',
   MARK_DONE: 'Tandai selesai',
   REASSIGN: 'Ganti penanggung jawab',
+  CHANGE_STATUS: 'Ubah status',
 
   // Generic
   SAVE: 'Simpan',
@@ -216,19 +218,54 @@ export const ERROR = {
 } as const;
 
 // ============================================================
-// Toast messages — short, friendly
+// Toast messages — short, friendly (Sprint 6 overhaul: refined verbs)
 // ============================================================
 export const TOAST = {
-  TASK_CREATED: 'Tugas berhasil dibuat',
-  TASK_UPDATED: 'Tugas berhasil diupdate',
-  TASK_DELETED: 'Tugas berhasil dihapus',
+  TASK_CREATED: 'Tugas dibuat',
+  TASK_UPDATED: 'Tugas diupdate',
+  TASK_DELETED: 'Tugas dihapus',
   COMMENT_POSTED: 'Komen terkirim',
   COMMENT_UPDATED: 'Komen diupdate',
   COMMENT_DELETED: 'Komen dihapus',
-  PROJECT_CREATED: 'Project berhasil dibuat',
+  PROJECT_CREATED: 'Project dibuat',
   PROJECT_ARCHIVED: 'Project diarsipkan',
+  PROJECT_STATUS_UPDATED: 'Status project diupdate',
   IMPORT_SUCCESS: 'Import selesai',
   COPIED: 'Tersalin ke clipboard',
+  STATUS_UPDATED: 'Status diupdate',
+} as const;
+
+// ============================================================
+// Loading messages — context-aware (Sprint 6 overhaul: NEW)
+// ============================================================
+export const LOADING = {
+  GENERIC: 'Memuat...',
+  PROJECTS: 'Memuat projects...',
+  PROJECT: 'Memuat project...',
+  TASKS: 'Memuat tasks...',
+  TASK: 'Memuat task...',
+  COMMENTS: 'Memuat komen...',
+  USAGE: 'Memuat usage...',
+  REVIEW: 'Memuat review...',
+  PROFILE: 'Memuat profil...',
+  SUBMITTING: 'Memproses...',
+  CREATING: 'Membuat...',
+  SAVING: 'Menyimpan...',
+  REFRESHING: 'Refreshing...',
+} as const;
+
+// ============================================================
+// Helper hints / tooltips (Sprint 6 overhaul: NEW — inline microcopy)
+// ============================================================
+export const HINT = {
+  VIEW_TOGGLE: 'Switch antara List / Kanban / Gantt — datanya sama, cara lihatnya beda.',
+  KANBAN_DRAG: 'Drag kartu antar kolom untuk update status.',
+  MENTION_USAGE: 'Pakai @ untuk mention rekan tim.',
+  STATUS_CLICK_TO_EDIT: 'Klik untuk ubah status.',
+  IMPORT_MOM_VS_CSV:
+    'Beda dengan Import Tugas (CSV)? CSV untuk bulk planned tasks (langsung jadi tugas). MoM untuk konversi rapat (review queue dulu).',
+  IMPORT_CSV_VS_MOM:
+    'Beda dengan Import Notulensi? Notulensi untuk konversi rapat ke action items (review dulu). CSV untuk bulk import tugas terencana.',
 } as const;
 
 // ============================================================
@@ -239,6 +276,7 @@ export const PLACEHOLDER = {
   TASK_DESCRIPTION: 'Tambahkan konteks atau deskripsi (opsional)',
   COMMENT_BODY: 'Tulis komen... pakai @ untuk mention',
   PROJECT_NAME: 'Nama project',
+  PROJECT_DESCRIPTION: 'Tambahkan konteks atau scope project (opsional)',
   SEARCH_TASKS: 'Cari tugas...',
   SEARCH_PROJECTS: 'Cari project...',
   EMAIL: 'kamu@kalaborasi.com',
