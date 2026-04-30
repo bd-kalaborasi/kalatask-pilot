@@ -276,13 +276,16 @@
   --kt-on-error-container:         #93000A;
 
   /* 15.8 Status badge fg+bg (Monday-inspired)
-     Pattern Phase C will swap hex bg → rgb(R G B / 0.1). */
+     bg = rgb(R G B / 0.1) — 10% alpha of fg hue for cleaner blends. */
   --kt-status-todo-fg:        var(--kt-on-surface);
-  --kt-status-in-progress-bg: #FEF3C7; /* amber-100 */
   --kt-status-in-progress-fg: #92400E; /* amber-800 */
+  --kt-status-in-progress-bg: rgb(146 64 14 / 0.1);    /* 10% alpha amber-800 */
   --kt-status-review-fg:      #5B21B6; /* violet-800 */
+  --kt-status-review-bg:      rgb(91 33 182 / 0.1);    /* 10% alpha violet-800 */
   --kt-status-done-fg:        #065F46; /* emerald-800 */
+  --kt-status-done-bg:        rgb(6 95 70 / 0.1);      /* 10% alpha emerald-800 */
   --kt-status-blocked-fg:     #93000A;
+  --kt-status-blocked-bg:     rgb(147 0 10 / 0.1);     /* 10% alpha error-fg */
 
   /* 15.9 Source attribution (D5: keep csv violet legacy) */
   --kt-source-mom:    #8B5CF6; /* alias of csv for MoM source */

@@ -77,8 +77,10 @@ export function Dialog({
       ref={ref}
       onClick={handleBackdropClick}
       className={cn(
-        'rounded-lg border bg-surface-bright p-0 shadow-brand-lg backdrop:bg-black/40 backdrop:backdrop-blur-sm',
-        'open:kt-scale-in',
+        // v2.2 D2: bumped radius 12 → 16px via --kt-radius-lg. Use rounded-kt-lg
+        // explicitly to avoid leaning on shadcn's --radius (8px).
+        'rounded-kt-lg border border-outline-variant bg-surface-container-lowest p-0 shadow-brand-lg backdrop:bg-black/40 backdrop:backdrop-blur-sm',
+        'open:animate-scale-in',
         'w-full max-w-md',
         className,
       )}

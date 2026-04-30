@@ -4,7 +4,9 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  // v2.2: transition-all + active:scale-[0.98] for tactile press feedback.
+  // Honored under prefers-reduced-motion via globals.css media query.
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-all duration-fast ease-brand active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -17,6 +19,15 @@ const buttonVariants = cva(
           'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
+        // v2.2 brand variants — opt-in. Use these for primary CTAs that
+        // should carry the KalaTask blue identity (was previously inline
+        // bg-brand-deep refs scattered in pages).
+        brand:
+          'bg-primary-container text-on-primary-container hover:bg-primary-container/90 shadow-brand-sm hover:shadow-brand-md',
+        'brand-secondary':
+          'bg-secondary-container text-on-secondary-container hover:bg-secondary-container/85 shadow-brand-sm',
+        'ghost-brand':
+          'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface',
       },
       size: {
         default: 'h-10 px-4 py-2',

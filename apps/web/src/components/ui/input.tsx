@@ -9,7 +9,9 @@ const Input = React.forwardRef<
     <input
       type={type}
       className={cn(
-        'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background transition-colors duration-fast ease-brand file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+        // v2.2: outline-variant border (cooler, calmer than zinc-200), p-3
+        // (spec §7), focus jumps to primary container blue for brand cue.
+        'flex h-10 w-full rounded-kt-md border border-outline-variant bg-surface-container-lowest px-3 py-2 text-sm ring-offset-background transition-colors duration-fast ease-brand file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-on-surface-variant/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-container focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
         className,
       )}
       ref={ref}
