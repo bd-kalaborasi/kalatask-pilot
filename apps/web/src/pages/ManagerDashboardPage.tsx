@@ -49,15 +49,17 @@ export function ManagerDashboardPage() {
   return (
     <div className="min-h-screen bg-canvas animate-fade-in">
       <AppHeader />
-      <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
-        <div>
-          <h2 className="text-headline font-semibold">Manager Dashboard</h2>
-          <p className="text-sm text-muted-foreground mt-1">
+      <main className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-8 space-y-6">
+        <header>
+          <h1 className="font-display text-headline-md text-on-surface">
+            Manager Dashboard
+          </h1>
+          <p className="text-body-md text-on-surface-variant mt-1">
             Quick view — 30 hari terakhir
             {profile.role === 'manager' && ' (team kamu)'}
             {profile.role === 'admin' && ' (cross-team)'}
           </p>
-        </div>
+        </header>
 
         {loading && (
           <p className="text-sm text-muted-foreground">Memuat dashboard...</p>
@@ -115,18 +117,18 @@ export function ManagerDashboardPage() {
               />
             </div>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Detail Dashboard</CardTitle>
-                <CardDescription>
-                  Drill-down ke chart breakdown + per-user view
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-wrap gap-3">
+            <section className="bg-surface-container-lowest p-6 rounded-kt-lg shadow-brand-sm border border-outline-variant">
+              <header className="mb-4">
+                <h2 className="font-display text-title-lg font-bold text-on-surface">
+                  Detail Dashboard
+                </h2>
+                <p className="text-body-sm text-on-surface-variant mt-1">
+                  Drill-down ke chart breakdown + per-user view.
+                </p>
+              </header>
+              <div className="flex flex-wrap gap-3">
                 <Button asChild variant="outline">
-                  <Link to="/dashboard/productivity">
-                    Productivity Dashboard →
-                  </Link>
+                  <Link to="/dashboard/productivity">Productivity Dashboard →</Link>
                 </Button>
                 <Button asChild variant="outline">
                   <Link to="/workload">Workload Detail →</Link>
@@ -134,14 +136,16 @@ export function ManagerDashboardPage() {
                 <Button asChild variant="outline">
                   <Link to="/bottleneck">Bottleneck →</Link>
                 </Button>
-              </CardContent>
-            </Card>
+              </div>
+            </section>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Status per Member</CardTitle>
-              </CardHeader>
-              <CardContent>
+            <section className="bg-surface-container-lowest rounded-kt-lg shadow-brand-sm border border-outline-variant overflow-hidden">
+              <header className="px-6 py-4 border-b border-outline-variant bg-surface-container-low/50">
+                <h2 className="font-display text-title-md font-bold text-on-surface">
+                  Status per Member
+                </h2>
+              </header>
+              <div className="p-6">
                 {workload.members.length === 0 ? (
                   <EmptyState
                     compact
@@ -180,8 +184,8 @@ export function ManagerDashboardPage() {
                     ))}
                   </ul>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </section>
           </>
         )}
       </main>
