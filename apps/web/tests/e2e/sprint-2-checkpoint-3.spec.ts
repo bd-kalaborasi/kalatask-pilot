@@ -374,9 +374,10 @@ test.describe('S6: Kanban 5 kolom + Blocked red urgency (Q1)', () => {
     const blockedColumn = page.locator('[data-status="blocked"]');
     await expect(blockedColumn).toBeVisible({ timeout: 10_000 });
 
-    // Header punya red bg class (bg-red-100)
+    // Header carries red urgency via brand-tinted token (post Sprint 6
+    // overhaul: bg-red-100 → bg-status-blocked-bg, text-feedback-danger).
     const header = blockedColumn.locator('header').first();
-    await expect(header).toHaveClass(/bg-red-100/);
+    await expect(header).toHaveClass(/bg-status-blocked-bg/);
   });
 });
 
