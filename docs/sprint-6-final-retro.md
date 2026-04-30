@@ -190,3 +190,58 @@ Open agenda items:
 ## Closing
 
 PR #7 ready to undraft. Revert anchor in place. Owner can re-evaluate via the 6 post-Stitch screenshots in `docs/sprint-6-final-screenshots/` — pre-Stitch baseline at `docs/sprint-6-overhaul-screenshots/` for side-by-side comparison.
+
+---
+
+# Patch round (2026-04-30)
+
+**Trigger:** Owner verified localhost vs Stitch references after the v2.2 token round and found a structural gap. Token-only refactor wasn't enough — Stitch screens require DOM hierarchy changes (KPI grids, panels, sidebar context, tab strips, leaderboards). Spec for the patch round captured in this same conversation.
+
+**Workflow change (now mandatory):** per route, fetch raw Stitch HTML via `mcp__stitch__get_screen → htmlCode.downloadUrl → curl save`, adapt DOM hierarchy in React, swap Stitch raw colors for v2.2 brand tokens, screenshot pair side-by-side. Pre-flight `mcp__stitch__list_screens` recommended to handle ID typos (one ID in spec was 33-hex; actual was 32-hex).
+
+## Patch phase log
+
+| Phase | Scope | Commit |
+|---|---|---|
+| 1 | Extract 13 raw Stitch HTML into `docs/stitch-html-export/` (5 184 lines) | `5354136` |
+| 2a route 1 | `/dashboard` — hero + 3-KPI strip + quick-action strip + 2-col activity feed/featured project + priorities/illustration | `b05b83f` |
+| 2a route 2 | `/dashboard/productivity` — 4-KPI sparkline strip + 2-col velocity-chart + leaderboard + insights row (derived) | `5baf75b` |
+| 2a route 3 | `/admin/usage` — 3-metric strip + 2-col top-tables + alerts panel + Optimization Tips callout | `7fdc2d9` |
+| 2b | `/projects` (status pill row + card grid hover lift) | `687480e` |
+| 2b | `/workload` + `/bottleneck` (severity summary KPI cards + token-tinted detail panels) | `98c1c51` |
+| 2b | `/admin/mom-import` (list + review with breadcrumb + section panels) | `783817a` |
+| 2b | `/projects/:id` + `/tasks/:id` (breadcrumbs + display headlines) | `ac45dbf` |
+| 2b | `/dashboard/manager` (KPI tiles preserved + section panel re-skin) | `9a101e5` |
+| Build hygiene | unused imports + `ProjectStatus` import path fix | `e3ab266` |
+
+**Routes deferred (no existing route in `App.tsx`):** `/tasks`, `/onboarding`, `/settings`. Stitch refs available in `docs/stitch-html-export/04-tasks.html`, `12-onboarding.html`, `13-settings-team.html` for future sprint.
+
+## Visual evidence (`docs/sprint-6-patch-comparison/`)
+
+7 post-Stitch screenshots paired with 5 Stitch references (manager-dashboard has no dedicated Stitch ref — Stitch '06 settings' is closest analog):
+
+| File pair | Route |
+|---|---|
+| `01-dashboard-{stitch,after}.png` | `/` |
+| `02-projects-{stitch,after}.png` | `/projects` |
+| `08-admin-usage-{stitch,after}.png` | `/admin/usage` |
+| `09-workload-{stitch,after}.png` | `/workload` |
+| `10-bottleneck-{stitch,after}.png` | `/bottleneck` |
+| `11-productivity-{stitch,after}.png` | `/dashboard/productivity` |
+| `14-manager-dashboard-after.png` | `/dashboard/manager` (no separate Stitch ref) |
+
+## Test surface — patches required
+
+The structural refactor changed several headings and labels. Stale assertions surfaced and were updated, not bypassed:
+
+- **`auth.spec.ts`** — `getByRole heading user.fullName` no longer matches; new dashboard hero is `Selamat datang, {firstName}`. Email no longer rendered on dashboard body (AppHeader still shows full name + role badge).
+- **`dashboards.spec.ts`** — heading text labels: `Productivity Dashboard` → `Productivity` (matches Stitch); `Workload View` → `Workload Tim`; `Bottleneck View` → `Bottleneck Tugas`. Period filter caption replaced by tab role (`getByRole tab Kuartal selected`).
+- **`ProductivityDashboardPage.tsx`** — refactor introduced hooks-order violation (`useMemo` placed after `if (authLoading) return`). Fixed by moving all `useMemo` calls above the early-return guards.
+
+## Bundle metric (post-patch)
+
+153.54 KB gzip — Δ +6.97 KB from baseline 146.57 KB. Within 250 KB hard ceiling, slightly over the +5 KB target, accepted given the structural depth (4-KPI sparklines, leaderboard, insights derivation, 2-col layouts, semantic section panels).
+
+## Acceptance
+
+Owner approved Phase 2a checkpoint (`/dashboard`, `/dashboard/productivity`, `/admin/usage` pairs in `docs/sprint-6-patch-comparison/`) and instructed continuous autonomous execution for the remaining 7 routes. PR #7 carries all patch-round commits; tag `sprint-6-patch-complete` marks the closing point.
