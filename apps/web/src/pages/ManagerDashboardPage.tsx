@@ -9,13 +9,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { MetricTile } from '@/components/dashboard/MetricTile';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { summarize } from '@/lib/dashboardMetrics';

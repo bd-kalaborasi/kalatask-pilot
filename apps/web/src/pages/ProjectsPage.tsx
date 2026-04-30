@@ -22,9 +22,9 @@ import { useTeamsList } from '@/hooks/useTeamsList';
 import {
   applyProjectsFilter,
   EMPTY_PROJECTS_FILTER,
-  type ProjectStatus,
   type ProjectsFilter,
 } from '@/lib/projects';
+import type { ProjectStatus } from '@/components/project/ProjectStatusBadge';
 import {
   readProjectsFilterFromUrl,
   writeProjectsFilterToUrl,
