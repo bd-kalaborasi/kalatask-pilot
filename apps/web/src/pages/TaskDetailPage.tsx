@@ -59,41 +59,42 @@ export function TaskDetailPage() {
   return (
     <div className="min-h-screen bg-canvas animate-fade-in">
       <AppHeader />
-      <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
-        <div className="flex items-center gap-2 text-sm">
-          <Button asChild variant="ghost" size="sm">
-            <Link to={`/projects/${projectId}`}>← Balik ke Project</Link>
-          </Button>
-        </div>
+      <main className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-8 space-y-6">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-body-sm">
+          <Link
+            to={`/projects/${projectId}`}
+            className="text-on-surface-variant hover:text-primary-container transition-colors"
+          >
+            ← Project
+          </Link>
+        </nav>
 
         {loading && (
-          <p className="text-sm text-muted-foreground">Memuat task...</p>
+          <p className="text-body-md text-on-surface-variant">Memuat task...</p>
         )}
 
         {error && (
-          <Card>
-            <CardContent className="py-8 text-center">
-              <p className="text-sm text-destructive">{error}</p>
-            </CardContent>
-          </Card>
+          <div className="bg-surface-container-lowest rounded-kt-lg shadow-brand-sm border border-outline-variant py-8 text-center">
+            <p className="text-body-md text-feedback-danger">{error}</p>
+          </div>
         )}
 
         {!loading && !error && task && (
           <>
-            <div className="space-y-3">
+            <header className="space-y-3">
               <div className="flex flex-wrap items-start justify-between gap-3">
-                <h2 className="text-headline font-semibold leading-tight">
+                <h1 className="font-display text-headline-md text-on-surface leading-tight flex-1">
                   {task.title}
-                </h2>
-                <div className="flex items-center gap-2">
+                </h1>
+                <div className="flex items-center gap-2 shrink-0">
                   <TaskStatusBadge status={task.status} />
                   <TaskPriorityBadge priority={task.priority} />
                 </div>
               </div>
               {task.assignee && (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-body-md text-on-surface-variant">
                   Assigned to{' '}
-                  <span className="font-medium text-foreground">
+                  <span className="font-medium text-on-surface">
                     {task.assignee.full_name}
                   </span>
                 </p>

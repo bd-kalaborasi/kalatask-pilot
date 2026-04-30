@@ -156,10 +156,19 @@ export function ProjectDetailPage() {
   return (
     <div className="min-h-screen bg-canvas animate-fade-in">
       <AppHeader />
-      <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
-        <Button asChild variant="ghost" size="sm">
-          <Link to="/projects">← Kembali ke Projects</Link>
-        </Button>
+      <main className="max-w-[1400px] mx-auto px-margin-mobile md:px-margin-desktop py-8 space-y-6">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-body-sm">
+          <Link
+            to="/projects"
+            className="text-on-surface-variant hover:text-primary-container transition-colors"
+          >
+            Proyek
+          </Link>
+          <span className="text-on-surface-variant" aria-hidden="true">/</span>
+          <span className="text-on-surface font-medium truncate max-w-md">
+            {project?.name ?? '...'}
+          </span>
+        </nav>
 
         {projectLoading && (
           <p className="text-sm text-muted-foreground">Memuat project...</p>
@@ -188,9 +197,9 @@ export function ProjectDetailPage() {
                 aria-label="Konteks project"
               >
                 <div className="space-y-2">
-                  <h2 className="text-headline font-semibold leading-tight">
+                  <h1 className="font-display text-headline-md text-on-surface leading-tight">
                     {project.name}
-                  </h2>
+                  </h1>
                   <ProjectStatusBadge status={project.status} />
                 </div>
 
@@ -252,11 +261,14 @@ export function ProjectDetailPage() {
 
               {/* Main content — tasks views */}
               <div className="space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <h3 className="text-xl font-semibold">Tasks</h3>
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-outline-variant">
+                <h2 className="font-display text-title-lg font-bold text-on-surface">
+                  Tasks
+                </h2>
                 <div className="flex items-center gap-2">
                   {canCreateTask && (
                     <Button
+                      variant="brand"
                       onClick={() => setCreateTaskOpen(true)}
                       data-testid="create-task-button"
                     >
