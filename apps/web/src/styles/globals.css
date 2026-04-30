@@ -12,7 +12,7 @@
  *   import './styles/globals.css';
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Display:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @import './theme.css';
 
@@ -115,10 +115,63 @@
     .kt-scale-in,
     .kt-shake,
     .kt-pulse-attention,
-    .animate-wizard-in {
+    .animate-wizard-in,
+    .animate-fade-in,
+    .animate-fade-up,
+    .animate-scale-in {
       animation: none !important;
     }
   }
+
+  /* ============================================================
+   * v2.2 STITCH ELEVATION UTILITIES (Sprint 6 final)
+   * Replaces ad-hoc bg-surface shadow-brand-md patterns.
+   * Use elev-N as semantic shorthand for tonal+shadow combo.
+   * ============================================================ */
+  .elev-0 {
+    background: var(--kt-surface);
+  }
+  .elev-1 {
+    background: var(--kt-surface-container-lowest);
+    box-shadow: var(--kt-shadow-sm);
+  }
+  .elev-2 {
+    background: var(--kt-surface-container-low);
+    box-shadow: var(--kt-shadow-md);
+  }
+  .elev-3 {
+    background: var(--kt-surface-container-high);
+    box-shadow: var(--kt-shadow-md);
+    border: 1px solid var(--kt-outline-variant);
+  }
+  .elev-4 {
+    background: var(--kt-surface-container-highest);
+    box-shadow: var(--kt-shadow-lg);
+    backdrop-filter: blur(15px);
+  }
+
+  /* ============================================================
+   * v2.2 ANIMATION RECIPES (per design-system-final-spec §6)
+   * Mapped to Tailwind via animation/keyframes config too.
+   * Naming `animate-*` matches Tailwind defaults so utility
+   * usage feels native (e.g. animate-fade-in).
+   * ============================================================ */
+  @keyframes kt-v2-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes kt-v2-fade-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes kt-v2-scale-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .animate-fade-in  { animation: kt-v2-fade-in  var(--kt-duration-base)   var(--kt-ease-out); }
+  .animate-fade-up  { animation: kt-v2-fade-up  var(--kt-duration-medium) var(--kt-ease-out); }
+  .animate-scale-in { animation: kt-v2-scale-in var(--kt-duration-base)   var(--kt-ease-out); }
 }
 
 /* ============================================================
