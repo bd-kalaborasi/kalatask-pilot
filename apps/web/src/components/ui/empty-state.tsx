@@ -1,16 +1,18 @@
 /**
- * EmptyState — unified component untuk semua empty view (F10 Sprint 4 Step 5).
+ * EmptyState — unified component untuk semua empty view.
+ *
+ * Sprint 6 final v2.2 upgrade:
+ *  - Token migration: --kt-deep-{50,700} inline → primary-container +
+ *    on-surface semantic classes
+ *  - Typography: text-{base,lg,sm} → title-lg / body-md
+ *  - Optional secondaryAction (link-style) per spec §7.5
  *
  * Microcopy guideline (BRAND.md §6 Voice & Tone):
  *   - Indonesian friendly-professional
  *   - Action-oriented: explain WHY empty + WHAT user can do next
- *   - Optional CTA button untuk "Buat task pertama" / "Buka Projects" / dll
  *
- * Visual:
- *   - Center-aligned, soft padding
- *   - Icon (emoji atau simple char) di lingkaran subtle
- *   - Heading semibold, body muted
- *   - CTA primary atau ghost variant
+ * Backward compat: existing call sites with `icon` / `iconNode` /
+ * `ctaLabel` / `ctaOnClick` / `compact` continue to work unchanged.
  */
 import type { ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
@@ -23,6 +25,9 @@ interface EmptyStateProps {
   cta?: ReactNode;
   ctaLabel?: string;
   ctaOnClick?: () => void;
+  /** v2.2 spec §7.5: secondary action as link-style label + href. */
+  secondaryActionLabel?: string;
+  secondaryActionHref?: string;
   className?: string;
   compact?: boolean;
 }
@@ -35,6 +40,8 @@ export function EmptyState({
   cta,
   ctaLabel,
   ctaOnClick,
+  secondaryActionLabel,
+  secondaryActionHref,
   className,
   compact = false,
 }: EmptyStateProps) {
@@ -46,32 +53,41 @@ export function EmptyState({
     >
       {(icon || iconNode) && (
         <div
-          className={`flex items-center justify-center rounded-2xl mb-4 ${
+          className={`flex items-center justify-center rounded-2xl mb-4 bg-primary-container/15 text-on-primary-container ${
             compact ? 'h-12 w-12 text-2xl' : 'h-16 w-16 text-3xl'
           }`}
-          style={{ backgroundColor: 'var(--kt-deep-50)' }}
           aria-hidden="true"
         >
           {iconNode ?? icon}
         </div>
       )}
       <h3
-        className={`font-semibold mb-2 ${compact ? 'text-base' : 'text-lg'}`}
-        style={{ color: 'var(--kt-deep-700)' }}
+        className={`font-semibold mb-2 text-on-surface ${
+          compact ? 'text-title-md' : 'text-title-lg'
+        }`}
       >
         {title}
       </h3>
       {body && (
-        <p className="text-sm leading-relaxed text-muted-foreground max-w-md">
+        <p className="text-body-md leading-relaxed text-on-surface-variant max-w-md">
           {body}
         </p>
       )}
-      {(cta || (ctaLabel && ctaOnClick)) && (
-        <div className="mt-5">
-          {cta ?? (
-            <Button onClick={ctaOnClick} size="sm">
-              {ctaLabel}
-            </Button>
+      {(cta || (ctaLabel && ctaOnClick) || secondaryActionLabel) && (
+        <div className="mt-5 flex flex-col sm:flex-row items-center gap-3">
+          {cta ??
+            (ctaLabel && ctaOnClick && (
+              <Button onClick={ctaOnClick} size="sm" variant="brand">
+                {ctaLabel}
+              </Button>
+            ))}
+          {secondaryActionLabel && secondaryActionHref && (
+            <a
+              href={secondaryActionHref}
+              className="text-body-md text-primary-container underline-offset-4 hover:underline"
+            >
+              {secondaryActionLabel}
+            </a>
           )}
         </div>
       )}
