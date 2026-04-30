@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Inter+Display:wght@600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#ffb785",
+                        "primary-fixed": "#d1e4ff",
+                        "on-tertiary-fixed": "#301400",
+                        "on-surface-variant": "#414750",
+                        "on-error-container": "#93000a",
+                        "outline": "#717781",
+                        "on-tertiary-container": "#ffccaa",
+                        "on-primary-fixed": "#001d35",
+                        "surface": "#f9f9fc",
+                        "outline-variant": "#c1c7d2",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f0f0f3",
+                        "surface-container-highest": "#e2e2e5",
+                        "on-secondary-fixed": "#001e2e",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e2e2e5",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#dadadc",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#0461a2",
+                        "error": "#ba1a1a",
+                        "background": "#f9f9fc",
+                        "secondary-fixed-dim": "#86cfff",
+                        "primary": "#00487a",
+                        "surface-container-low": "#f3f3f6",
+                        "on-surface": "#1a1c1e",
+                        "tertiary-container": "#924902",
+                        "on-secondary-fixed-variant": "#004c6d",
+                        "primary-container": "#0060a0",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed-variant": "#00497c",
+                        "secondary-container": "#45beff",
+                        "on-primary-container": "#bbd9ff",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#e8e8ea",
+                        "surface-bright": "#f9f9fc",
+                        "primary-fixed-dim": "#9dcaff",
+                        "secondary": "#00658f",
+                        "on-tertiary-fixed-variant": "#713700",
+                        "inverse-primary": "#9dcaff",
+                        "surface-container": "#eeeef0",
+                        "on-secondary-container": "#004a6b",
+                        "inverse-surface": "#2f3133",
+                        "tertiary-fixed": "#ffdcc6",
+                        "on-background": "#1a1c1e",
+                        "tertiary": "#6f3600",
+                        "secondary-fixed": "#c7e7ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "base": "8px",
+                        "margin-desktop": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter Display"],
+                        "display-lg": ["Inter Display"],
+                        "body-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "display-lg": ["57px", { "lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0.5px", "fontWeight": "400" }],
+                        "title-lg": ["22px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.25px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen">
+<!-- TopNavBar Integration -->
+<nav class="fixed top-0 w-full z-50 border-b bg-white/80 backdrop-blur-md border-slate-200 shadow-sm flex justify-between items-center h-16 px-6">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold tracking-tight text-blue-800">KalaTask</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center bg-surface-container rounded-full px-4 py-1.5 border border-outline-variant">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-label-lg w-64" placeholder="Cari bottleneck..." type="text"/>
+</div>
+<button class="p-2 text-slate-600 hover:bg-slate-50 transition-colors rounded-full relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 text-slate-600 hover:bg-slate-50 transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Foto profil kamu" data-alt="A professional close-up headshot of a young Indonesian professional woman smiling warmly in an office setting. She has a clean, polished appearance with soft natural lighting illuminating her face. The background is a slightly blurred modern corporate workspace with hints of maritime blue and sky blue accents, matching a professional and calm business aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqPng4Vtv9FgfRvsh0gMdyWgLH8788bVYR__Qo_6e9LcJi2gXUmGvACklZn8CHoBaVd3pxjmO4TQpUwDAzqgVeO4OLSlIE10o8cJlN8mKRJo1LspnCu2Hpk1Dflqja7Cf4SQjZqOetTZRqgaUO8SAPmacTVb6Ni6KuBNN637yEeK0B-XpjZjGzdlV5QsViHZjGCVXXGYlapsCsFnV50Vu8ZhqnyvObQP51evGq9X46QD66mVO3WsmlEqJsAGXm88el3xjwzyyN0iSj"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar Integration -->
+<aside class="h-full w-64 border-r fixed left-0 top-0 bg-white border-slate-200 shadow-lg shadow-blue-900/5 hidden md:flex flex-col p-4 space-y-2 pt-20">
+<div class="mb-6 px-4">
+<h2 class="text-lg font-black text-blue-800">KalaTask</h2>
+<p class="text-xs text-slate-500">Kelola harimu</p>
+</div>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-all hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-all hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
+<span class="font-label-lg">Tugas Saya</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-all hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span class="font-label-lg">Proyek</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-50 text-blue-700 rounded-lg border-r-4 border-blue-700 font-semibold transition-all hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-lg">Analisis</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-all hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-lg">Tim</span>
+</a>
+<div class="mt-auto pt-4 border-t border-slate-100">
+<button class="w-full bg-primary text-white rounded-lg py-3 px-4 font-label-lg flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                Tugas Baru
+            </button>
+<div class="mt-4">
+<a class="flex items-center gap-3 px-4 py-2 text-slate-500 hover:text-blue-600 text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+                    Bantuan
+                </a>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-500 hover:text-error text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                    Keluar
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="md:pl-64 pt-24 pb-12 px-6">
+<div class="max-w-container-max mx-auto">
+<!-- Header Section -->
+<header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface">Bottleneck Tugas</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-1">Tugas yang stuck &gt; 3 hari, perlu unblocking</p>
+</div>
+<div class="flex items-center">
+<div class="flex items-center bg-white border border-outline-variant rounded-full px-4 py-2 shadow-sm">
+<span class="material-symbols-outlined text-primary mr-2" data-icon="filter_list">filter_list</span>
+<span class="text-label-lg font-medium text-on-surface">Stuck &gt; 3 hari</span>
+<span class="material-symbols-outlined text-on-surface-variant ml-2 cursor-pointer" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</header>
+<!-- Stat Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<!-- Stat 1 -->
+<div class="bg-white p-6 rounded-xl shadow-[0_4px_12px_rgba(0,96,160,0.08)] border border-slate-100 flex flex-col justify-between">
+<div>
+<span class="text-label-lg text-on-surface-variant uppercase tracking-wider">Total Bottleneck</span>
+<div class="flex items-baseline gap-2 mt-2">
+<span class="text-display-lg font-display-lg text-error">12</span>
+<span class="text-body-md text-on-surface-variant">tugas terhambat</span>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-slate-50 flex items-center text-error font-medium">
+<span class="material-symbols-outlined mr-1" data-icon="trending_up">trending_up</span>
+<span class="text-sm">+2 dari minggu lalu</span>
+</div>
+</div>
+<!-- Stat 2 -->
+<div class="bg-white p-6 rounded-xl shadow-[0_4px_12px_rgba(0,96,160,0.08)] border border-slate-100 flex flex-col justify-between">
+<div>
+<span class="text-label-lg text-on-surface-variant uppercase tracking-wider">Rata-rata Hari Stuck</span>
+<div class="flex items-baseline gap-2 mt-2">
+<span class="text-display-lg font-display-lg text-primary">5.4</span>
+<span class="text-body-md text-on-surface-variant">hari</span>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-slate-50 flex items-center text-primary font-medium">
+<span class="material-symbols-outlined mr-1" data-icon="schedule">schedule</span>
+<span class="text-sm">Butuh perhatian segera</span>
+</div>
+</div>
+<!-- Stat 3 (Task Highlight) -->
+<div class="bg-primary-container text-white p-6 rounded-xl shadow-lg border border-primary relative overflow-hidden">
+<div class="relative z-10">
+<span class="text-label-lg text-blue-100 uppercase tracking-wider">Tugas Tertua</span>
+<h3 class="font-title-lg text-title-lg mt-2 leading-tight">Integrasi Payment API Tahap 2</h3>
+<div class="flex items-center gap-2 mt-4 bg-white/20 w-fit px-3 py-1 rounded-full backdrop-blur-sm">
+<span class="material-symbols-outlined text-sm" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="font-bold">14 Hari Stuck</span>
+</div>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-white/10 rotate-12" data-icon="history">history</span>
+</div>
+</div>
+<!-- Heatmap Section -->
+<section class="mb-8">
+<div class="bg-white p-8 rounded-xl shadow-[0_4px_12px_rgba(0,96,160,0.08)] border border-slate-100">
+<h2 class="font-title-lg text-title-lg text-on-surface mb-6">Heatmap status × umur</h2>
+<div class="overflow-x-auto">
+<div class="min-w-[600px] grid grid-cols-[180px_1fr_1fr_1fr] gap-4">
+<!-- Header X -->
+<div></div>
+<div class="text-center pb-4 text-label-lg font-bold text-on-surface-variant">≤3d</div>
+<div class="text-center pb-4 text-label-lg font-bold text-on-surface-variant">4-7d</div>
+<div class="text-center pb-4 text-label-lg font-bold text-error border-l-2 border-error/10 bg-error/5 rounded-t-lg">&gt;7d</div>
+<!-- Row 1 -->
+<div class="flex items-center font-label-lg text-on-surface-variant font-medium">Belum mulai</div>
+<div class="bg-green-50 text-green-700 h-24 rounded-lg flex flex-col items-center justify-center border border-green-100">
+<span class="text-3xl font-mono font-bold italic">0</span>
+<span class="text-[10px] uppercase font-bold tracking-widest opacity-60">Lancar</span>
+</div>
+<div class="bg-amber-50 text-amber-700 h-24 rounded-lg flex flex-col items-center justify-center border border-amber-100">
+<span class="text-3xl font-mono font-bold italic">2</span>
+<span class="text-[10px] uppercase font-bold tracking-widest opacity-60">Peringatan</span>
+</div>
+<div class="bg-red-50 text-red-700 h-24 rounded-lg flex flex-col items-center justify-center border-l-2 border-red-500 border-t border-b border-r border-red-100">
+<span class="text-3xl font-mono font-bold italic">4</span>
+<span class="text-[10px] uppercase font-bold tracking-widest opacity-60">Urgent</span>
+</div>
+<!-- Row 2 -->
+<div class="flex items-center font-label-lg text-on-surface-variant font-medium">Sedang dikerjakan</div>
+<div class="bg-amber-50 text-amber-600 h-24 rounded-lg flex flex-col items-center justify-center border border-amber-100">
+<span class="text-3xl font-mono font-bold italic">2</span>
+<span class="text-[10px] uppercase font-bold tracking-widest opacity-60">Low</span>
+</div>
+<div class="bg-amber-600 text-white h-24 rounded-lg flex flex-col items-center justify-center shadow-inner">
+<span class="text-3xl font-mono font-bold italic">5</span>
+<span class="text-[10px] uppercase font-bold tracking-widest opacity-70">Moderate</span>
+</div>
+<div class="bg-red-600 text-white h-24 rounded-lg flex flex-col items-center justify-center border-l-2 border-white shadow-lg">
+<span class="text-3xl font-mono font-bold italic">6</span>
+<span class="text-[10px] uppercase font-bold tracking-widest opacity-70">Critical</span>
+</div>
+<!-- Row 3 -->
+<div class="flex items-center font-label-lg text-on-surface-variant font-medium">Cek ulang</div>
+<div class="bg-green-50 text-green-700 h-24 rounded-lg flex flex-col items-center justify-center border border-green-100">
+<span class="text-3xl font-mono font-bold italic">1</span>
+<span class="text-[10px] uppercase font-bold tracking-widest opacity-60">Lancar</span>
+</div>
+<div class="bg-amber-50 text-amber-700 h-24 rounded-lg flex flex-col items-center justify-center border border-amber-100">
+<span class="text-3xl font-mono font-bold italic">1</span>
+<span class="text-[10px] uppercase font-bold tracking-widest opacity-60">Peringatan</span>
+</div>
+<div class="bg-red-50 text-red-700 h-24 rounded-lg flex flex-col items-center justify-center border-l-2 border-red-500 border-t border-b border-r border-red-100">
+<span class="text-3xl font-mono font-bold italic">2</span>
+<span class="text-[10px] uppercase font-bold tracking-widest opacity-60">Urgent</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Table Section -->
+<section class="bg-white rounded-xl shadow-[0_4px_12px_rgba(0,96,160,0.08)] border border-slate-100 overflow-hidden">
+<div class="p-6 border-b border-slate-100 flex items-center justify-between">
+<h2 class="font-title-lg text-title-lg text-on-surface">Daftar tugas tertahan terlama</h2>
+<button class="text-primary font-label-lg flex items-center gap-1 hover:underline">
+                        Lihat Semua <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full border-collapse">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="text-left px-6 py-4 font-label-lg text-on-surface-variant">Judul Tugas &amp; Proyek</th>
+<th class="text-left px-6 py-4 font-label-lg text-on-surface-variant">Status</th>
+<th class="text-left px-6 py-4 font-label-lg text-on-surface-variant">Penanggung Jawab</th>
+<th class="text-center px-6 py-4 font-label-lg text-on-surface-variant">Hari Stuck</th>
+<th class="text-right px-6 py-4 font-label-lg text-on-surface-variant">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50 transition-colors">
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">Integrasi Payment API Tahap 2</span>
+<div class="mt-1 flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-700 uppercase">Proyek FinTech</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">Sedang dikerjakan</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<img alt="Budi Santoso" class="w-8 h-8 rounded-full" data-alt="A portrait of a male Indonesian software developer in his early 30s. He is wearing a clean casual button-down shirt, sitting in a contemporary bright office with indoor plants. The lighting is crisp and professional, reflecting a high-end startup environment with modern blue and grey tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAb7gqVXtrZraRPkoN5c1VEWnnu68uUoCwksVvOtK_iPSIv-XTSFXR44z40FqDbSxxsztIoGIu3aZOxMzKPlv30zoh2bk_HSc2Fp2yKyTG0t1OZ02jnPYTQbsgCyIynumlNJkjRwhYBxj1mS1cw--dceh1OpgD3RAgr_-2Q4VaoaK3wyByBtelElhDpQ8UOPEr3SRJPmLqEZEfIPHJdTzyM8U8WU1nXHQQzsIJgCcq9gyZKoOOv82IF9m4ur4O9qV0zyjcjNr6x-M94"/>
+<span class="text-body-md font-medium">Budi Santoso</span>
+</div>
+</td>
+<td class="px-6 py-5 text-center">
+<div class="inline-flex flex-col items-center">
+<span class="font-mono text-xl font-bold text-error">14</span>
+<span class="px-2 py-0.5 bg-error-container text-on-error-container text-[10px] font-bold rounded">KRITIS</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="bg-secondary-container text-on-secondary-container px-4 py-2 rounded-lg text-sm font-bold hover:brightness-95 transition-all">
+                                        Buka tugas
+                                    </button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50 transition-colors">
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">Finalisasi UI Dashboard Tim</span>
+<div class="mt-1 flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-700 uppercase">Revamp 2024</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700">Cek ulang</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<img alt="Siti Aminah" class="w-8 h-8 rounded-full" data-alt="A portrait of a young professional Indonesian woman wearing a modern hijab, smiling confidently at the camera. She is in a creative studio space with large windows and soft daylight. The environment is minimalist and high-end, featuring a color palette of soft whites and calm blues that suggest a professional design workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBuA1ZvnbhCt9VEF5zaO-hF8cKKQkpBTH0hywyWE-0jMHvJHdUwidfHBx8LxcUCq3MdxScOl1aRUNtny8NBrHMFzhoWrKGEFD0FNGvk9kwu7s2z_iLExieQtIGdXNXzfS0DZo5YtRafC4Q-KRyTtnwSfG6cUy89fP9YlxZP76m0ljS3ZWxGzVCl8xFX0PprCgFvSIir8qYwDYnhSoRxrJFhTFsr5TPJl3ZEoSzNvhBN_bJwuBHqsM9u330LCf2a1sEaCbUF4K5lEkC"/>
+<span class="text-body-md font-medium">Siti Aminah</span>
+</div>
+</td>
+<td class="px-6 py-5 text-center">
+<div class="inline-flex flex-col items-center">
+<span class="font-mono text-xl font-bold text-error">9</span>
+<span class="px-2 py-0.5 bg-error-container text-on-error-container text-[10px] font-bold rounded">KRITIS</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="bg-secondary-container text-on-secondary-container px-4 py-2 rounded-lg text-sm font-bold hover:brightness-95 transition-all">
+                                        Buka tugas
+                                    </button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50 transition-colors">
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">Audit Keamanan Database</span>
+<div class="mt-1 flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 uppercase">Core Infrastructure</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700">Belum mulai</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<img alt="Andi Wijaya" class="w-8 h-8 rounded-full" data-alt="A portrait of a mature male Indonesian technical lead in his late 30s. He is wearing smart corporate attire, standing against a high-tech server room background with subtle blue glowing lights. The mood is serious, professional, and secure, with professional lighting that highlights expertise and reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpa8hD0qcexBzdINj6WTsUZG6UsDOLf7kzCz0wyFZ-19e9iZ_0mmj-Xck9tYUhAmPEqyxZ6Vaadv6_Acz2uN78CR8EuOyOuSTfSCGPIRFWfQPHIw-iq5M4q0uk4nfWggjhW9IBy9NB_J-KNeVxh8V3PuTrjiqjdaSOQYay1Xc9rAdAvwokt0Pm3J2EbXOI4imIxZUlUUUp-YfUFxklaesqZgi8CyHF6KMYXVX5PngffpEahJIZxAdUO_3fs9gnK7BD9qviUzPeT_DZ"/>
+<span class="text-body-md font-medium">Andi Wijaya</span>
+</div>
+</td>
+<td class="px-6 py-5 text-center">
+<div class="inline-flex flex-col items-center">
+<span class="font-mono text-xl font-bold text-amber-600">6</span>
+<span class="px-2 py-0.5 bg-amber-100 text-amber-800 text-[10px] font-bold rounded">STUCK</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="bg-secondary-container text-on-secondary-container px-4 py-2 rounded-lg text-sm font-bold hover:brightness-95 transition-all">
+                                        Buka tugas
+                                    </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+<!-- FAB for Task Creation (Suppressed on this view per guidelines, but relevant for Dashboard/Home) -->
+<!-- Suppression logic: This is a detail/analysis screen, FAB is hidden to focus on investigation -->
+</body></html>
