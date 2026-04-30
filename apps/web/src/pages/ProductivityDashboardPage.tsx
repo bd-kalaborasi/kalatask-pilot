@@ -52,27 +52,7 @@ export function ProductivityDashboardPage() {
     periodDays,
   );
 
-  // Wait until profile resolved sebelum render redirect logic.
-  // (race kunci dashboards.spec.ts:89 Sprint 4.5 investigation)
-  if (authLoading || !profile) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-canvas">
-        <p className="text-sm text-muted-foreground">Memuat dashboard...</p>
-      </div>
-    );
-  }
-
-  if (profile.role === 'member') {
-    return <Navigate to="/" replace />;
-  }
-
-  function setPeriod(days: number) {
-    const next = new URLSearchParams(searchParams);
-    if (days === 30) next.delete('period');
-    else next.set('period', String(days));
-    setSearchParams(next);
-  }
-
+  // All hooks declared BEFORE early returns to honor React hooks rules.
   const topPerformers = useMemo(() => {
     if (!productivity) return [];
     return [...productivity.completion_rate_per_user]
@@ -102,6 +82,27 @@ export function ProductivityDashboardPage() {
     );
     return total / productivity.velocity_per_week.length;
   }, [productivity]);
+
+  // Wait until profile resolved sebelum render redirect logic.
+  // (race kunci dashboards.spec.ts:89 Sprint 4.5 investigation)
+  if (authLoading || !profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-canvas">
+        <p className="text-sm text-muted-foreground">Memuat dashboard...</p>
+      </div>
+    );
+  }
+
+  if (profile.role === 'member') {
+    return <Navigate to="/" replace />;
+  }
+
+  function setPeriod(days: number) {
+    const next = new URLSearchParams(searchParams);
+    if (days === 30) next.delete('period');
+    else next.set('period', String(days));
+    setSearchParams(next);
+  }
 
   return (
     <div className="min-h-screen bg-canvas animate-fade-in">

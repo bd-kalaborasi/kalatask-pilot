@@ -72,7 +72,7 @@ test.describe('F13 Productivity Dashboard permission', () => {
     await login(page, ADMIN);
     await page.goto('/dashboard/productivity');
     await expect(
-      page.getByRole('heading', { name: 'Productivity Dashboard' }),
+      page.getByRole('heading', { level: 1, name: /Productivity/ }),
     ).toBeVisible({ timeout: 15_000 });
   });
 
@@ -82,7 +82,7 @@ test.describe('F13 Productivity Dashboard permission', () => {
     await login(page, MAYA);
     await page.goto('/dashboard/productivity');
     await expect(
-      page.getByRole('heading', { name: 'Productivity Dashboard' }),
+      page.getByRole('heading', { level: 1, name: /Productivity/ }),
     ).toBeVisible({ timeout: 15_000 });
   });
 
@@ -103,8 +103,10 @@ test.describe('F13 Productivity Dashboard permission', () => {
     await login(page, ADMIN);
     await page.goto('/dashboard/productivity?period=90');
     await expect(page).toHaveURL(/period=90/);
+    // Sprint 6 patch: period toggle pills (Minggu/Bulan/Kuartal/6 Bulan)
+    // replace previous "Periode: X hari" caption. 90 days maps to "Kuartal".
     await expect(
-      page.getByText('Periode: 90 hari'),
+      page.getByRole('tab', { name: 'Kuartal', selected: true }),
     ).toBeVisible({ timeout: 15_000 });
   });
 });
@@ -114,7 +116,7 @@ test.describe('F5 Workload + F6 Bottleneck permission', () => {
     await login(page, SARI);
     await page.goto('/workload');
     await expect(
-      page.getByRole('heading', { name: 'Workload View' }),
+      page.getByRole('heading', { name: 'Workload Tim' }),
     ).toBeVisible({ timeout: 15_000 });
   });
 
@@ -122,7 +124,7 @@ test.describe('F5 Workload + F6 Bottleneck permission', () => {
     await login(page, ADMIN);
     await page.goto('/bottleneck');
     await expect(
-      page.getByRole('heading', { name: 'Bottleneck View' }),
+      page.getByRole('heading', { name: 'Bottleneck Tugas' }),
     ).toBeVisible({ timeout: 10_000 });
   });
 

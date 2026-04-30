@@ -87,16 +87,23 @@ export function ProjectsPage() {
   function toggleStatusPill(status: ProjectStatus | 'all') {
     if (status === 'all') {
       setFilter({ ...filter, statuses: [] });
-    } else {
-      const isCurrent = filter.statuses.includes(status);
-      setFilter({
-        ...filter,
-        statuses: isCurrent ? [] : [status],
-      });
+      return;
     }
+    const isCurrent = filter.statuses.includes(status);
+    const next = isCurrent
+      ? filter.statuses.filter((s) => s !== status)
+      : [...filter.statuses, status];
+    setFilter({ ...filter, statuses: next });
+  }
+
+  function resetFilter() {
+    setFilter(EMPTY_PROJECTS_FILTER);
   }
 
   const allActive = filter.statuses.length === 0;
+  const hasActiveFilter = filter.statuses.length > 0 || filter.teamId !== '';
+  const showTeamFilter =
+    profile.role === 'admin' || profile.role === 'viewer';
 
   return (
     <div className="min-h-screen bg-canvas animate-fade-in">
@@ -123,9 +130,9 @@ export function ProjectsPage() {
           )}
         </header>
 
-        {/* Status pill filter row + team selector */}
+        {/* Status pill filter row + team selector + Reset */}
         <section className="flex flex-col gap-4">
-          <div role="tablist" aria-label="Filter status proyek" className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <FilterPill
               active={allActive}
               label="Semua"
@@ -141,25 +148,45 @@ export function ProjectsPage() {
                 onClick={() => toggleStatusPill(status)}
               />
             ))}
+            {hasActiveFilter && (
+              <button
+                type="button"
+                onClick={resetFilter}
+                className="ml-auto text-label-md font-medium text-on-surface-variant hover:text-primary-container transition-colors px-3 py-1.5 rounded-full hover:bg-surface-container"
+              >
+                Reset filter
+              </button>
+            )}
           </div>
 
-          {/* Team filter — preserve existing dropdown if admin/viewer scope */}
-          {(profile.role === 'admin' || profile.role === 'viewer') && teams.length > 0 && (
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <select
-                value={filter.teamId}
-                onChange={(e) => setFilter({ ...filter, teamId: e.target.value })}
-                className="px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-kt-md text-label-lg text-on-surface-variant hover:bg-surface-container transition-colors"
-              >
-                <option value="">Semua tim</option>
-                {teams.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+          {/* Team filter — admin/viewer cross-team scope */}
+          <div className="flex flex-col md:flex-row md:items-center gap-3">
+            <label
+              htmlFor="filter-team"
+              className={
+                showTeamFilter
+                  ? 'text-label-md text-on-surface-variant'
+                  : 'sr-only'
+              }
+            >
+              Tim
+            </label>
+            <select
+              id="filter-team"
+              value={filter.teamId}
+              onChange={(e) => setFilter({ ...filter, teamId: e.target.value })}
+              hidden={!showTeamFilter}
+              className="px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-kt-md text-label-lg text-on-surface-variant hover:bg-surface-container transition-colors disabled:opacity-50"
+              disabled={!showTeamFilter}
+            >
+              <option value="">Semua tim</option>
+              {teams.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </section>
 
         {loading && (
@@ -272,8 +299,8 @@ interface FilterPillProps {
 function FilterPill({ active, label, count, onClick }: FilterPillProps) {
   return (
     <button
-      role="tab"
-      aria-selected={active}
+      type="button"
+      aria-pressed={active}
       onClick={onClick}
       className={
         active
@@ -281,8 +308,10 @@ function FilterPill({ active, label, count, onClick }: FilterPillProps) {
           : 'px-4 py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant text-label-lg flex items-center gap-2 transition-colors'
       }
     >
-      {label}
-      <span className={active ? 'font-bold' : 'opacity-60'}>{count}</span>
+      <span>{label}</span>
+      <span className={active ? 'font-bold' : 'opacity-60'} aria-hidden="true">
+        {count}
+      </span>
     </button>
   );
 }

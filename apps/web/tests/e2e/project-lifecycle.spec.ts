@@ -59,7 +59,7 @@ test.describe('F14 Project lifecycle — projects page render per role', () => {
     await page.goto('/projects');
 
     await expect(
-      page.getByRole('heading', { name: 'Projects' }),
+      page.getByRole('heading', { name: 'Proyek', exact: true }),
     ).toBeVisible();
 
     // Status filter chips visible (5 enum, refined Indonesian Sprint 6)
@@ -80,7 +80,7 @@ test.describe('F14 Project lifecycle — projects page render per role', () => {
     await page.goto('/projects');
 
     await expect(
-      page.getByRole('heading', { name: 'Projects' }),
+      page.getByRole('heading', { name: 'Proyek', exact: true }),
     ).toBeVisible();
 
     // Team filter HIDDEN untuk manager (RLS sudah team-scope, no need UI filter)
@@ -94,7 +94,7 @@ test.describe('F14 Project lifecycle — projects page render per role', () => {
     await page.goto('/projects');
 
     await expect(
-      page.getByRole('heading', { name: 'Projects' }),
+      page.getByRole('heading', { name: 'Proyek', exact: true }),
     ).toBeVisible();
     await expect(page.getByRole('button', { name: 'Aktif' })).toBeVisible();
     await expect(page.locator('#filter-team')).toBeHidden();
@@ -107,7 +107,7 @@ test.describe('F14 Project lifecycle — projects page render per role', () => {
     await page.goto('/projects');
 
     await expect(
-      page.getByRole('heading', { name: 'Projects' }),
+      page.getByRole('heading', { name: 'Proyek', exact: true }),
     ).toBeVisible();
 
     // Viewer = cross-team per ADR-002 → team filter visible

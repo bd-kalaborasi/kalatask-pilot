@@ -68,15 +68,16 @@ test.describe('Sprint 5 — F16 Usage dashboard access', () => {
   test('Admin /admin/usage renders 3 progress bar cards', async ({ page }) => {
     await login(page, ADMIN.email, ADMIN.password);
     await page.goto('/admin/usage');
-    await expect(page.getByRole('heading', { name: 'Usage Monitoring' })).toBeVisible({
-      timeout: 10000,
-    });
-    // 3 progress bar cards: Database, Storage, MAU
+    // Sprint 6 patch: heading "Usage Monitoring" → "Monitoring Penggunaan" (Stitch label)
+    await expect(
+      page.getByRole('heading', { name: 'Monitoring Penggunaan', exact: true }),
+    ).toBeVisible({ timeout: 10000 });
+    // 3 progress bar cards: Database, Penyimpanan (was Storage), MAU
     await expect(page.getByText('Database', { exact: true })).toBeVisible();
-    await expect(page.getByText('Storage', { exact: true })).toBeVisible();
+    await expect(page.getByText('Penyimpanan', { exact: true })).toBeVisible();
     await expect(page.getByText(/^MAU/i)).toBeVisible();
-    // Refresh button
-    await expect(page.getByRole('button', { name: /Refresh/ })).toBeVisible();
+    // Sprint 6 patch: Refresh button → "Segarkan"
+    await expect(page.getByRole('button', { name: /Segarkan|Refresh/ })).toBeVisible();
   });
 
   test('Member /admin/usage redirects to /', async ({ page }) => {

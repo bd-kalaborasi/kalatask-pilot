@@ -136,8 +136,9 @@ test.describe('S1: Login + Dashboard navigate per role', () => {
         page.getByRole('link', { name: 'Projects', exact: true }),
       ).toBeVisible();
 
-      // Buka Projects CTA berfungsi
-      await page.getByRole('link', { name: 'Buka Projects' }).click();
+      // Sprint 6 patch (Stitch dashboard): "Buka Projects" → "Lihat semua proyek"
+      // (Stitch HTML pattern matches Bahasa Indonesia voice)
+      await page.getByRole('link', { name: /Lihat semua proyek/i }).click();
       await expect(page).toHaveURL(/\/projects$/);
     });
   }
@@ -153,7 +154,8 @@ test.describe('S2: F14 project list page render per role', () => {
     await login(page, ADMIN);
     await page.goto('/projects');
 
-    await expect(page.getByRole('heading', { name: 'Projects' })).toBeVisible();
+    // Sprint 6 patch: heading "Projects" → "Proyek" (Stitch Bahasa Indonesia)
+    await expect(page.getByRole('heading', { name: 'Proyek', exact: true })).toBeVisible();
     for (const status of ['Perencanaan', 'Aktif', 'Ditahan', 'Selesai', 'Diarsipkan']) {
       await expect(page.getByRole('button', { name: status })).toBeVisible();
     }
@@ -483,8 +485,10 @@ test.describe('S9: Sprint 1 regression', () => {
   }) => {
     await login(page, ADMIN);
     await page.reload();
+    // Sprint 6 patch: dashboard heading "{fullName}" → "Selamat datang, {firstName}"
+    const firstName = ADMIN.fullName.split(' ')[0];
     await expect(
-      page.getByRole('heading', { name: new RegExp(ADMIN.fullName) }),
+      page.getByRole('heading', { name: new RegExp(`Selamat datang, ${firstName}`) }),
     ).toBeVisible({ timeout: 10_000 });
   });
 

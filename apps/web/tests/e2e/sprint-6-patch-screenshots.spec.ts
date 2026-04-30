@@ -22,32 +22,25 @@ async function login(page: Page) {
 }
 
 test.describe('Sprint 6 patch — comparison screenshots', () => {
-  test('01 /dashboard', async ({ page }) => {
-    await login(page);
-    await page.waitForLoadState('networkidle');
-    await page.screenshot({
-      path: `docs/sprint-6-patch-comparison/01-dashboard-${SUFFIX}.png`,
-      fullPage: true,
-    });
-  });
+  const ROUTES: Array<{ slug: string; path: string }> = [
+    { slug: '01-dashboard', path: '/' },
+    { slug: '02-projects', path: '/projects' },
+    { slug: '08-admin-usage', path: '/admin/usage' },
+    { slug: '09-workload', path: '/workload' },
+    { slug: '10-bottleneck', path: '/bottleneck' },
+    { slug: '11-productivity', path: '/dashboard/productivity' },
+    { slug: '14-manager-dashboard', path: '/dashboard/manager' },
+  ];
 
-  test('11 /dashboard/productivity', async ({ page }) => {
-    await login(page);
-    await page.goto('/dashboard/productivity');
-    await page.waitForLoadState('networkidle');
-    await page.screenshot({
-      path: `docs/sprint-6-patch-comparison/11-productivity-${SUFFIX}.png`,
-      fullPage: true,
+  for (const route of ROUTES) {
+    test(`${route.slug} ${route.path}`, async ({ page }) => {
+      await login(page);
+      if (route.path !== '/') await page.goto(route.path);
+      await page.waitForLoadState('networkidle');
+      await page.screenshot({
+        path: `docs/sprint-6-patch-comparison/${route.slug}-${SUFFIX}.png`,
+        fullPage: true,
+      });
     });
-  });
-
-  test('08 /admin/usage', async ({ page }) => {
-    await login(page);
-    await page.goto('/admin/usage');
-    await page.waitForLoadState('networkidle');
-    await page.screenshot({
-      path: `docs/sprint-6-patch-comparison/08-admin-usage-${SUFFIX}.png`,
-      fullPage: true,
-    });
-  });
+  }
 });
