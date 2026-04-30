@@ -146,25 +146,39 @@ export function AdminMoMReviewPage() {
   return (
     <div className="min-h-screen bg-canvas animate-fade-in">
       <AppHeader />
-      <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
-        <div className="flex items-center gap-2">
-          <Button asChild variant="ghost" size="sm">
-            <Link to="/admin/mom-import">← Balik ke Import MoM</Link>
-          </Button>
-        </div>
+      <main className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-8 space-y-6">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-body-sm">
+          <Link
+            to="/admin/mom-import"
+            className="text-on-surface-variant hover:text-primary-container transition-colors"
+          >
+            Import MoM
+          </Link>
+          <span className="text-on-surface-variant" aria-hidden="true">/</span>
+          <span className="text-on-surface font-medium truncate">
+            {parent.title || parent.file_name}
+          </span>
+        </nav>
 
-        <div>
-          <h2 className="text-headline font-semibold">{parent.title || parent.file_name}</h2>
-          <p className="text-sm text-muted-foreground mt-1 font-mono">
+        <header>
+          <h1 className="font-display text-headline-md text-on-surface">
+            {parent.title || parent.file_name}
+          </h1>
+          <p className="text-body-sm text-on-surface-variant mt-1 font-mono">
             {parent.file_name} · {parent.mom_date ?? '—'}
           </p>
-        </div>
+        </header>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Ringkasan resolusi</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <section className="bg-surface-container-lowest rounded-kt-lg shadow-brand-sm border border-outline-variant p-6">
+          <header className="mb-4">
+            <h2 className="font-display text-title-md font-bold text-on-surface">
+              Ringkasan resolusi
+            </h2>
+            <p className="text-body-sm text-on-surface-variant mt-1">
+              Confidence dari fuzzy match Plaud → user database.
+            </p>
+          </header>
+          <div className="space-y-4">
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
               <Stat label="Total" value={summary.total ?? 0} />
               <Stat label="HIGH" value={summary.high ?? 0} tone="success" />
@@ -174,7 +188,7 @@ export function AdminMoMReviewPage() {
             </div>
 
             {!isApproved && (summary.high ?? 0) > 0 && (
-              <div className="border-t pt-4">
+              <div className="border-t border-outline-variant pt-4">
                 <Button
                   size="lg"
                   onClick={() => {
@@ -202,8 +216,8 @@ export function AdminMoMReviewPage() {
                 </p>
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </section>
 
         {/* Filter tabs — Sprint 6-rev redesign per Stitch principle */}
         <div
