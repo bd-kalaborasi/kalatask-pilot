@@ -1,28 +1,21 @@
 /**
  * BottleneckPage — F6 Bottleneck View.
  *
- * Task stuck di status non-final (todo/in_progress/review) > X hari
- * tanpa update. X dari app_settings.bottleneck_threshold_days (default 3
- * per Q4 owner answer).
+ * Sprint 6 patch: structure adopted from Stitch v1 export
+ * (docs/stitch-html-export/10-bottleneck.html "Bottleneck Tugas").
  *
- * "Stuck" measurement: tasks.updated_at < now - X days (Q2 Sprint 3
- * Option A — defer activity_log accurate measurement Sprint 4+).
+ * Layout:
+ * - Header: display headline-md + threshold subtitle + measurement note
+ * - Severity summary cards (total stuck, critical >2x threshold, normal)
+ * - Bottleneck list panel
  *
- * Permission: Admin + Manager + Viewer (cross-management visibility).
- * Member redirect.
+ * Permission: Admin + Manager + Viewer (read-only management visibility).
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { TaskStatusBadge } from '@/components/task/TaskStatusBadge';
 import { TaskPriorityBadge } from '@/components/task/TaskPriorityBadge';
 import {
@@ -66,7 +59,15 @@ export function BottleneckPage() {
     };
   }, [profile]);
 
-  // Pattern Sprint 4 profile-resolved (Sprint 4.5 Step 0 housekeeping)
+  const stats = useMemo(() => {
+    const critical = tasks.filter((t) => daysSinceUpdate(t.updated_at) > threshold * 2).length;
+    return {
+      total: tasks.length,
+      critical,
+      warning: tasks.length - critical,
+    };
+  }, [tasks, threshold]);
+
   if (authLoading || !profile) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-canvas">
@@ -82,26 +83,26 @@ export function BottleneckPage() {
   return (
     <div className="min-h-screen bg-canvas animate-fade-in">
       <AppHeader />
-      <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
-        <div>
-          <h2 className="text-headline font-semibold">Bottleneck View</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Task non-final yang stuck &gt; {threshold} hari tanpa update
+      <main className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-8 space-y-6">
+        {/* Header */}
+        <header>
+          <h1 className="font-display text-headline-md text-on-surface">Bottleneck Tugas</h1>
+          <p className="text-body-md text-on-surface-variant mt-1">
+            Task non-final yang stuck &gt; {threshold} hari tanpa update.
           </p>
-          <p className="text-xs text-muted-foreground mt-1">
-            Threshold configurable di <code>app_settings.bottleneck_threshold_days</code>.
-            Measurement: <code>tasks.updated_at</code> (defer activity_log accurate
-            tracking Sprint 4+).
+          <p className="text-body-sm text-on-surface-variant/80 mt-1">
+            Threshold configurable di <code className="font-mono text-primary-container">app_settings.bottleneck_threshold_days</code>.
+            Measurement: <code className="font-mono">tasks.updated_at</code>.
           </p>
-        </div>
+        </header>
 
         {loading && (
-          <p className="text-sm text-muted-foreground">Memuat bottleneck...</p>
+          <p className="text-body-md text-on-surface-variant">Memuat bottleneck...</p>
         )}
 
         {error && (
-          <div className="border border-destructive/50 bg-destructive/10 rounded-md p-4">
-            <p className="text-sm text-destructive">{error.message}</p>
+          <div className="border border-feedback-danger/50 bg-feedback-danger-bg rounded-kt-md p-4">
+            <p className="text-body-md text-feedback-danger">{error.message}</p>
             <Button
               variant="outline"
               size="sm"
@@ -114,63 +115,85 @@ export function BottleneckPage() {
         )}
 
         {!loading && !error && (
-          <Card className={tasks.length > 0 ? 'border-l-4 border-l-red-500' : undefined}>
-            <CardHeader>
-              <CardTitle>
-                {tasks.length === 0
-                  ? 'Tidak ada bottleneck 🎉'
-                  : `${tasks.length} task stuck`}
-              </CardTitle>
-              {tasks.length > 0 && (
-                <CardDescription>
-                  Sorted by paling lama tidak update (top = critical)
-                </CardDescription>
-              )}
-            </CardHeader>
-            <CardContent>
+          <>
+            {/* Severity summary cards */}
+            <section
+              aria-label="Ringkasan bottleneck"
+              className="grid grid-cols-1 sm:grid-cols-3 gap-6"
+            >
+              <SeverityCard label="Total stuck" value={stats.total} tone="primary" />
+              <SeverityCard
+                label="Critical"
+                value={stats.critical}
+                tone="critical"
+                caption={stats.critical > 0 ? `> ${threshold * 2} hari stuck` : 'Tidak ada'}
+              />
+              <SeverityCard
+                label="Warning"
+                value={stats.warning}
+                tone="warning"
+                caption={stats.warning > 0 ? `> ${threshold} hari stuck` : 'Tidak ada'}
+              />
+            </section>
+
+            {/* Bottleneck list panel */}
+            <section
+              className={`bg-surface-container-lowest rounded-kt-lg shadow-brand-sm border border-outline-variant overflow-hidden ${
+                tasks.length > 0 ? 'border-l-4 border-l-feedback-danger' : ''
+              }`}
+            >
+              <header className="px-6 py-4 border-b border-outline-variant bg-surface-container-low/50">
+                <h2 className="font-display text-title-md font-bold text-on-surface">
+                  {tasks.length === 0 ? 'Tidak ada bottleneck 🎉' : `${tasks.length} task stuck`}
+                </h2>
+                {tasks.length > 0 && (
+                  <p className="text-body-sm text-on-surface-variant mt-1">
+                    Sorted by paling lama tidak update (top = critical).
+                  </p>
+                )}
+              </header>
               {tasks.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
-                  Semua task non-final ter-update dalam {threshold} hari terakhir.
-                  Bagus, no bottleneck.
-                </p>
+                <div className="p-8 text-center">
+                  <div
+                    className="w-20 h-20 mx-auto mb-4 bg-feedback-success-bg rounded-full flex items-center justify-center text-feedback-success text-4xl"
+                    aria-hidden="true"
+                  >
+                    ✓
+                  </div>
+                  <p className="text-body-md text-on-surface-variant max-w-md mx-auto">
+                    Semua task non-final ter-update dalam {threshold} hari terakhir.
+                    Bagus, no bottleneck.
+                  </p>
+                </div>
               ) : (
-                <ul className="divide-y">
+                <ul className="divide-y divide-outline-variant/60">
                   {tasks.map((t) => {
                     const stuckDays = daysSinceUpdate(t.updated_at);
+                    const isCritical = stuckDays > threshold * 2;
                     return (
                       <li
                         key={t.id}
-                        className="py-3 flex items-start gap-3 flex-wrap"
+                        className="px-6 py-4 flex items-start gap-3 flex-wrap hover:bg-surface-container-low/40 transition-colors"
                       >
-                        <div className="flex-1 min-w-[200px] space-y-1">
+                        <div className="flex-1 min-w-[220px] space-y-1">
                           <Link
                             to={`/projects/${t.project_id}`}
-                            className="font-medium hover:underline"
+                            className="text-label-lg font-medium text-on-surface hover:text-primary-container transition-colors hover:underline"
                           >
                             {t.title}
                           </Link>
-                          {t.assignee && (
-                            <p className="text-xs text-muted-foreground">
-                              {t.assignee.full_name}
-                              {t.deadline &&
-                                ` · deadline ${formatDateID(t.deadline)}`}
-                            </p>
-                          )}
-                          {!t.assignee && (
-                            <p className="text-xs text-muted-foreground italic">
-                              Unassigned
-                              {t.deadline &&
-                                ` · deadline ${formatDateID(t.deadline)}`}
-                            </p>
-                          )}
+                          <p className="text-body-sm text-on-surface-variant">
+                            {t.assignee?.full_name ?? <span className="italic">Unassigned</span>}
+                            {t.deadline && ` · deadline ${formatDateID(t.deadline)}`}
+                          </p>
                         </div>
                         <TaskStatusBadge status={t.status} />
                         <TaskPriorityBadge priority={t.priority} />
                         <span
                           className={
-                            stuckDays > threshold * 2
-                              ? 'text-xs px-2 py-0.5 rounded-full bg-feedback-danger-bg text-feedback-danger font-mono'
-                              : 'text-xs px-2 py-0.5 rounded-full bg-feedback-warning-bg text-feedback-warning font-mono'
+                            isCritical
+                              ? 'text-label-md px-3 py-1 rounded-full bg-feedback-danger-bg text-feedback-danger font-mono font-bold'
+                              : 'text-label-md px-3 py-1 rounded-full bg-feedback-warning-bg text-feedback-warning font-mono font-bold'
                           }
                         >
                           {stuckDays} hari stuck
@@ -180,10 +203,39 @@ export function BottleneckPage() {
                   })}
                 </ul>
               )}
-            </CardContent>
-          </Card>
+            </section>
+          </>
         )}
       </main>
+    </div>
+  );
+}
+
+interface SeverityCardProps {
+  label: string;
+  value: number;
+  tone: 'primary' | 'critical' | 'warning';
+  caption?: string;
+}
+
+function SeverityCard({ label, value, tone, caption }: SeverityCardProps) {
+  const valueColor = {
+    primary: 'text-primary-container',
+    critical: 'text-feedback-danger',
+    warning: 'text-feedback-warning',
+  }[tone];
+
+  return (
+    <div className="bg-surface-container-lowest p-6 rounded-kt-lg shadow-brand-sm border border-outline-variant">
+      <p className="text-label-md font-bold uppercase tracking-widest text-on-surface-variant mb-2">
+        {label}
+      </p>
+      <p className={`font-display text-display-sm leading-tight tabular-nums ${valueColor} mb-1`}>
+        {value}
+      </p>
+      {caption && (
+        <p className="text-body-sm text-on-surface-variant">{caption}</p>
+      )}
     </div>
   );
 }
