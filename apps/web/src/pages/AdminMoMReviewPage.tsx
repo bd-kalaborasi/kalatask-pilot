@@ -120,7 +120,7 @@ export function AdminMoMReviewPage() {
 
   if (!parent) {
     return (
-      <div className="min-h-screen bg-canvas">
+      <div className="min-h-screen bg-canvas animate-fade-in">
         <AppHeader />
         <main className="max-w-dashboard mx-auto px-6 py-8">
           <p className="text-sm text-destructive">MoM tidak ditemukan.</p>
@@ -144,7 +144,7 @@ export function AdminMoMReviewPage() {
   ).filter((conf) => groups[conf].length > 0);
 
   return (
-    <div className="min-h-screen bg-canvas">
+    <div className="min-h-screen bg-canvas animate-fade-in">
       <AppHeader />
       <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
         <div className="flex items-center gap-2">

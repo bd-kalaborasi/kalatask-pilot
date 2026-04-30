@@ -154,7 +154,7 @@ export function ProjectDetailPage() {
   if (!profile) return null;
 
   return (
-    <div className="min-h-screen bg-canvas">
+    <div className="min-h-screen bg-canvas animate-fade-in">
       <AppHeader />
       <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
         <Button asChild variant="ghost" size="sm">

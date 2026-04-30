@@ -27,7 +27,8 @@ export function ToastContainer() {
           key={t.id}
           role="alert"
           className={cn(
-            'border rounded-md px-3 py-2 text-sm shadow-brand-md flex items-start gap-2 kt-slide-up',
+            // v2.2: rounded-kt-md + animate-fade-up (300ms ease-out per spec §6.3 toast)
+            'border rounded-kt-md px-3 py-2 text-sm shadow-brand-md flex items-start gap-2 animate-fade-up',
             TONE_CLASS[t.tone],
           )}
         >
