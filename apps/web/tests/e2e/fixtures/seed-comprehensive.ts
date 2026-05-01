@@ -47,6 +47,37 @@ interface SeedSummary {
   durationMs: number;
 }
 
+/**
+ * R3 RUN STATUS:
+ * - MCP Supabase service is read-only in this session (cannot apply migrations
+ *   or execute INSERT via MCP). DB writes blocked at MCP layer.
+ * - Local credentials available: only VITE_SUPABASE_ANON_KEY (RLS-restricted),
+ *   no SUPABASE_SERVICE_ROLE_KEY in any .env file.
+ * - Net effect: factory NOT executed against live DB this round.
+ * - Owner action: provide SERVICE_ROLE_KEY (Supabase Settings > API), then:
+ *   `SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... \
+ *    npx tsx apps/web/tests/e2e/fixtures/seed-comprehensive.ts`
+ *
+ * Existing Supabase data (verified via mcp__supabase__execute_sql SELECT):
+ * - 31 users (4 fixture + 27 production-like seed)
+ * - 2 teams (aaaa, bbbb)
+ * - 4 projects, 23 tasks, 32 comments, 12 notifications, 0 mom_imports
+ *
+ * Brief targets (this round):
+ * - 24 test users (existing 4 keep + 20 new — script ready, write blocked)
+ * - 4 teams (existing 2 keep + 2 new)
+ * - 8 projects (existing 4 keep + 4 new)
+ * - 120 tasks (existing 23 keep + ~97 new)
+ * - 300 comments (existing 32 keep + ~268 new)
+ * - 50 notifications (existing 12 keep + ~38 new)
+ * - 3 MoM imports (existing 0 + 3 new)
+ *
+ * Existing E2E suite (174 passing) operates on existing fixture data; brief
+ * 24-user / 120-task targets are for richer visualization, not blocking
+ * E2E. New R3 specs are designed to work on existing data and adapt
+ * gracefully if seed factory executed later.
+ */
+
 // ============================================================
 // Deterministic UUIDs for repeatability
 // ============================================================
@@ -106,19 +137,20 @@ interface ProjectSeed {
 }
 
 const PROJECTS: ProjectSeed[] = [
-  // 4 active dengan progress beragam
-  { id: '10000000-0000-0000-0000-000000000001', name: 'Modernize Dashboard UX', description: 'Refresh visual identity per BRAND.md v2.x. Adopt Stitch v1 + token consolidation.', owner_id: USERS[0].id, status: 'active', completionRatio: 0.10, taskCount: 12 },
-  { id: '10000000-0000-0000-0000-000000000002', name: 'Sales Q2 Pipeline', description: 'Onboard 5 enterprise clients dengan automated proposal workflow.', owner_id: USERS[1].id, status: 'active', completionRatio: 0.35, taskCount: 18 },
-  { id: '10000000-0000-0000-0000-000000000003', name: 'Mobile App MVP', description: 'iOS + Android shell, sync API, push notifications.', owner_id: USERS[2].id, status: 'active', completionRatio: 0.60, taskCount: 16 },
-  { id: '10000000-0000-0000-0000-000000000004', name: 'Compliance Audit 2026', description: 'GDPR + ISO 27001 readiness assessment, gap closure.', owner_id: USERS[3].id, status: 'active', completionRatio: 0.90, taskCount: 14 },
+  // 4 active dengan progress beragam — taskCount totals 120 per brief
+  { id: '10000000-0000-0000-0000-000000000001', name: 'Modernize Dashboard UX', description: 'Refresh visual identity per BRAND.md v2.x. Adopt Stitch v1 + token consolidation.', owner_id: USERS[0].id, status: 'active', completionRatio: 0.10, taskCount: 18 },
+  { id: '10000000-0000-0000-0000-000000000002', name: 'Sales Q2 Pipeline', description: 'Onboard 5 enterprise clients dengan automated proposal workflow.', owner_id: USERS[1].id, status: 'active', completionRatio: 0.35, taskCount: 22 },
+  { id: '10000000-0000-0000-0000-000000000003', name: 'Mobile App MVP', description: 'iOS + Android shell, sync API, push notifications.', owner_id: USERS[2].id, status: 'active', completionRatio: 0.60, taskCount: 20 },
+  { id: '10000000-0000-0000-0000-000000000004', name: 'Compliance Audit 2026', description: 'GDPR + ISO 27001 readiness assessment, gap closure.', owner_id: USERS[3].id, status: 'active', completionRatio: 0.90, taskCount: 18 },
   // 2 completed
-  { id: '10000000-0000-0000-0000-000000000005', name: 'Q1 Marketing Campaign', description: 'Brand awareness lift via paid + organic, target 30% lift.', owner_id: USERS[1].id, status: 'completed', completionRatio: 1.0, taskCount: 10 },
-  { id: '10000000-0000-0000-0000-000000000006', name: 'Office Move HQ → Sudirman', description: 'Logistics + IT migration + new lease ops.', owner_id: USERS[0].id, status: 'completed', completionRatio: 1.0, taskCount: 8 },
+  { id: '10000000-0000-0000-0000-000000000005', name: 'Q1 Marketing Campaign', description: 'Brand awareness lift via paid + organic, target 30% lift.', owner_id: USERS[1].id, status: 'completed', completionRatio: 1.0, taskCount: 16 },
+  { id: '10000000-0000-0000-0000-000000000006', name: 'Office Move HQ → Sudirman', description: 'Logistics + IT migration + new lease ops.', owner_id: USERS[0].id, status: 'completed', completionRatio: 1.0, taskCount: 14 },
   // 1 archived
-  { id: '10000000-0000-0000-0000-000000000007', name: 'Legacy Tool Sunset', description: 'Decommission old time-tracker, migrate users to new app.', owner_id: USERS[0].id, status: 'archived', completionRatio: 1.0, taskCount: 6 },
+  { id: '10000000-0000-0000-0000-000000000007', name: 'Legacy Tool Sunset', description: 'Decommission old time-tracker, migrate users to new app.', owner_id: USERS[0].id, status: 'archived', completionRatio: 1.0, taskCount: 12 },
   // 1 just created (no tasks)
   { id: '10000000-0000-0000-0000-000000000008', name: 'Performance Review System', description: 'Build internal performance feedback workflow Q3.', owner_id: USERS[2].id, status: 'planning', completionRatio: 0, taskCount: 0 },
 ];
+// Total tasks across projects: 18+22+20+18+16+14+12+0 = 120 (matches brief target)
 
 const STATUS_DIST: Array<{ status: string; weight: number }> = [
   { status: 'todo', weight: 0.30 },
@@ -231,32 +263,128 @@ async function runSeed(config: SeedConfig): Promise<SeedSummary> {
     if (res.error) throw res.error;
   }
 
-  // 5. Comments — sample 5-10 per task on a subset
-  console.log('[seed] Generating comments...');
-  const sampleTasks = allTasks.filter(() => Math.random() < 0.4);
+  // 5. Comments — target 300 (brief). Distribute 2-4 per task across all 120 tasks.
+  console.log('[seed] Generating comments target 300...');
   const comments: Array<Record<string, unknown>> = [];
   let commentIdx = 0;
-  for (const task of sampleTasks) {
-    const count = Math.floor(Math.random() * 6) + 1;
-    for (let c = 0; c < count; c++) {
-      const author = USERS[Math.floor(Math.random() * USERS.length)];
-      const daysAgo = Math.floor(Math.random() * 30);
-      const ts = new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000).toISOString();
-      comments.push({
-        id: `30000000-0000-0000-0000-${(commentIdx++).toString(16).padStart(12, '0')}`,
-        task_id: task.id,
-        user_id: author.id,
-        body: c === 0
-          ? `Update progress: working on this. ETA besok.`
-          : `@${USERS[(Math.floor(Math.random() * USERS.length))].full_name.split(' ')[0]} bisa cek bagian ini? Need input.`,
-        created_at: ts,
-      });
-    }
+  const COMMENT_TARGET = 300;
+  let i = 0;
+  while (comments.length < COMMENT_TARGET && i < allTasks.length * 5) {
+    const task = allTasks[i % allTasks.length];
+    const author = USERS[Math.floor(Math.random() * USERS.length)];
+    const mention = USERS[Math.floor(Math.random() * USERS.length)];
+    const daysAgo = Math.floor(Math.random() * 30);
+    const ts = new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000).toISOString();
+    const isQuestion = Math.random() < 0.3;
+    const body = isQuestion
+      ? `@${mention.full_name.split(' ')[0]} bisa cek progress di bagian ini? ETA kapan?`
+      : commentIdx % 4 === 0
+        ? 'Done bagian ini, lanjut ke milestone berikutnya.'
+        : commentIdx % 4 === 1
+          ? 'Need input dari tim sebelum lanjut.'
+          : commentIdx % 4 === 2
+            ? 'Update progress: 60% selesai, ETA besok pagi.'
+            : `Reviewed by @${mention.full_name.split(' ')[0]}, looks good.`;
+    comments.push({
+      id: `30000000-0000-0000-0000-${commentIdx.toString(16).padStart(12, '0')}`,
+      task_id: task.id,
+      user_id: author.id,
+      body,
+      created_at: ts,
+    });
+    commentIdx++;
+    i++;
   }
   console.log(`[seed] Inserting ${comments.length} comments...`);
-  for (let i = 0; i < comments.length; i += chunkSize) {
-    const chunk = comments.slice(i, i + chunkSize);
+  for (let j = 0; j < comments.length; j += chunkSize) {
+    const chunk = comments.slice(j, j + chunkSize);
     const res = await supabase.from('comments').upsert(chunk);
+    if (res.error) throw res.error;
+  }
+
+  // 6. Notifications — target 50 (brief).
+  // Mix: mention (40%), assignment (30%), status_change (20%), comment_reply (10%)
+  console.log('[seed] Generating 50 notifications...');
+  const notifications: Array<Record<string, unknown>> = [];
+  const NOTIF_TYPES = [
+    { type: 'mention', weight: 0.4 },
+    { type: 'assignment', weight: 0.3 },
+    { type: 'status_change', weight: 0.2 },
+    { type: 'comment_reply', weight: 0.1 },
+  ];
+  for (let n = 0; n < 50; n++) {
+    const recipient = USERS[Math.floor(Math.random() * USERS.length)];
+    const sourceTask = allTasks[Math.floor(Math.random() * allTasks.length)];
+    const type = pickWeighted(NOTIF_TYPES).type;
+    const isRead = Math.random() < 0.3;
+    const daysAgo = Math.floor(Math.random() * 14);
+    const ts = new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000).toISOString();
+    const message =
+      type === 'mention'
+        ? `${USERS[Math.floor(Math.random() * USERS.length)].full_name} men-mention kamu di task "${(sourceTask as { title: string }).title.slice(0, 32)}"`
+        : type === 'assignment'
+          ? `Kamu di-assign ke task baru: "${(sourceTask as { title: string }).title.slice(0, 40)}"`
+          : type === 'status_change'
+            ? `Task "${(sourceTask as { title: string }).title.slice(0, 32)}" pindah ke ${pickWeighted(STATUS_DIST).status}`
+            : `Reply baru di komen kamu: task "${(sourceTask as { title: string }).title.slice(0, 32)}"`;
+    notifications.push({
+      id: `40000000-0000-0000-0000-${n.toString(16).padStart(12, '0')}`,
+      user_id: recipient.id,
+      type,
+      payload: {
+        task_id: (sourceTask as { id: string }).id,
+        message,
+      },
+      read_at: isRead ? new Date(Date.now() - (daysAgo - 1) * 24 * 60 * 60 * 1000).toISOString() : null,
+      created_at: ts,
+    });
+  }
+  console.log(`[seed] Inserting ${notifications.length} notifications...`);
+  for (let k = 0; k < notifications.length; k += chunkSize) {
+    const chunk = notifications.slice(k, k + chunkSize);
+    const res = await supabase.from('notifications').upsert(chunk);
+    if (res.error) throw res.error;
+  }
+
+  // 7. MoM imports — target 3 (brief). Mix pending_review, approved, rejected.
+  console.log('[seed] Generating 3 MoM imports...');
+  const momImports = [
+    {
+      id: '50000000-0000-0000-0000-000000000001',
+      file_name: 'mom-2026-04-23-product-sync.md',
+      mom_date: '2026-04-23',
+      title: 'Product Sync Q2 Planning',
+      raw_markdown: '# Product Sync — 2026-04-23\n\n## Action Items\n- [ ] @Sari finalize Q2 roadmap (ETA besok)\n- [ ] @Reza review Mobile MVP wireframe\n- [ ] @Lina coordinate vendor onboarding',
+      parse_summary: { total: 3, high: 2, medium: 1, low: 0, unresolved: 0 },
+      approval_status: 'approved',
+      uploaded_by: USERS[0].id,
+      created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    {
+      id: '50000000-0000-0000-0000-000000000002',
+      file_name: 'mom-2026-04-25-sales-strategy.md',
+      mom_date: '2026-04-25',
+      title: 'Sales Strategy Q2',
+      raw_markdown: '# Sales Strategy Q2\n\n## Action Items\n- [ ] @Reza prep enterprise pitch deck\n- [ ] @Bayu schedule demo dengan client A\n- [ ] @Citra benchmark competitor',
+      parse_summary: { total: 3, high: 1, medium: 2, low: 0, unresolved: 0 },
+      approval_status: 'pending_review',
+      uploaded_by: USERS[0].id,
+      created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    {
+      id: '50000000-0000-0000-0000-000000000003',
+      file_name: 'mom-2026-04-20-rejected-test.md',
+      mom_date: '2026-04-20',
+      title: 'Test rejected MoM',
+      raw_markdown: '# Test\n\nThis MoM was rejected for incomplete action items.',
+      parse_summary: { total: 1, high: 0, medium: 0, low: 0, unresolved: 1 },
+      approval_status: 'rejected',
+      uploaded_by: USERS[0].id,
+      created_at: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+  ];
+  for (const mom of momImports) {
+    const res = await supabase.from('mom_imports').upsert(mom);
     if (res.error) throw res.error;
   }
 
@@ -267,8 +395,8 @@ async function runSeed(config: SeedConfig): Promise<SeedSummary> {
     projectsInserted: PROJECTS.length,
     tasksInserted: allTasks.length,
     commentsInserted: comments.length,
-    notificationsInserted: 0, // requires notif schema, deferred
-    momImportsInserted: 0, // requires mom_imports schema with valid raw_markdown, deferred
+    notificationsInserted: notifications.length,
+    momImportsInserted: momImports.length,
     durationMs,
   };
 }
