@@ -29,17 +29,18 @@ async function login(page: Page, email: string, password: string) {
 }
 
 test.describe('Sprint 5 — F9 MoM Import access', () => {
-  test('Admin sees Import Notulensi nav link', async ({ page }) => {
+  test('Admin sees Import nav link (unified MoM + CSV)', async ({ page }) => {
+    // Sprint 6 patch r2 Phase B: nav unified to single "Import" link
     await login(page, ADMIN.email, ADMIN.password);
     await expect(
-      page.getByRole('link', { name: /Import Notulensi/i }),
+      page.getByRole('link', { name: 'Import', exact: true }),
     ).toBeVisible();
   });
 
-  test('Member doesnt see Import Notulensi nav link', async ({ page }) => {
+  test('Member doesnt see Import nav link', async ({ page }) => {
     await login(page, ANDI.email, ANDI.password);
     await expect(
-      page.getByRole('link', { name: /Import Notulensi/i }),
+      page.getByRole('link', { name: 'Import', exact: true }),
     ).toBeHidden();
   });
 

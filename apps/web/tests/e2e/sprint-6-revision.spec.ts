@@ -89,15 +89,15 @@ test.describe('Issue 1 — Create Project + Create Task CTAs', () => {
 // Issue 2: Import labeling
 // ============================================================
 test.describe('Issue 2 — Import MoM vs CSV labeling', () => {
-  test('admin: sidebar shows Import Notulensi + Import Tugas (CSV)', async ({
+  test('admin: sidebar shows unified Import nav (R2 Phase B)', async ({
     page,
   }) => {
+    // Sprint 6 patch r2 Phase B: 2 nav entries (Import Notulensi +
+    // Import Tugas CSV) consolidated into single "Import" link.
+    // Both functions reachable via tab nav at /admin/import.
     await login(page, ADMIN);
     await expect(
-      page.getByRole('link', { name: /Import Notulensi/i }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole('link', { name: /Import Tugas \(CSV\)/i }),
+      page.getByRole('link', { name: 'Import', exact: true }),
     ).toBeVisible();
   });
 

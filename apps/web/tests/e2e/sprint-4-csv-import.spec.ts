@@ -41,17 +41,19 @@ async function dismissWizardIfVisible(page: Page) {
 }
 
 test.describe('Sprint 4 — CSV Import admin-only', () => {
-  test('Admin sees Import Tugas (CSV) nav link', async ({ page }) => {
+  test('Admin sees Import nav link (unified MoM + CSV)', async ({ page }) => {
+    // Sprint 6 patch r2 Phase B: "Import Tugas (CSV)" + "Import Notulensi"
+    // unified into single "Import" entry → /admin/import with tab nav
     await login(page, ADMIN.email, ADMIN.password);
     await expect(
-      page.getByRole('link', { name: /Import Tugas \(CSV\)/i }),
+      page.getByRole('link', { name: 'Import', exact: true }),
     ).toBeVisible();
   });
 
-  test('Member does not see Import Tugas (CSV) nav link', async ({ page }) => {
+  test('Member does not see Import nav link', async ({ page }) => {
     await login(page, MEMBER.email, MEMBER.password);
     await expect(
-      page.getByRole('link', { name: /Import Tugas \(CSV\)/i }),
+      page.getByRole('link', { name: 'Import', exact: true }),
     ).toBeHidden();
   });
 
