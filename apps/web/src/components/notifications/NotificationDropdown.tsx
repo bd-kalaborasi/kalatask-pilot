@@ -19,6 +19,7 @@ import { cn } from '@/lib/utils';
 import { useNotifications } from '@/hooks/useNotifications';
 import { formatRelativeTimeID } from '@/lib/formatRelativeTime';
 import { notifTier, type NotificationRow } from '@/lib/notifications';
+import { fetchTaskById } from '@/lib/tasks';
 
 const TIER_DOT_CLASS: Record<ReturnType<typeof notifTier>, string> = {
   normal:   'bg-feedback-info',
@@ -64,9 +65,17 @@ export function NotificationDropdown() {
     }
     setOpen(false);
     if (notif.task_id) {
-      // Find project_id via task — fetch lazy via supabase. For pilot,
-      // simpler navigate ke /projects (user can navigate from there).
-      // TODO Sprint 4: deeplink ke /projects/<project_id>?task=<task_id>
+      // Sprint 6 patch r3: deeplink to task detail. Resolve project_id via
+      // task fetch (RLS-aware). Fallback to /projects if task not accessible.
+      try {
+        const task = await fetchTaskById(notif.task_id);
+        if (task && task.project_id) {
+          navigate(`/projects/${task.project_id}/tasks/${task.id}`);
+          return;
+        }
+      } catch {
+        // fall through
+      }
       navigate('/projects');
     }
   }

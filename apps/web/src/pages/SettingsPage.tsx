@@ -193,12 +193,47 @@ interface ProfileSectionProps {
 }
 
 function ProfileSection({ profile }: ProfileSectionProps) {
+  const [editing, setEditing] = useState(false);
+  const [fullName, setFullName] = useState(profile.full_name);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [savedAt, setSavedAt] = useState<Date | null>(null);
+
+  async function handleSave() {
+    setSaving(true);
+    setError(null);
+    const trimmed = fullName.trim();
+    if (trimmed.length < 2) {
+      setError('Nama minimal 2 karakter');
+      setSaving(false);
+      return;
+    }
+    const { error: err } = await supabase
+      .from('users')
+      .update({ full_name: trimmed })
+      .eq('id', profile.id);
+    if (err) {
+      setError(err.message);
+      setSaving(false);
+      return;
+    }
+    setSavedAt(new Date());
+    setEditing(false);
+    setSaving(false);
+  }
+
+  function handleCancel() {
+    setFullName(profile.full_name);
+    setError(null);
+    setEditing(false);
+  }
+
   return (
     <section className="space-y-6">
       <header>
         <h1 className="font-display text-headline-md text-on-surface">Profile</h1>
         <p className="text-body-md text-on-surface-variant mt-1">
-          Identitas akun kamu di KalaTask. Perubahan email/password lewat admin.
+          Identitas akun kamu di KalaTask. Email + password ubahnya lewat admin.
         </p>
       </header>
 
@@ -208,17 +243,55 @@ function ProfileSection({ profile }: ProfileSectionProps) {
             className="w-16 h-16 rounded-full bg-primary-container/15 flex items-center justify-center text-2xl font-bold text-primary-container"
             aria-hidden="true"
           >
-            {profile.full_name?.charAt(0).toUpperCase() || '?'}
+            {fullName?.charAt(0).toUpperCase() || '?'}
           </div>
-          <div>
-            <p className="text-title-md font-semibold text-on-surface">
-              {profile.full_name}
-            </p>
-            <p className="text-body-sm text-on-surface-variant font-mono">
-              {profile.email ?? '—'}
-            </p>
+          <div className="flex-1">
+            {editing ? (
+              <div className="space-y-2">
+                <label htmlFor="profile-name" className="sr-only">Nama lengkap</label>
+                <input
+                  id="profile-name"
+                  type="text"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  className="w-full px-3 py-2 border border-outline-variant rounded-kt-md text-body-md focus:ring-2 focus:ring-primary-container/30 focus:border-primary-container"
+                  disabled={saving}
+                  maxLength={120}
+                />
+                {error && (
+                  <p className="text-body-sm text-feedback-danger">{error}</p>
+                )}
+                <div className="flex gap-2">
+                  <Button onClick={handleSave} disabled={saving} variant="brand" size="sm">
+                    {saving ? 'Menyimpan...' : 'Simpan'}
+                  </Button>
+                  <Button onClick={handleCancel} disabled={saving} variant="outline" size="sm">
+                    Batal
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <p className="text-title-md font-semibold text-on-surface">{fullName}</p>
+                <p className="text-body-sm text-on-surface-variant font-mono">
+                  {profile.email ?? '—'}
+                </p>
+              </>
+            )}
           </div>
+          {!editing && (
+            <Button onClick={() => setEditing(true)} variant="outline" size="sm">
+              Edit nama
+            </Button>
+          )}
         </div>
+
+        {savedAt && !editing && (
+          <p className="text-body-sm text-feedback-success">
+            ✓ Tersimpan {savedAt.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}.
+            Refresh halaman untuk lihat perubahan di header.
+          </p>
+        )}
 
         <div className="grid sm:grid-cols-2 gap-4 pt-4 border-t border-outline-variant">
           <Field label="Role" value={ROLE_LABEL[profile.role]} />
@@ -228,7 +301,7 @@ function ProfileSection({ profile }: ProfileSectionProps) {
 
       <div className="bg-surface-container-low p-4 rounded-kt-md border border-outline-variant">
         <p className="text-body-sm text-on-surface-variant">
-          ℹ️ Edit profile + ubah password belum tersedia di MVP pilot. Hubungi admin untuk perubahan.
+          ℹ️ Email + password ubahnya lewat admin (security review). Nama bisa diubah langsung.
         </p>
       </div>
     </section>
