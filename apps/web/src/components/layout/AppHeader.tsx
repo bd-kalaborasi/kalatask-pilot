@@ -64,6 +64,19 @@ export function AppHeader() {
           >
             Projects
           </NavLink>
+          <NavLink
+            to="/tasks"
+            className={({ isActive }) =>
+              cn(
+                'px-3 py-1.5 rounded-md transition-colors',
+                isActive
+                  ? 'bg-accent text-accent-foreground font-medium'
+                  : 'text-muted-foreground hover:text-foreground',
+              )
+            }
+          >
+            Tugas Saya
+          </NavLink>
           {profile && (profile.role === 'admin' || profile.role === 'manager') && (
             <NavLink
               to="/dashboard/manager"
@@ -82,8 +95,8 @@ export function AppHeader() {
           {profile?.role === 'admin' && (
             <>
               <NavLink
-                to="/admin/mom-import"
-                title="Convert action items dari notulensi rapat (Plaud) jadi tugas otomatis"
+                to="/admin/import"
+                title="Upload notulensi rapat (MoM) atau bulk-create tugas dari CSV"
                 className={({ isActive }) =>
                   cn(
                     'px-3 py-1.5 rounded-md transition-colors',
@@ -93,21 +106,7 @@ export function AppHeader() {
                   )
                 }
               >
-                Import Notulensi
-              </NavLink>
-              <NavLink
-                to="/admin/csv-import"
-                title="Bulk-create tugas dari spreadsheet (.csv)"
-                className={({ isActive }) =>
-                  cn(
-                    'px-3 py-1.5 rounded-md transition-colors',
-                    isActive
-                      ? 'bg-accent text-accent-foreground font-medium'
-                      : 'text-muted-foreground hover:text-foreground',
-                  )
-                }
-              >
-                Import Tugas (CSV)
+                Import
               </NavLink>
               <NavLink
                 to="/admin/usage"
@@ -124,6 +123,19 @@ export function AppHeader() {
               </NavLink>
             </>
           )}
+          <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              cn(
+                'px-3 py-1.5 rounded-md transition-colors',
+                isActive
+                  ? 'bg-accent text-accent-foreground font-medium'
+                  : 'text-muted-foreground hover:text-foreground',
+              )
+            }
+          >
+            Pengaturan
+          </NavLink>
         </nav>
 
         <div className="flex items-center gap-2 flex-shrink-0">

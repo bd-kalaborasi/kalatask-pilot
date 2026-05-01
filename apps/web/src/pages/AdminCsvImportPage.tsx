@@ -62,7 +62,13 @@ interface ServerResponse {
   rows: ServerRowResult[];
 }
 
-export function AdminCsvImportPage() {
+interface AdminCsvImportPageProps {
+  /** Sprint 6 patch r2: when true, skip AppHeader + min-h-screen wrap.
+   *  Used by /admin/import wrapper page (Phase B). */
+  embedded?: boolean;
+}
+
+export function AdminCsvImportPage({ embedded = false }: AdminCsvImportPageProps = {}) {
   const { profile, loading: authLoading } = useAuth();
   const { showToast } = useToast();
   const [phase, setPhase] = useState<Phase>('idle');
@@ -198,10 +204,9 @@ export function AdminCsvImportPage() {
 
   const previewRows = validations.slice(0, 10);
 
-  return (
-    <div className="min-h-screen bg-canvas animate-fade-in">
-      <AppHeader />
-      <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
+  const body = (
+    <div className="space-y-6">
+      {!embedded && (
         <div className="space-y-2">
           <h2 className="text-headline font-semibold">Import Tugas (CSV)</h2>
           <p className="text-sm text-muted-foreground">
@@ -216,6 +221,7 @@ export function AdminCsvImportPage() {
             Header wajib: <code className="text-xs">{ALL_HEADERS.join(', ')}</code>
           </p>
         </div>
+      )}
 
         {phase === 'idle' && (
           <Card>
@@ -376,6 +382,16 @@ export function AdminCsvImportPage() {
             </CardContent>
           </Card>
         )}
+    </div>
+  );
+
+  if (embedded) return body;
+
+  return (
+    <div className="min-h-screen bg-canvas animate-fade-in">
+      <AppHeader />
+      <main className="max-w-dashboard mx-auto px-6 py-8">
+        {body}
       </main>
     </div>
   );

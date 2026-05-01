@@ -73,6 +73,33 @@ export async function fetchTasksByProject(
   return (data ?? []) as unknown as TaskWithAssignee[];
 }
 
+/**
+ * Fetch tasks assigned to a specific user across all projects (RLS-aware).
+ * Used by /tasks "Tugas Saya" personal task list (Sprint 6 patch r2).
+ * Includes project name for context display.
+ */
+export interface TaskWithAssigneeAndProject extends TaskWithAssignee {
+  project: {
+    id: string;
+    name: string;
+    status: string;
+  } | null;
+}
+
+export async function fetchTasksByAssignee(
+  userId: string,
+): Promise<TaskWithAssigneeAndProject[]> {
+  const { data, error } = await supabase
+    .from('tasks')
+    .select(
+      `${TASK_SELECT_COLUMNS}, project:projects!tasks_project_id_fkey (id, name, status)`,
+    )
+    .eq('assignee_id', userId)
+    .order('deadline', { ascending: true, nullsFirst: false });
+  if (error) throw error;
+  return (data ?? []) as unknown as TaskWithAssigneeAndProject[];
+}
+
 export async function fetchTaskById(
   taskId: string,
 ): Promise<TaskWithAssignee | null> {

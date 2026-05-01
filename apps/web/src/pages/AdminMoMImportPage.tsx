@@ -37,7 +37,13 @@ const APPROVAL_STYLE: Record<string, string> = {
   rejected:       'bg-feedback-danger-bg text-feedback-danger',
 };
 
-export function AdminMoMImportPage() {
+interface AdminMoMImportPageProps {
+  /** Sprint 6 patch r2: when true, skip AppHeader + min-h-screen wrap.
+   *  Used by /admin/import wrapper page (Phase B). */
+  embedded?: boolean;
+}
+
+export function AdminMoMImportPage({ embedded = false }: AdminMoMImportPageProps = {}) {
   const { profile, loading: authLoading } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
@@ -120,10 +126,9 @@ export function AdminMoMImportPage() {
   }
   if (profile.role !== 'admin') return <Navigate to="/" replace />;
 
-  return (
-    <div className="min-h-screen bg-canvas animate-fade-in">
-      <AppHeader />
-      <main className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-8 space-y-6">
+  const body = (
+    <div className="space-y-6">
+      {!embedded && (
         <header className="space-y-2">
           <h1 className="font-display text-headline-md text-on-surface">
             Import Notulensi (MoM)
@@ -137,6 +142,7 @@ export function AdminMoMImportPage() {
             dari spreadsheet (langsung jadi tugas). MoM untuk konversi rapat ad-hoc (review queue dulu).
           </p>
         </header>
+      )}
 
         <section className="bg-surface-container-lowest rounded-kt-lg shadow-brand-sm border border-outline-variant overflow-hidden">
           <header className="px-6 py-4 border-b border-outline-variant bg-surface-container-low/50">
@@ -261,6 +267,16 @@ export function AdminMoMImportPage() {
             )}
           </div>
         </section>
+    </div>
+  );
+
+  if (embedded) return body;
+
+  return (
+    <div className="min-h-screen bg-canvas animate-fade-in">
+      <AppHeader />
+      <main className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-8">
+        {body}
       </main>
     </div>
   );
