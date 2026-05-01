@@ -402,6 +402,7 @@ Untuk membedakan task dari `manual` vs `cowork-agent` vs `csv-import` (PRD F9, F
 | v1.0 | 2026-04-27 | Initial brand kit untuk pilot — palette, logo, typography, voice |
 | v2.0 | 2026-04-29 | Sprint 6 polish — Stitch MCP collab. Refined Asana/Monday-style microcopy guidelines (§13), Indonesian status labels locked, Stitch-derived hybrid tokens NOTED (surface tonal scale, M3-inspired typography) but **paper-only — never landed in code** (post-revision audit confirmed). |
 | **v2.1** | **2026-04-30** | **Sprint 6 holistic overhaul — v2 tokens LAND IN CODE. theme.css §8b surface tonal scale (5 levels), §8c semantic feedback colors, §9b M3 typography (display/headline/title/body/label), §10b semantic spacing (gap-card/section/page), §14 motion tokens (fast/base/slow + ease-brand). tailwind.config.ts maps all to utility classes. PRODUCT.md + DESIGN.md companion docs added (manual Impeccable equivalent — external skill install blocked by sandbox). All raw bg-zinc-*, bg-emerald-*, bg-amber-*, bg-red-* refs eliminated from pages + components (103→0). Card / Dialog / Toast / Notifications / Status badges all consume v2.1 tokens.** |
+| **v2.3** | **2026-04-30** | **Sprint 6 patch r2 — Copy Glossary lock. Section "Copy Glossary" added (see below). Locks canonical terms across UI: `Refresh` (not Segarkan), `Buat` (not Bikin), `Hapus`, `Simpan`, `Batal`, `Tutup` (dismiss) vs `Selesai` (completion), `Edit` (verb) vs `Ubah` (change setting context). Future components WAJIB consult glossary. AdminUsagePage button "Segarkan" → "Refresh" applied. WizardTour onboarding step 1 + GanttView empty-state copy "Bikin" → "Buat" applied. See docs/sprint-6-patch-r2-copy-audit.md for full audit.** |
 | **v2.2** | **2026-04-30** | **Sprint 6 final overhaul — Stitch v1 + research (Asana/Monday/ClickUp) consolidated per docs/design-system-final-spec.md (ADR-010). theme.css §15 v2.2 block adds: 9-level surface scale (replaces 5-level), M3 color triads (D4 split: primary darker `#00487A` for AA + primary-container `#0060A0` for fill), tertiary warm orange `#6F3600` (D1 net-new accent), full M3 typography hierarchy (display/headline/title/body/label × lg/md/sm + caption) with Inter Display family (D3, ~10 KB), Stitch spacing (gutter/container/margins), brand-tinted 4-level elevation with Deep Blue alpha 0.08–0.10, granular animation tokens (5 durations × 5 easings + 3 reusable @keyframes). Modal radius 12 → 16 px (D2). Source-csv violet `#8B5CF6` retained as legacy (D5 dual-accent). Status badge `-bg` swapped to rgb(R G B / 0.1) for cleaner blends. Primitives: Button gains brand/brand-secondary/ghost-brand variants + active scale-[0.98]; Card → surface-container-lowest + brand shadows + hover lift; Dialog → 16 px radius + scale-in entrance; Input → outline-variant border + primary focus ring. 12 page roots gain `animate-fade-in` (200 ms ease-out). EmptyState v2.2 with secondary-action API. Bundle 146.57 → 150.73 KB gzip (+4.16 KB, ≤ 5 KB target). Lighthouse a11y 93 retained.** |
 
 ### v2 — what changed
@@ -492,6 +493,59 @@ Konsisten di semua component (Badge, Column header, Filter dropdown, Modal title
 - Apakah perlu illustration set custom (vs pakai unDraw)?
 - Apakah produk akan punya marketing site terpisah → butuh additional brand assets?
 - Apakah perlu trademark "KalaTask" sebagai nama produk?
+
+---
+
+## 14. Copy Glossary (v2.3 — Sprint 6 patch r2)
+
+**Locked canonical terms across UI.** Reviewer wajib consult sebelum introduce new copy. Audit: `docs/sprint-6-patch-r2-copy-audit.md`.
+
+### 14.1 Action verbs
+
+| Action | Indonesian canonical | Notes |
+|---|---|---|
+| Refresh data | **Refresh** | English idiomatic; do NOT use "Segarkan" |
+| Save | **Simpan** | — |
+| Save changes | **Simpan perubahan** | — |
+| Cancel / Dismiss | **Batal** | — |
+| Delete | **Hapus** | — |
+| Edit (verb) | **Edit** | For "Edit komen", "Edit tugas" |
+| Change (setting/state) | **Ubah** | For "Ubah status", "Ubah role" |
+| Create (primary CTA) | **Buat** | "Buat project", "Buat tugas". Do NOT use "Bikin" (colloquial) |
+| Add (list append) | **Tambah** | "Tambah anggota", "Tambah komen" |
+| Close (dismiss) | **Tutup** | For modal/popover dismiss |
+| Done (completion) | **Selesai** | For wizard step / final action |
+| Login | **Masuk** | — |
+| Logout | **Keluar** | — |
+| Submit | **Kirim** | For form submissions |
+| Search | **Cari** | — |
+| Filter | **Filter** | English idiomatic |
+| Sort | **Urutkan** | — |
+| Back / Previous (navigation) | **Kembali** | — |
+| Back / Previous (wizard step) | **Mundur** | — |
+| Next / Continue | **Lanjut** | — |
+
+### 14.2 Status & state labels
+
+Per `apps/web/src/lib/labels.ts` — source of truth, do NOT hardcode in components:
+
+- Task status: `Belum mulai / Sedang dikerjakan / Cek ulang / Selesai / Tertahan`
+- Task priority: `Rendah / Sedang / Tinggi / Sangat penting`
+- Project status: `Perencanaan / Aktif / Ditahan / Selesai / Diarsipkan`
+
+### 14.3 Section / page names
+
+| Concept | Label |
+|---|---|
+| Settings | **Pengaturan** |
+| Notifications | **Notifikasi** |
+| Profile | **Profile** (English idiomatic — Profil OK as alternative) |
+| Email | **Email** |
+| Password / Kata sandi | **Kata sandi** (label) |
+
+### 14.4 Future-proofing
+
+**Any new component WAJIB pakai canonical term dari §14.1.** PR review mandate. New copy idea? Open `docs/sprint-6-patch-r2-copy-audit.md` to extend glossary, then update this section.
 
 ---
 

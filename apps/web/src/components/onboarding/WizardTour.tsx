@@ -37,9 +37,9 @@ const STEPS: WizardStep[] = [
   },
   {
     emoji: '🎯',
-    title: 'Bikin task baru itu sederhana',
+    title: 'Buat task baru itu sederhana',
     body:
-      'Klik tombol "Bikin task" di project, isi judul, pilih status. Selesai. Task baru langsung muncul di view List, Kanban, atau Gantt.',
+      'Klik tombol "Buat task" di project, isi judul, pilih status. Selesai. Task baru langsung muncul di view List, Kanban, atau Gantt.',
     ctaLabel: 'Coba di Project Contoh',
     ctaHref: '/projects',
   },

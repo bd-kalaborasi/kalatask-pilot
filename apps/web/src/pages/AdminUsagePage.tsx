@@ -108,7 +108,7 @@ export function AdminUsagePage() {
               onClick={() => void refresh()}
               disabled={loading}
             >
-              {loading ? 'Refreshing…' : '↻ Segarkan'}
+              {loading ? 'Refreshing…' : '↻ Refresh'}
             </Button>
           </div>
         </header>

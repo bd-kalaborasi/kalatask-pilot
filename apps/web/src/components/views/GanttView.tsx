@@ -71,7 +71,7 @@ export function GanttView({ tasks, viewMode = 'Day' }: GanttViewProps) {
         <EmptyState
           icon="📅"
           title="Timeline-nya masih kosong"
-          body="Bikin task dengan deadline dulu, baru bar Gantt muncul di sini."
+          body="Buat task dengan deadline dulu, baru bar Gantt muncul di sini."
         />
       </div>
     );
