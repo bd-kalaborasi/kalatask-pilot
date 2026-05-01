@@ -16,8 +16,8 @@
  * - useDashboardData → ProductivityMetrics + WorkloadSummary (KPI numbers)
  * - useProjectsList → projects array (count + featured)
  *
- * Where data isn't yet wired to schema (activity feed, per-user priorities),
- * EmptyState placeholders show with intent — to be filled in follow-up sprint.
+ * Activity feed and per-user priorities are sourced from useDashboardFeed
+ * + useUserPriorities (R4 Phase B — real comment + open-task data, RLS-aware).
  */
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -25,6 +25,14 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useOnboarding } from '@/hooks/useOnboarding';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useProjectsList } from '@/hooks/useProjectsList';
+import {
+  useDashboardFeed,
+  useUserPriorities,
+  type ActivityFeedItem,
+  type PriorityTask,
+} from '@/hooks/useDashboardFeed';
+import { formatRelativeTimeID } from '@/lib/formatRelativeTime';
+import { TaskPriorityBadge } from '@/components/task/TaskPriorityBadge';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -140,7 +148,7 @@ export function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* LEFT: Activity feed + Featured project */}
           <div className="lg:col-span-2 space-y-6">
-            <ActivityFeedPanel />
+            <ActivityFeedPanel /* R4 Phase B: real data */ />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FeaturedProjectCard
@@ -153,7 +161,7 @@ export function DashboardPage() {
 
           {/* RIGHT: Priorities + Illustration */}
           <div className="space-y-6">
-            <PrioritiesPanel />
+            <PrioritiesPanel userId={profile.id} />
             <CollabIllustrationCard />
           </div>
         </div>
@@ -221,6 +229,8 @@ function KpiCard({ tone, iconName, label, value, caption }: KpiCardProps) {
 }
 
 function ActivityFeedPanel() {
+  const { feed, loading } = useDashboardFeed(6);
+
   return (
     <section
       aria-label="Aktivitas terbaru"
@@ -232,15 +242,65 @@ function ActivityFeedPanel() {
           Lihat semua
         </Link>
       </header>
-      <div className="px-6 py-8">
-        <EmptyState
-          icon="📋"
-          title="Aktivitas tim akan muncul di sini"
-          body="Begitu rekan kerja update tugas, komentar, atau selesaikan project, kamu lihat semuanya di feed ini."
-          compact
-        />
-      </div>
+      {loading && (
+        <p className="px-6 py-8 text-body-md text-on-surface-variant">Memuat aktivitas…</p>
+      )}
+      {!loading && feed.length === 0 && (
+        <div className="px-6 py-8">
+          <EmptyState
+            icon="📋"
+            title="Aktivitas tim akan muncul di sini"
+            body="Begitu rekan kerja update tugas, komentar, atau selesaikan project, kamu lihat semuanya di feed ini."
+            compact
+          />
+        </div>
+      )}
+      {!loading && feed.length > 0 && (
+        <ul className="divide-y divide-outline-variant/40">
+          {feed.map((item) => (
+            <ActivityRow key={item.id} item={item} />
+          ))}
+        </ul>
+      )}
     </section>
+  );
+}
+
+function ActivityRow({ item }: { item: ActivityFeedItem }) {
+  const href = item.task_id && item.project_id
+    ? `/projects/${item.project_id}/tasks/${item.task_id}`
+    : '/projects';
+  return (
+    <li>
+      <Link
+        to={href}
+        className="block px-6 py-3 hover:bg-surface-container-low/40 transition-colors"
+      >
+        <div className="flex items-start gap-3">
+          <div
+            className="w-8 h-8 rounded-full bg-primary-container/15 flex items-center justify-center text-primary-container font-bold text-sm shrink-0"
+            aria-hidden="true"
+          >
+            {item.user_full_name.charAt(0).toUpperCase()}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-body-sm text-on-surface">
+              <span className="font-semibold">{item.user_full_name}</span>{' '}
+              komentar di{' '}
+              <span className="text-primary-container font-medium">{item.task_title}</span>
+            </p>
+            {item.body && (
+              <p className="text-body-sm text-on-surface-variant truncate mt-0.5">
+                {item.body}
+              </p>
+            )}
+            <p className="text-label-md text-on-surface-variant/80 mt-1">
+              {formatRelativeTimeID(item.created_at)}
+            </p>
+          </div>
+        </div>
+      </Link>
+    </li>
   );
 }
 
@@ -331,7 +391,9 @@ function TeamCard({ memberCount }: TeamCardProps) {
   );
 }
 
-function PrioritiesPanel() {
+function PrioritiesPanel({ userId }: { userId: string }) {
+  const { priorities, loading } = useUserPriorities(userId, 4);
+
   return (
     <section
       aria-label="Prioritas untuk kamu"
@@ -340,15 +402,51 @@ function PrioritiesPanel() {
       <header className="px-6 py-4 border-b border-outline-variant bg-surface-container-low/50">
         <h2 className="text-title-lg font-bold text-on-surface">Prioritas untuk kamu</h2>
       </header>
-      <div className="p-6">
-        <EmptyState
-          icon="⭐"
-          title="Belum ada tugas prioritas"
-          body="Tugas dengan deadline dekat atau prioritas tinggi akan muncul di sini begitu kamu di-assign."
-          compact
-        />
-      </div>
+      {loading && (
+        <p className="p-6 text-body-md text-on-surface-variant">Memuat prioritas…</p>
+      )}
+      {!loading && priorities.length === 0 && (
+        <div className="p-6">
+          <EmptyState
+            icon="⭐"
+            title="Belum ada tugas prioritas"
+            body="Tugas dengan deadline dekat atau prioritas tinggi akan muncul di sini begitu kamu di-assign."
+            compact
+          />
+        </div>
+      )}
+      {!loading && priorities.length > 0 && (
+        <ul className="divide-y divide-outline-variant/40">
+          {priorities.map((task) => (
+            <PriorityRow key={task.id} task={task} />
+          ))}
+        </ul>
+      )}
     </section>
+  );
+}
+
+function PriorityRow({ task }: { task: PriorityTask }) {
+  return (
+    <li>
+      <Link
+        to={`/projects/${task.project_id}/tasks/${task.id}`}
+        className="block px-4 py-3 hover:bg-surface-container-low/40 transition-colors"
+      >
+        <div className="flex items-start gap-3">
+          <TaskPriorityBadge priority={task.priority} />
+          <div className="flex-1 min-w-0">
+            <p className="text-body-md text-on-surface font-medium truncate">
+              {task.title}
+            </p>
+            <p className="text-body-sm text-on-surface-variant mt-0.5">
+              {task.project_name ?? '(no project)'}
+              {task.deadline && ` · deadline ${task.deadline}`}
+            </p>
+          </div>
+        </div>
+      </Link>
+    </li>
   );
 }
 

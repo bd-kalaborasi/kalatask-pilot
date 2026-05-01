@@ -27,6 +27,21 @@ import { supabase } from '@/lib/supabase';
 import { formatDateID } from '@/lib/formatDate';
 import type { UserRole } from '@/lib/auth';
 
+const NOTIF_EVENT_LABELS: Record<string, { title: string; desc: string }> = {
+  assigned: { title: 'Tugas di-assign ke kamu', desc: 'Saat seseorang assign task baru' },
+  status_done: { title: 'Tugas selesai', desc: 'Saat task yang kamu watch berubah ke done' },
+  deadline_h3: { title: 'Deadline 3 hari lagi', desc: 'Pengingat 3 hari sebelum deadline' },
+  deadline_h1: { title: 'Deadline besok', desc: 'Pengingat 1 hari sebelum deadline' },
+  overdue: { title: 'Tugas overdue', desc: 'Saat deadline terlewat' },
+  mentioned: { title: 'Di-mention di komentar', desc: 'Saat seseorang sebut @kamu di komentar' },
+  escalation: { title: 'Eskalasi tugas', desc: 'Saat task kamu di-escalate ke manager' },
+  digest: { title: 'Ringkasan harian', desc: 'Email ringkasan task hari ini (kalau ada)' },
+};
+const NOTIF_EVENT_ORDER = [
+  'assigned', 'mentioned', 'status_done', 'deadline_h3', 'deadline_h1',
+  'overdue', 'escalation', 'digest',
+];
+
 type Section = 'profile' | 'notifications' | 'members';
 
 interface SettingsUser {
@@ -299,12 +314,118 @@ function ProfileSection({ profile }: ProfileSectionProps) {
         </div>
       </div>
 
-      <div className="bg-surface-container-low p-4 rounded-kt-md border border-outline-variant">
-        <p className="text-body-sm text-on-surface-variant">
-          ℹ️ Email + password ubahnya lewat admin (security review). Nama bisa diubah langsung.
-        </p>
-      </div>
+      <PasswordChangeBlock />
     </section>
+  );
+}
+
+function PasswordChangeBlock() {
+  const [open, setOpen] = useState(false);
+  const [pw, setPw] = useState('');
+  const [pw2, setPw2] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [savedAt, setSavedAt] = useState<Date | null>(null);
+
+  async function handleSave() {
+    setError(null);
+    if (pw.length < 8) {
+      setError('Password minimal 8 karakter');
+      return;
+    }
+    if (pw !== pw2) {
+      setError('Konfirmasi password tidak cocok');
+      return;
+    }
+    setSaving(true);
+    const { error: err } = await supabase.auth.updateUser({ password: pw });
+    setSaving(false);
+    if (err) {
+      setError(err.message);
+      return;
+    }
+    setSavedAt(new Date());
+    setPw('');
+    setPw2('');
+    setOpen(false);
+  }
+
+  return (
+    <div className="bg-surface-container-lowest p-6 rounded-kt-lg shadow-brand-sm border border-outline-variant space-y-3">
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <p className="text-title-md font-semibold text-on-surface">Ubah password</p>
+          <p className="text-body-sm text-on-surface-variant">
+            Password minimal 8 karakter. Ganti sesekali untuk keamanan.
+          </p>
+        </div>
+        {!open && (
+          <Button onClick={() => setOpen(true)} variant="outline" size="sm">
+            Ubah password
+          </Button>
+        )}
+      </div>
+
+      {open && (
+        <div className="space-y-3 pt-2 border-t border-outline-variant">
+          <div>
+            <label htmlFor="new-password" className="text-label-md font-bold text-on-surface-variant uppercase tracking-widest">
+              Password baru
+            </label>
+            <input
+              id="new-password"
+              type="password"
+              value={pw}
+              onChange={(e) => setPw(e.target.value)}
+              className="mt-1 w-full px-3 py-2 border border-outline-variant rounded-kt-md text-body-md focus:ring-2 focus:ring-primary-container/30 focus:border-primary-container"
+              autoComplete="new-password"
+              disabled={saving}
+              minLength={8}
+            />
+          </div>
+          <div>
+            <label htmlFor="new-password-confirm" className="text-label-md font-bold text-on-surface-variant uppercase tracking-widest">
+              Konfirmasi password baru
+            </label>
+            <input
+              id="new-password-confirm"
+              type="password"
+              value={pw2}
+              onChange={(e) => setPw2(e.target.value)}
+              className="mt-1 w-full px-3 py-2 border border-outline-variant rounded-kt-md text-body-md focus:ring-2 focus:ring-primary-container/30 focus:border-primary-container"
+              autoComplete="new-password"
+              disabled={saving}
+              minLength={8}
+            />
+          </div>
+          {error && <p className="text-body-sm text-feedback-danger">{error}</p>}
+          <div className="flex gap-2">
+            <Button onClick={handleSave} disabled={saving} variant="brand" size="sm">
+              {saving ? 'Menyimpan...' : 'Simpan password'}
+            </Button>
+            <Button
+              onClick={() => {
+                setOpen(false);
+                setPw('');
+                setPw2('');
+                setError(null);
+              }}
+              disabled={saving}
+              variant="outline"
+              size="sm"
+            >
+              Batal
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {savedAt && !open && (
+        <p className="text-body-sm text-feedback-success">
+          ✓ Password berhasil diubah {savedAt.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}.
+        </p>
+      )}
+    </div>
   );
 }
 
@@ -325,7 +446,74 @@ function Field({ label, value, mono }: { label: string; value: string; mono?: bo
 // Notifications section
 // ============================================================
 
+interface NotifPref {
+  event_type: string;
+  enabled: boolean;
+  channel: string;
+}
+
 function NotificationsSection() {
+  const [prefs, setPrefs] = useState<NotifPref[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState<string | null>(null);
+  const [unavailable, setUnavailable] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const { data, error } = await supabase.rpc('get_notif_prefs');
+      if (!mounted) return;
+      if (error) {
+        // Migration not yet applied — fall back to defaults locally.
+        setUnavailable(true);
+        setPrefs(
+          NOTIF_EVENT_ORDER.map((et) => ({
+            event_type: et,
+            enabled: true,
+            channel: 'in_app',
+          })),
+        );
+        setLoading(false);
+        return;
+      }
+      setPrefs((data ?? []) as NotifPref[]);
+      setLoading(false);
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  async function toggle(event_type: string, current: boolean) {
+    setSaving(event_type);
+    setPrefs((prev) =>
+      prev.map((p) => (p.event_type === event_type ? { ...p, enabled: !current } : p)),
+    );
+    if (!unavailable) {
+      const { error } = await supabase.rpc('update_notif_pref', {
+        p_event_type: event_type,
+        p_enabled: !current,
+        p_channel: 'in_app',
+      });
+      if (error) {
+        // Rollback optimistic update on error.
+        setPrefs((prev) =>
+          prev.map((p) => (p.event_type === event_type ? { ...p, enabled: current } : p)),
+        );
+      }
+    }
+    setSaving(null);
+  }
+
+  // Fill in any missing events from canonical order so UI is stable.
+  const ordered = useMemo(() => {
+    const byKey = new Map(prefs.map((p) => [p.event_type, p]));
+    return NOTIF_EVENT_ORDER.map(
+      (et) =>
+        byKey.get(et) ?? { event_type: et, enabled: true, channel: 'in_app' },
+    );
+  }, [prefs]);
+
   return (
     <section className="space-y-6">
       <header>
@@ -335,12 +523,58 @@ function NotificationsSection() {
         </p>
       </header>
 
-      <div className="bg-surface-container-lowest p-6 rounded-kt-lg shadow-brand-sm border border-outline-variant">
-        <EmptyState
-          icon="🔔"
-          title="Preferensi notifikasi: segera tersedia"
-          body="Saat ini semua notifikasi aktif by default. Toggle per-event akan tersedia di Sprint 7."
-        />
+      {unavailable && (
+        <div className="bg-feedback-warning-bg border border-feedback-warning-border rounded-kt-md p-3 text-body-sm text-feedback-warning">
+          ⚠️ Tabel preferensi belum di-deploy. Toggle hanya disimpan lokal — admin perlu apply migration{' '}
+          <code className="font-mono">20260501100000_r4_create_notif_prefs.sql</code>.
+        </div>
+      )}
+
+      <div className="bg-surface-container-lowest rounded-kt-lg shadow-brand-sm border border-outline-variant divide-y divide-outline-variant/60">
+        {loading ? (
+          <div className="p-6">
+            <p className="text-body-md text-on-surface-variant">Memuat preferensi...</p>
+          </div>
+        ) : (
+          ordered.map((p) => {
+            const meta = NOTIF_EVENT_LABELS[p.event_type] ?? {
+              title: p.event_type,
+              desc: '',
+            };
+            return (
+              <div
+                key={p.event_type}
+                className="flex items-start justify-between gap-4 p-5"
+              >
+                <div className="flex-1">
+                  <p className="text-body-md font-semibold text-on-surface">{meta.title}</p>
+                  <p className="text-body-sm text-on-surface-variant mt-0.5">{meta.desc}</p>
+                </div>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={p.enabled}
+                  aria-label={`Toggle ${meta.title}`}
+                  disabled={saving === p.event_type}
+                  onClick={() => toggle(p.event_type, p.enabled)}
+                  className={
+                    p.enabled
+                      ? 'relative inline-flex h-6 w-11 items-center rounded-full bg-primary-container transition-colors disabled:opacity-50'
+                      : 'relative inline-flex h-6 w-11 items-center rounded-full bg-surface-container transition-colors disabled:opacity-50 ring-1 ring-outline-variant'
+                  }
+                >
+                  <span
+                    className={
+                      p.enabled
+                        ? 'inline-block h-5 w-5 transform rounded-full bg-on-primary-container shadow translate-x-5 transition-transform'
+                        : 'inline-block h-5 w-5 transform rounded-full bg-on-surface-variant shadow translate-x-1 transition-transform'
+                    }
+                  />
+                </button>
+              </div>
+            );
+          })
+        )}
       </div>
     </section>
   );
@@ -352,6 +586,112 @@ function NotificationsSection() {
 
 interface MembersSectionProps {
   currentUserId: string;
+}
+
+function InviteButton({ onInvited }: { onInvited: () => void }) {
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [role, setRole] = useState<UserRole>('member');
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  async function handleSubmit() {
+    setError(null);
+    setSuccess(null);
+    const trimmed = email.trim().toLowerCase();
+    if (!trimmed.includes('@') || trimmed.length < 5) {
+      setError('Email tidak valid');
+      return;
+    }
+    setSaving(true);
+    const { error: err } = await supabase.rpc('create_user_invite', {
+      p_email: trimmed,
+      p_role: role,
+    });
+    setSaving(false);
+    if (err) {
+      // RPC unavailable → graceful degradation message
+      if (err.message.includes('not found') || err.code === '42883') {
+        setError('Migration belum di-deploy. Hubungi admin untuk apply 20260501100100_r4_create_user_invites.sql');
+      } else {
+        setError(err.message);
+      }
+      return;
+    }
+    setSuccess(`Undangan dikirim ke ${trimmed}`);
+    setEmail('');
+    onInvited();
+    setTimeout(() => {
+      setOpen(false);
+      setSuccess(null);
+    }, 1800);
+  }
+
+  if (!open) {
+    return (
+      <Button variant="brand" onClick={() => setOpen(true)}>
+        + Undang anggota
+      </Button>
+    );
+  }
+
+  return (
+    <div className="w-full bg-surface-container-low p-4 rounded-kt-md border border-outline-variant space-y-3">
+      <p className="text-title-sm font-semibold text-on-surface">Undang anggota baru</p>
+      <div className="grid sm:grid-cols-[1fr_140px_auto_auto] gap-2 items-end">
+        <div>
+          <label htmlFor="invite-email" className="text-label-md font-bold text-on-surface-variant uppercase tracking-widest">
+            Email
+          </label>
+          <input
+            id="invite-email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="rekan@perusahaan.com"
+            className="mt-1 w-full px-3 py-2 border border-outline-variant rounded-kt-md text-body-md focus:ring-2 focus:ring-primary-container/30 focus:border-primary-container"
+            disabled={saving}
+          />
+        </div>
+        <div>
+          <label htmlFor="invite-role" className="text-label-md font-bold text-on-surface-variant uppercase tracking-widest">
+            Role
+          </label>
+          <select
+            id="invite-role"
+            value={role}
+            onChange={(e) => setRole(e.target.value as UserRole)}
+            className="mt-1 w-full px-3 py-2 border border-outline-variant rounded-kt-md text-body-md bg-surface-container-lowest"
+            disabled={saving}
+          >
+            <option value="member">Member</option>
+            <option value="manager">Manager</option>
+            <option value="viewer">Viewer</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <Button onClick={handleSubmit} disabled={saving} variant="brand" size="sm">
+          {saving ? 'Mengirim...' : 'Kirim undangan'}
+        </Button>
+        <Button
+          onClick={() => {
+            setOpen(false);
+            setEmail('');
+            setError(null);
+            setSuccess(null);
+          }}
+          variant="outline"
+          size="sm"
+          disabled={saving}
+        >
+          Batal
+        </Button>
+      </div>
+      {error && <p className="text-body-sm text-feedback-danger">{error}</p>}
+      {success && <p className="text-body-sm text-feedback-success">✓ {success}</p>}
+    </div>
+  );
 }
 
 function MembersSection({ currentUserId }: MembersSectionProps) {
@@ -451,9 +791,7 @@ function MembersSection({ currentUserId }: MembersSectionProps) {
             <option value="viewer">Viewer</option>
           </select>
         </div>
-        <Button variant="brand" disabled title="Segera tersedia">
-          + Undang anggota
-        </Button>
+        <InviteButton onInvited={() => { /* Sprint 7+: refresh invite list */ }} />
       </div>
 
       {loading && <p className="text-body-md text-on-surface-variant">Memuat anggota...</p>}
@@ -471,7 +809,7 @@ function MembersSection({ currentUserId }: MembersSectionProps) {
             title={users.length === 0 ? 'Belum ada anggota' : 'Tidak ada hasil'}
             body={
               users.length === 0
-                ? 'Tambah anggota tim lewat fitur Undang (akan tersedia di Sprint 7).'
+                ? 'Tambah anggota tim lewat tombol "+ Undang anggota" di atas.'
                 : 'Coba ubah kata kunci pencarian atau filter role.'
             }
           />
