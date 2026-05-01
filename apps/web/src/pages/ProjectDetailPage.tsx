@@ -260,7 +260,9 @@ export function ProjectDetailPage() {
               </aside>
 
               {/* Main content — tasks views */}
-              <div className="space-y-4">
+              {/* min-w-0 prevents Gantt timeline from expanding the grid column.
+                  Sprint 6 patch r2 Phase E. */}
+              <div className="space-y-4 min-w-0">
               <div className="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-outline-variant">
                 <h2 className="font-display text-title-lg font-bold text-on-surface">
                   Tasks
