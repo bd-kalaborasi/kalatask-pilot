@@ -50,23 +50,35 @@ export function useDashboardFeed(limit = 6): {
         .order('created_at', { ascending: false })
         .limit(limit);
 
-      const items: ActivityFeedItem[] = (rawComments ?? []).map(
-        (row: {
-          id: string;
-          body: string;
-          created_at: string;
-          author: { full_name: string } | null;
-          task: { id: string; title: string; project_id: string } | null;
-        }) => ({
-          id: row.id,
-          type: 'comment' as const,
-          user_full_name: row.author?.full_name ?? 'Seseorang',
-          task_title: row.task?.title ?? '(task tidak ditemukan)',
-          task_id: row.task?.id ?? '',
-          project_id: row.task?.project_id ?? '',
-          body: row.body,
-          created_at: row.created_at,
-        }),
+      // Supabase typed select returns join targets as arrays even for single FKs.
+      type CommentRow = {
+        id: string;
+        body: string;
+        created_at: string;
+        author: { full_name: string } | { full_name: string }[] | null;
+        task:
+          | { id: string; title: string; project_id: string }
+          | { id: string; title: string; project_id: string }[]
+          | null;
+      };
+      const pickFirst = <T,>(v: T | T[] | null): T | null =>
+        Array.isArray(v) ? v[0] ?? null : v;
+
+      const items: ActivityFeedItem[] = ((rawComments ?? []) as CommentRow[]).map(
+        (row) => {
+          const author = pickFirst(row.author);
+          const task = pickFirst(row.task);
+          return {
+            id: row.id,
+            type: 'comment' as const,
+            user_full_name: author?.full_name ?? 'Seseorang',
+            task_title: task?.title ?? '(task tidak ditemukan)',
+            task_id: task?.id ?? '',
+            project_id: task?.project_id ?? '',
+            body: row.body,
+            created_at: row.created_at,
+          };
+        },
       );
 
       if (mounted) {
@@ -117,17 +129,20 @@ export function useUserPriorities(userId: string | null, limit = 4): {
         .neq('status', 'done')
         .order('deadline', { ascending: true, nullsFirst: false });
 
-      const rows = (data ?? []) as Array<{
+      type TaskRow = {
         id: string;
         title: string;
         priority: string;
         deadline: string | null;
         status: string;
         project_id: string;
-        project: { name: string } | null;
-      }>;
+        project: { name: string } | { name: string }[] | null;
+      };
+      const pickFirst = <T,>(v: T | T[] | null): T | null =>
+        Array.isArray(v) ? v[0] ?? null : v;
 
-      // Sort: priority desc, then deadline asc (already pre-sorted by deadline)
+      const rows = (data ?? []) as unknown as TaskRow[];
+
       rows.sort(
         (a, b) =>
           (PRIORITY_RANK[b.priority] ?? 0) - (PRIORITY_RANK[a.priority] ?? 0),
@@ -140,7 +155,7 @@ export function useUserPriorities(userId: string | null, limit = 4): {
         deadline: r.deadline,
         status: r.status,
         project_id: r.project_id,
-        project_name: r.project?.name ?? null,
+        project_name: pickFirst(r.project)?.name ?? null,
       }));
 
       if (mounted) {
