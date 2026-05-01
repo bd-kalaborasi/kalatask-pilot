@@ -246,8 +246,14 @@ async function runSeed(config: SeedConfig): Promise<SeedSummary> {
   if (teamsRes.error) throw teamsRes.error;
 
   // 2. Users (idempotent upsert)
+  // Mark tutorial completed so wizard does NOT auto-show on test dashboard load
+  // (so E2E "Buka tutorial" reopen flow can click without modal overlay).
   console.log(`[seed] Upserting ${USERS.length} users...`);
-  const usersRes = await supabase.from('users').upsert(USERS);
+  const usersWithOnboarding = USERS.map((u) => ({
+    ...u,
+    onboarding_state: { tutorial_done: true, sample_seeded: true },
+  }));
+  const usersRes = await supabase.from('users').upsert(usersWithOnboarding);
   if (usersRes.error) throw usersRes.error;
 
   // 3. Projects
