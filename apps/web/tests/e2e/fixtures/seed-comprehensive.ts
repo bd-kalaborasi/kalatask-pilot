@@ -31,6 +31,17 @@
  */
 
 import { createClient } from '@supabase/supabase-js';
+import { config as loadEnv } from 'dotenv';
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// R4 Phase A: load .env.local from repo root.
+// File path: apps/web/tests/e2e/fixtures/seed-comprehensive.ts → 5 levels up.
+const __filename = fileURLToPath(import.meta.url);
+const repoRoot = resolve(__filename, '..', '..', '..', '..', '..', '..');
+loadEnv({ path: resolve(repoRoot, '.env.local') });
+// Fallback: also try cwd in case script invoked from repo root.
+loadEnv({ path: '.env.local' });
 
 interface SeedConfig {
   supabaseUrl: string;
@@ -288,7 +299,7 @@ async function runSeed(config: SeedConfig): Promise<SeedSummary> {
     comments.push({
       id: `30000000-0000-0000-0000-${commentIdx.toString(16).padStart(12, '0')}`,
       task_id: task.id,
-      user_id: author.id,
+      author_id: author.id,
       body,
       created_at: ts,
     });
@@ -306,11 +317,14 @@ async function runSeed(config: SeedConfig): Promise<SeedSummary> {
   // Mix: mention (40%), assignment (30%), status_change (20%), comment_reply (10%)
   console.log('[seed] Generating 50 notifications...');
   const notifications: Array<Record<string, unknown>> = [];
+  // Schema enum: assigned / status_done / deadline_h3 / deadline_h1 /
+  // overdue / mentioned / escalation / digest
   const NOTIF_TYPES = [
-    { type: 'mention', weight: 0.4 },
-    { type: 'assignment', weight: 0.3 },
-    { type: 'status_change', weight: 0.2 },
-    { type: 'comment_reply', weight: 0.1 },
+    { type: 'mentioned', weight: 0.4 },
+    { type: 'assigned', weight: 0.3 },
+    { type: 'status_done', weight: 0.15 },
+    { type: 'deadline_h3', weight: 0.1 },
+    { type: 'overdue', weight: 0.05 },
   ];
   for (let n = 0; n < 50; n++) {
     const recipient = USERS[Math.floor(Math.random() * USERS.length)];
@@ -331,11 +345,9 @@ async function runSeed(config: SeedConfig): Promise<SeedSummary> {
       id: `40000000-0000-0000-0000-${n.toString(16).padStart(12, '0')}`,
       user_id: recipient.id,
       type,
-      payload: {
-        task_id: (sourceTask as { id: string }).id,
-        message,
-      },
-      read_at: isRead ? new Date(Date.now() - (daysAgo - 1) * 24 * 60 * 60 * 1000).toISOString() : null,
+      task_id: (sourceTask as { id: string }).id,
+      body: message,
+      is_read: isRead,
       created_at: ts,
     });
   }
@@ -355,6 +367,7 @@ async function runSeed(config: SeedConfig): Promise<SeedSummary> {
       mom_date: '2026-04-23',
       title: 'Product Sync Q2 Planning',
       raw_markdown: '# Product Sync — 2026-04-23\n\n## Action Items\n- [ ] @Sari finalize Q2 roadmap (ETA besok)\n- [ ] @Reza review Mobile MVP wireframe\n- [ ] @Lina coordinate vendor onboarding',
+      parse_status: 'parsed',
       parse_summary: { total: 3, high: 2, medium: 1, low: 0, unresolved: 0 },
       approval_status: 'approved',
       uploaded_by: USERS[0].id,
@@ -366,6 +379,7 @@ async function runSeed(config: SeedConfig): Promise<SeedSummary> {
       mom_date: '2026-04-25',
       title: 'Sales Strategy Q2',
       raw_markdown: '# Sales Strategy Q2\n\n## Action Items\n- [ ] @Reza prep enterprise pitch deck\n- [ ] @Bayu schedule demo dengan client A\n- [ ] @Citra benchmark competitor',
+      parse_status: 'parsed',
       parse_summary: { total: 3, high: 1, medium: 2, low: 0, unresolved: 0 },
       approval_status: 'pending_review',
       uploaded_by: USERS[0].id,
@@ -377,6 +391,7 @@ async function runSeed(config: SeedConfig): Promise<SeedSummary> {
       mom_date: '2026-04-20',
       title: 'Test rejected MoM',
       raw_markdown: '# Test\n\nThis MoM was rejected for incomplete action items.',
+      parse_status: 'parsed',
       parse_summary: { total: 1, high: 0, medium: 0, low: 0, unresolved: 1 },
       approval_status: 'rejected',
       uploaded_by: USERS[0].id,
@@ -405,15 +420,22 @@ async function runSeed(config: SeedConfig): Promise<SeedSummary> {
 // CLI entry
 // ============================================================
 
-if (import.meta.url === `file://${process.argv[1]}`.replace(/\\/g, '/')) {
+// CLI entry — auto-runs when invoked directly via `npx tsx <this-file>`.
+// On Windows, import.meta.url has different format than process.argv[1],
+// so we use a permissive check (always run unless RUN_AS_LIB=1).
+if (process.env.RUN_AS_LIB !== '1') {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) {
     console.error(
       '[seed] Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY env var.',
     );
+    console.error(
+      '[seed] Expected at .env.local in repo root. Verified loaded?',
+    );
     process.exit(1);
   }
+  console.log('[seed] Env loaded. Connecting…');
   runSeed({ supabaseUrl: url, serviceKey: key })
     .then((summary) => {
       console.log('[seed] Complete:', summary);
