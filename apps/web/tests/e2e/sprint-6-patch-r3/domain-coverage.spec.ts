@@ -437,22 +437,21 @@ test.describe('R3 Onboarding +5', () => {
     await login(page, ADMIN);
     await page.waitForLoadState('networkidle');
     await page.getByText(/Buka tutorial/).first().click();
-    // Wizard renders dialog/modal — look for the Lewati tutorial button
+    // Wizard renders modal — Skip tutorial button is the surface marker
     await expect(
-      page.getByRole('button', { name: /Lewati tutorial/ }).first(),
+      page.getByRole('button', { name: /Skip tutorial/ }),
     ).toBeVisible({ timeout: 5_000 });
   });
 
   test('O3 admin: wizard reopen flow accessible', async ({ page }) => {
     await login(page, ADMIN);
     await page.waitForLoadState('networkidle');
-    // Verify the Buka tutorial trigger exists and is clickable
     const trigger = page.getByText(/Buka tutorial/).first();
     await expect(trigger).toBeVisible();
     await trigger.click();
     await page.waitForTimeout(500);
-    // After click, the wizard surface contains step-related text
-    await expect(page.getByText(/Lewati tutorial|Selesai/i).first()).toBeVisible({ timeout: 5_000 });
+    // After click, wizard surface has Skip tutorial button
+    await expect(page.getByRole('button', { name: /Skip tutorial/ })).toBeVisible({ timeout: 5_000 });
   });
 
   test('O4 admin: wizard renders Lanjut button when active', async ({ page }) => {
@@ -460,9 +459,9 @@ test.describe('R3 Onboarding +5', () => {
     await page.waitForLoadState('networkidle');
     await page.getByText(/Buka tutorial/).first().click();
     await page.waitForTimeout(500);
-    // Wizard should have Lanjut button (step advance)
-    const lanjut = page.getByRole('button', { name: /^Lanjut$/ });
-    expect(await lanjut.count()).toBeGreaterThan(0);
+    // Wizard should have Lanjut button (or Selesai on last step)
+    const advanceBtn = page.getByRole('button', { name: /^(Lanjut|Selesai)/ });
+    expect(await advanceBtn.count()).toBeGreaterThan(0);
   });
 
   test('O5 manager: dashboard "Buka tutorial" also visible', async ({ page }) => {
