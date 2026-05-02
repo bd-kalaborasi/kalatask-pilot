@@ -6,12 +6,12 @@
 -- Owner action: run after R4 PR merges.
 
 CREATE TABLE IF NOT EXISTS public.user_invites (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  id uuid PRIMARY KEY DEFAULT extensions.gen_random_uuid(),
   email text NOT NULL,
   role text NOT NULL CHECK (role IN ('admin', 'manager', 'member', 'viewer')),
   team_id uuid REFERENCES public.teams(id) ON DELETE SET NULL,
   invited_by uuid NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
-  token text NOT NULL UNIQUE DEFAULT encode(gen_random_bytes(24), 'hex'),
+  token text NOT NULL UNIQUE DEFAULT encode(extensions.gen_random_bytes(24), 'hex'),
   status text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'revoked', 'expired')),
   expires_at timestamptz NOT NULL DEFAULT (now() + interval '7 days'),
   created_at timestamptz NOT NULL DEFAULT now(),
