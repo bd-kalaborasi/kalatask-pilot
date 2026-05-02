@@ -98,8 +98,9 @@ test.describe('Sprint 4.5 — Comments thread + task detail', () => {
     await login(page, ADMIN.email, ADMIN.password);
     await openFirstTaskInProject(page);
 
+    // Sprint 6 patch: "← Balik ke Project" button → breadcrumb-style "← Project" link
     await expect(
-      page.getByRole('link', { name: /Balik ke Project/ }),
+      page.getByRole('link', { name: /^← Project$/ }),
     ).toBeVisible();
   });
 });

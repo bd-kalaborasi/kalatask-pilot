@@ -12,7 +12,7 @@
  *   import './styles/globals.css';
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Display:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @import './theme.css';
 
@@ -76,6 +76,102 @@
   .animate-wizard-in {
     animation: wizard-in 220ms cubic-bezier(0.16, 1, 0.3, 1);
   }
+
+  /* ============================================================
+   * v2.1 MOTION RECIPES (Sprint 6 holistic overhaul)
+   * Purposeful, ≤ 300ms, ease-brand. Prefers-reduced-motion respected.
+   * ============================================================ */
+  @keyframes kt-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes kt-slide-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes kt-scale-in {
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes kt-shake {
+    0%, 100% { transform: translateX(0); }
+    25%      { transform: translateX(-4px); }
+    75%      { transform: translateX(4px); }
+  }
+  @keyframes kt-pulse-attention {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.02); }
+  }
+
+  .kt-fade-in        { animation: kt-fade-in       var(--kt-motion-base) var(--kt-ease-brand); }
+  .kt-slide-up       { animation: kt-slide-up      var(--kt-motion-base) var(--kt-ease-brand); }
+  .kt-scale-in       { animation: kt-scale-in      var(--kt-motion-base) var(--kt-ease-brand); }
+  .kt-shake          { animation: kt-shake         250ms ease-out; }
+  .kt-pulse-attention{ animation: kt-pulse-attention 600ms var(--kt-ease-brand); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .kt-fade-in,
+    .kt-slide-up,
+    .kt-scale-in,
+    .kt-shake,
+    .kt-pulse-attention,
+    .animate-wizard-in,
+    .animate-fade-in,
+    .animate-fade-up,
+    .animate-scale-in {
+      animation: none !important;
+    }
+  }
+
+  /* ============================================================
+   * v2.2 STITCH ELEVATION UTILITIES (Sprint 6 final)
+   * Replaces ad-hoc bg-surface shadow-brand-md patterns.
+   * Use elev-N as semantic shorthand for tonal+shadow combo.
+   * ============================================================ */
+  .elev-0 {
+    background: var(--kt-surface);
+  }
+  .elev-1 {
+    background: var(--kt-surface-container-lowest);
+    box-shadow: var(--kt-shadow-sm);
+  }
+  .elev-2 {
+    background: var(--kt-surface-container-low);
+    box-shadow: var(--kt-shadow-md);
+  }
+  .elev-3 {
+    background: var(--kt-surface-container-high);
+    box-shadow: var(--kt-shadow-md);
+    border: 1px solid var(--kt-outline-variant);
+  }
+  .elev-4 {
+    background: var(--kt-surface-container-highest);
+    box-shadow: var(--kt-shadow-lg);
+    backdrop-filter: blur(15px);
+  }
+
+  /* ============================================================
+   * v2.2 ANIMATION RECIPES (per design-system-final-spec §6)
+   * Mapped to Tailwind via animation/keyframes config too.
+   * Naming `animate-*` matches Tailwind defaults so utility
+   * usage feels native (e.g. animate-fade-in).
+   * ============================================================ */
+  @keyframes kt-v2-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes kt-v2-fade-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes kt-v2-scale-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .animate-fade-in  { animation: kt-v2-fade-in  var(--kt-duration-base)   var(--kt-ease-out); }
+  .animate-fade-up  { animation: kt-v2-fade-up  var(--kt-duration-medium) var(--kt-ease-out); }
+  .animate-scale-in { animation: kt-v2-scale-in var(--kt-duration-base)   var(--kt-ease-out); }
 }
 
 /* ============================================================

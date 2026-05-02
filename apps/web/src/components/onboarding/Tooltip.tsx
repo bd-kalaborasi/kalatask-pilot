@@ -53,7 +53,7 @@ export function Tooltip({
       className={`absolute z-30 max-w-xs animate-wizard-in ${anchorClasses[anchor]} ${className ?? ''}`}
     >
       <div
-        className="rounded-lg px-3 py-2 pr-8 text-xs font-medium shadow-lg ring-1"
+        className="rounded-kt-md px-3 py-2 pr-8 text-xs font-medium shadow-brand-lg ring-1"
         style={{
           backgroundColor: 'var(--kt-deep)',
           color: 'white',

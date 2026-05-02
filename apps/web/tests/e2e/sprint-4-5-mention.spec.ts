@@ -68,7 +68,9 @@ test.describe('Sprint 4.5 — @mention autocomplete', () => {
     });
   });
 
-  test('Click select user → token @[Name](uuid) injected', async ({ page }) => {
+  test('Click select user → display name injected (raw token hidden)', async ({
+    page,
+  }) => {
     await login(page, ADMIN.email, ADMIN.password);
     await openFirstTaskInProject(page);
 
@@ -80,8 +82,14 @@ test.describe('Sprint 4.5 — @mention autocomplete', () => {
     const sariOption = page.getByRole('option', { name: /Sari/ }).first();
     await sariOption.click();
 
-    // Verify body now contains @[Sari ...](uuid) token format
+    // Sprint 6 revision Issue 4: composer shows '@Full Name' plain text,
+    // canonical '@[Name](uuid)' token resolved at submit time.
     const bodyValue = await composer.inputValue();
-    expect(bodyValue).toMatch(/@\[Sari[^\]]+\]\([0-9a-f-]{36}\)/);
+    expect(bodyValue).toMatch(/@Sari\b/);
+    // Raw bracket token must NOT be visible in composer
+    expect(bodyValue).not.toMatch(/@\[Sari[^\]]+\]\(/);
+
+    // Pending mention pill should appear below textarea
+    await expect(page.getByTestId('pending-mentions')).toBeVisible();
   });
 });

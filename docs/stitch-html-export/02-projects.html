@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KalaTask - Proyek</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#eeeef0",
+                        "surface": "#f9f9fc",
+                        "primary": "#00487a",
+                        "surface-variant": "#e2e2e5",
+                        "primary-container": "#0060a0",
+                        "outline": "#717781",
+                        "on-secondary-fixed": "#001e2e",
+                        "on-surface-variant": "#414750",
+                        "primary-fixed-dim": "#9dcaff",
+                        "primary-fixed": "#d1e4ff",
+                        "tertiary-fixed": "#ffdcc6",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#924902",
+                        "on-secondary-container": "#004a6b",
+                        "on-background": "#1a1c1e",
+                        "on-secondary-fixed-variant": "#004c6d",
+                        "on-tertiary-fixed-variant": "#713700",
+                        "on-surface": "#1a1c1e",
+                        "inverse-on-surface": "#f0f0f3",
+                        "surface-tint": "#0461a2",
+                        "surface-container-highest": "#e2e2e5",
+                        "secondary-fixed-dim": "#86cfff",
+                        "background": "#f9f9fc",
+                        "surface-container-high": "#e8e8ea",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f9f9fc",
+                        "on-primary-fixed": "#001d35",
+                        "on-primary-container": "#bbd9ff",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f3f3f6",
+                        "error-container": "#ffdad6",
+                        "secondary": "#00658f",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#dadadc",
+                        "inverse-surface": "#2f3133",
+                        "tertiary": "#6f3600",
+                        "on-tertiary-fixed": "#301400",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#9dcaff",
+                        "secondary-container": "#45beff",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#ffccaa",
+                        "on-primary-fixed-variant": "#00497c",
+                        "secondary-fixed": "#c7e7ff",
+                        "tertiary-fixed-dim": "#ffb785",
+                        "outline-variant": "#c1c7d2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "margin-desktop": "32px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.25px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0.5px", "fontWeight": "400"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                        "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .project-card:hover .project-more-btn {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-surface">
+<!-- TopNavBar -->
+<nav class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-[0_2px_10px_rgba(0,96,160,0.08)] docked full-width top-0 sticky z-50 flex justify-between items-center h-16 px-6 w-full font-['Inter'] antialiased">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-extrabold tracking-tight text-[#0060A0] dark:text-sky-400">KalaTask</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors px-3 py-2 rounded-lg" href="#">Dashboard</a>
+<a class="text-[#0060A0] dark:text-sky-400 font-semibold border-b-2 border-[#0060A0] px-3 py-2" href="#">Projects</a>
+<a class="text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors px-3 py-2 rounded-lg" href="#">Calendar</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="pl-10 pr-4 py-2 bg-slate-100 border-none rounded-full text-sm w-64 focus:ring-2 focus:ring-[#0060A0]" placeholder="Cari apa saja..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors rounded-full">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden ml-2 ring-2 ring-slate-100">
+<img alt="Profil kamu" class="w-full h-full object-cover" data-alt="A professional headshot of a friendly Indonesian creative professional in their late 20s, wearing a clean, modern white linen shirt against a soft, bright studio background with subtle maritime blue highlights. The lighting is high-key and flattering, conveying an approachable yet professional personality for a collaborative workspace environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkvtn-iBh4l0HBcxbZ_gWhpTv2BEpmi1Lb7lGULs8RC-Wa1m4Q40kQXU-rbe8HbrBrHWtIvZQ3vUj08iLGed8ZYAYZGRMA8HnkAIEAaQAldrdE7p3dojUCEAUA4GLCzurQzfdejNpSMyq8n-LwRZ0IN1JC5AXchPouhlKF7bau_W4yk7ZfxUf2wVmdqLimPEI5LoKNz_qGuPRVhIo-mKs6T55XwdK68MXuNpOL2DodO28nQHaOfCFZ_RTlK2dTErZ-akKo_9K6_HNp"/>
+</div>
+</div>
+</div>
+</nav>
+<div class="flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="bg-white dark:bg-slate-900 border-r border-slate-100 dark:border-slate-800 h-screen w-64 fixed left-0 top-0 pt-20 pb-6 hidden md:flex flex-col gap-2 z-40 font-['Inter'] text-sm font-medium">
+<div class="px-6 mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-sky-100 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-[#0060A0]" style="font-variation-settings: 'FILL' 1;">work</span>
+</div>
+<div>
+<h3 class="text-sm font-bold text-[#0060A0]">KalaTask Workspace</h3>
+<p class="text-[10px] text-slate-400">Ruang kerja kamu</p>
+</div>
+</div>
+</div>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg mx-2 hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-sky-50 dark:bg-sky-900/20 text-[#0060A0] dark:text-sky-300 rounded-lg mx-2 hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment</span>
+<span>Projects</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg mx-2 hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span>Calendar</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg mx-2 hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Team</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg mx-2 hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span>Statistics</span>
+</a>
+<div class="mt-auto px-4 py-3 mx-2 bg-slate-50 rounded-xl">
+<p class="text-xs font-semibold text-slate-500 mb-2">Penyimpanan</p>
+<div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
+<div class="h-full bg-[#0060A0] w-3/4"></div>
+</div>
+<p class="text-[10px] text-slate-400 mt-2">7.5 GB dari 10 GB digunakan</p>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 md:ml-64 p-gutter max-w-container-max mx-auto w-full">
+<!-- Page Header -->
+<header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface">Proyek</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">12 dari 24 proyek aktif sedang berjalan</p>
+</div>
+<button class="bg-primary-container text-on-primary font-label-lg text-label-lg px-6 py-2.5 rounded-lg flex items-center gap-2 shadow-lg shadow-primary-container/20 hover:scale-105 transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+                    Buat proyek baru
+                </button>
+</header>
+<!-- Filter Row -->
+<div class="flex flex-col gap-6 mb-8">
+<div class="flex flex-wrap items-center gap-2">
+<button class="px-4 py-1.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-lg text-label-lg flex items-center gap-2">
+                        Semua <span class="opacity-60">12</span>
+</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container hover:bg-surface-variant transition-colors text-on-surface-variant font-label-lg text-label-lg flex items-center gap-2">
+                        Perencanaan <span class="opacity-60">3</span>
+</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container hover:bg-surface-variant transition-colors text-on-surface-variant font-label-lg text-label-lg flex items-center gap-2 border border-blue-100">
+                        Aktif <span class="text-primary font-bold">5</span>
+</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container hover:bg-surface-variant transition-colors text-on-surface-variant font-label-lg text-label-lg flex items-center gap-2">
+                        Ditahan <span class="opacity-60">1</span>
+</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container hover:bg-surface-variant transition-colors text-on-surface-variant font-label-lg text-label-lg flex items-center gap-2">
+                        Selesai <span class="opacity-60">2</span>
+</button>
+</div>
+<div class="flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center gap-4 w-full md:w-auto">
+<div class="relative w-full md:w-80">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-white border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Cari nama proyek kamu..." type="text"/>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 bg-white border border-outline-variant rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-[20px]">groups</span>
+                            Semua Tim
+                            <span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+<div class="flex items-center p-1 bg-surface-container rounded-lg shrink-0">
+<button class="p-2 bg-white text-primary rounded-md shadow-sm">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-variant rounded-md transition-colors">
+<span class="material-symbols-outlined text-[20px]">format_list_bulleted</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Project Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="project-card bg-white rounded-lg p-6 shadow-[0_2px_10px_rgba(0,96,160,0.08)] border border-slate-100 hover:-translate-y-1 transition-all cursor-pointer relative">
+<button class="project-more-btn opacity-0 absolute top-4 right-4 p-1 hover:bg-slate-100 rounded-full transition-all">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+<div class="flex justify-between items-start mb-4">
+<div class="px-2.5 py-1 rounded-full bg-blue-50 text-primary font-bold text-[10px] uppercase tracking-wider">Aktif</div>
+<span class="text-[10px] text-slate-400 font-medium italic">Update 2 jam lalu</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-2">Redesain Website KalaTask</h3>
+<div class="flex items-center gap-2 mb-6">
+<div class="w-6 h-6 rounded-full overflow-hidden">
+<img alt="Budi Santoso" class="w-full h-full object-cover" data-alt="A detailed portrait of a focused tech lead professional in a modern office, wearing glasses and a minimalist grey polo shirt. The scene is brightly lit with soft, professional illumination, emphasizing a clean and efficient workspace environment with hints of maritime blue in the background decorations." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkbfe5v8bd1bIkQF3CZeqAEAmmquoDxecljS4tNVAoQHuw8ZF04tm-CYTuj76AYuB8BgP9ZNxKdpjy3gFpYGCG8QHYJQ0siPhf2Zh2oOCtqscR2cEK27oG3Dn104_7A45hjJ1B0_rxAqphPHjSypUw4kNzivc6hy0LG6oRWXvUSPp8nhu20G_-pyan65yViciIJq9ttWDZXvI34sRNasH2o13RmuGjP5kDHfptp8j27zgMLHxaGshiAl3WtT5kBPsog08Snnf5TSUQ"/>
+</div>
+<span class="text-xs text-on-surface-variant font-medium">Budi Santoso</span>
+</div>
+<div class="mb-6">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs text-slate-500">8 dari 12 tugas selesai</span>
+<span class="text-xs font-bold text-primary">66%</span>
+</div>
+<div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container" style="width: 66%"></div>
+</div>
+</div>
+<div class="flex justify-between items-center pt-4 border-t border-slate-50">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white overflow-hidden">
+<img alt="Member 1" class="w-full h-full object-cover" data-alt="Close up portrait of a smiling female UI designer with glasses in a bright, modern studio. The lighting is soft and airy, creating a professional yet warm atmosphere that fits a clean Indonesian tech brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACBj_iKD0bwum-k82MGbmasf4jJjJdT81Ms5VIWaxm-V_bFn-93DlHMowXOMVGp8KADATYcDstXyzbvF0Pq32gACQSb_MWD408wsXOMI30IAxoFxTKueUlsL-yyLZgjIAcO4foEtw7jtb1sG-zRHS8CXIoU0ZrydmtODkmMwpBl_8cq6fk1zjohPNy3_sNKaOuYcyhC6bSMo6WhqlLiAqMkRjouAspismH7kq_vyg7AmsDnVDrUOzfuXzS0OpsjPIV7Xl8_G1Cfso5"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-white overflow-hidden">
+<img alt="Member 2" class="w-full h-full object-cover" data-alt="Portrait of a young male software developer with a friendly expression, captured in high definition with natural lighting in a contemporary creative office space. The color palette includes light greys and soft blue accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhGcu5Rp2B3z2IGYGP0UxYpPge06UwNrheVsuXiK6z4ru4FvkndszjfoOUnNSgm2IYVlEXmrLANz5XqmmobAVBZtHqVcQpkDgDpeL-b7hFNDnjX4lHwByeEpvCjYBtBrW4GRQkP7YblE-gHYjFEsVjshGMChCBAWC8amPYnlp6ZMjFGLICGWHmprU0QZiRmnyrxS_LrG6FCSoHYp332MX2egH6otVqfY7_zy6ecw4b037uIWA_j1-kfgjuiZPldox4hqrfR3pAsNWX"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-surface-container-high flex items-center justify-center text-[10px] font-bold text-slate-500">+3</div>
+</div>
+<button class="text-primary font-label-lg text-label-lg hover:underline">Detail</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="project-card bg-white rounded-lg p-6 shadow-[0_2px_10px_rgba(0,96,160,0.08)] border border-slate-100 hover:-translate-y-1 transition-all cursor-pointer relative">
+<button class="project-more-btn opacity-0 absolute top-4 right-4 p-1 hover:bg-slate-100 rounded-full transition-all">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+<div class="flex justify-between items-start mb-4">
+<div class="px-2.5 py-1 rounded-full bg-orange-50 text-orange-600 font-bold text-[10px] uppercase tracking-wider">Perencanaan</div>
+<span class="text-[10px] text-slate-400 font-medium italic">Update 5 jam lalu</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-2">Kampanye Digital Ramadhan</h3>
+<div class="flex items-center gap-2 mb-6">
+<div class="w-6 h-6 rounded-full overflow-hidden">
+<img alt="Siti Aminah" class="w-full h-full object-cover" data-alt="A portrait of a confident female marketing manager wearing a stylish hijab in a professional corporate setting. The background is a brightly lit modern office with soft bokeh, using a color scheme of white, soft teal, and corporate blue to evoke a sense of professional reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpmlhnnrOzpmg4X1WFPlZ4O5xsBbaLS5SAG8KjDSgInwTiM-P7-A-1z8zRJ9L_ja63VRcJbKVZzcnJKVAuTYF1RjfltsZReE2qqxlVsQXdM_3568VCz7TDjVx9rsX-xfrygPqou0fDTVS0q_k0DXb6-ZWSFmPU8cMaEe2ZfXO1fP1IV2O0qNHxS-GSR0-yTjhAMUazqmLJu2JT-Fu3KZw6lgeVkJzPioMeiA5WuL_GvWpOeIkaw-Ktecdn8Ri99jUGaCZI3BdCbVIh"/>
+</div>
+<span class="text-xs text-on-surface-variant font-medium">Siti Aminah</span>
+</div>
+<div class="mb-6">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs text-slate-500">2 dari 15 tugas selesai</span>
+<span class="text-xs font-bold text-primary">12%</span>
+</div>
+<div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container" style="width: 12%"></div>
+</div>
+</div>
+<div class="flex justify-between items-center pt-4 border-t border-slate-50">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white overflow-hidden">
+<img alt="Member 3" class="w-full h-full object-cover" data-alt="Close up of a creative professional in a workspace, brightly lit with a clean modern aesthetic, conveying focus and productivity in a collaborative Indonesian tech workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfQwuHGwVwZuoIpJhWnkzadJVHzc8TcgyFJfRhVr3ZB60yjhOf5qgxdSZcoXfhYGpruohU5hFPzBvErXNTa1wajgS34hjA06WwVt7rrvcIFjSbdjDmwlu1YPzS1kjWC91RXV7IyljtZyRhl9udi6_RoFJFt0hv_XtDy1s8Ca3bv81QRNzNTmwaSMkpcZOTZBhtA85XRwOAJ_ihvNeQW7oqLAtpgRNWSkd_3FsxZDLtlLCDdlrOO4gmwJGcEfx9rYN8MEdvVD63oa7I"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-surface-container-high flex items-center justify-center text-[10px] font-bold text-slate-500">+8</div>
+</div>
+<button class="text-primary font-label-lg text-label-lg hover:underline">Detail</button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="project-card bg-white rounded-lg p-6 shadow-[0_2px_10px_rgba(0,96,160,0.08)] border border-slate-100 hover:-translate-y-1 transition-all cursor-pointer relative">
+<button class="project-more-btn opacity-0 absolute top-4 right-4 p-1 hover:bg-slate-100 rounded-full transition-all">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+<div class="flex justify-between items-start mb-4">
+<div class="px-2.5 py-1 rounded-full bg-green-50 text-green-600 font-bold text-[10px] uppercase tracking-wider">Selesai</div>
+<span class="text-[10px] text-slate-400 font-medium italic">Update 1 hari lalu</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-2">Migrasi Server Q1</h3>
+<div class="flex items-center gap-2 mb-6">
+<div class="w-6 h-6 rounded-full overflow-hidden">
+<img alt="Rizky Pratama" class="w-full h-full object-cover" data-alt="A portrait of a focused IT infrastructure specialist in a modern data center environment, softly lit with blue-toned professional lighting. The style is clean and high-tech, representing reliability and expertise within a corporate Indonesian digital framework." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgksEY4A57rxOXxBdhNIhZrlUDLMOZBadhQDJYU2sQ9L-BwCURYkfCG_kcETYQXClIKomI5QLwli1-0x4AbjQgOuQa6_NEq7yAgrWApEhtNHTnZ7J9VnyGoUj11yVjL2Ui9MP8JTGthy_gVD-2_RIhsy6T6B69lQedBsYQh3PBKw2p0-LY9PMVyjl4iQ3T_MH0vg_DB4Ya7ncwUhK9s5vn3PACev2wDZ_Sf4b7X0R1Xzvz4weliTIuvtwaHZtKlBRSQoKYk-4jhM7h"/>
+</div>
+<span class="text-xs text-on-surface-variant font-medium">Rizky Pratama</span>
+</div>
+<div class="mb-6">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs text-slate-500">20 dari 20 tugas selesai</span>
+<span class="text-xs font-bold text-green-600">100%</span>
+</div>
+<div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-green-500" style="width: 100%"></div>
+</div>
+</div>
+<div class="flex justify-between items-center pt-4 border-t border-slate-50">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white overflow-hidden">
+<img alt="Member 4" class="w-full h-full object-cover" data-alt="A professional team member portrait in a clean, high-key office setting, emphasizing clarity, professionalism, and modern Indonesian tech culture through bright, even lighting and a minimal color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBb1wfuEUJct5VnbU-TwREuKaItQws8CAW1ZWXJGnh011Z1r-6UI0NE4aB31LfX410pAnTFCoOiXbyAx3t33k0QhTtezvNP_Um0UCaXm4BNllg7wjL5qsDmzFLrKsi4rR_EDa7_5utQLOs3Fqb3fh0O5uErDI4phl1vz9HU4dNfyWMY9TObpqtjztjNOOk__vb2oZ77gCIp-DY3dn4mvHh-NN1YTY36r2ujvE_Moys6axRhoKVwFesdftitCcRCA7Mp1iNIA_3rj3OM"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-white overflow-hidden">
+<img alt="Member 5" class="w-full h-full object-cover" data-alt="Friendly headshot of a software engineer in a modern workplace setting, illuminated by soft natural light with a professional, minimal aesthetic that aligns with a maritime blue and white brand theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIsOi8kFjdbDCxj4VJHrVoRQKhEo-F97V5T3AnVHSVvlSs_yIXjLvIUT5Eshe-5tNNWiyqanXmQBdVs_vyM1v4Pss9SZtPNKdt6IPs6Z9JoVABXS9N0aXbvEVR8zgO9W1EhDw7GPzvJd6nVG_g7MpVj-UTLnot1g9tTVhmxG6UH9uCVhOlEfsk7YVEUk3XXgYwKsJ6H15b5tKHCwsY5lYia3ekniFHdnwj9i3P6PyMX2dhv9hSsVG4uCMWewGbhy3cen9WhLyJuGyQ"/>
+</div>
+</div>
+<button class="text-primary font-label-lg text-label-lg hover:underline">Detail</button>
+</div>
+</div>
+<!-- Card 4 (Aktif) -->
+<div class="project-card bg-white rounded-lg p-6 shadow-[0_2px_10px_rgba(0,96,160,0.08)] border border-slate-100 hover:-translate-y-1 transition-all cursor-pointer relative">
+<button class="project-more-btn opacity-0 absolute top-4 right-4 p-1 hover:bg-slate-100 rounded-full transition-all">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+<div class="flex justify-between items-start mb-4">
+<div class="px-2.5 py-1 rounded-full bg-blue-50 text-primary font-bold text-[10px] uppercase tracking-wider">Aktif</div>
+<span class="text-[10px] text-slate-400 font-medium italic">Update 10 menit lalu</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-2">Audit Keamanan Data</h3>
+<div class="flex items-center gap-2 mb-6">
+<div class="w-6 h-6 rounded-full overflow-hidden">
+<img alt="Amalia Zahra" class="w-full h-full object-cover" data-alt="Portrait of a professional cybersecurity analyst in a clean, modern office space with soft high-key lighting. The scene is professional and dependable, with subtle branding elements of sky blue and deep navy in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDly1bSSGZ296g7Y-EeVdKcJYV_XDh9E-VGd46iTRq-h-TavNI4Vm9k0meAfntMg8lq5ZsGtiYt6a9feiOo79eFYQvF1NgMJqKw-HMyjBzNoQVchCaozgYkWubw94FGWpHmD6pKuWntZpthcLf9WQPkEh6EL0GdeBdXOjONJoS4Q9wWeXzWQNxHoSdH9-OAym6YyZpZG3jGo7p87gJLNm0MI53fP1Gdvkbx_XvC6VZscZcnpOiljDqyedUF979qGb2-FzQLlbVH38OR"/>
+</div>
+<span class="text-xs text-on-surface-variant font-medium">Amalia Zahra</span>
+</div>
+<div class="mb-6">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs text-slate-500">14 dari 32 tugas selesai</span>
+<span class="text-xs font-bold text-primary">44%</span>
+</div>
+<div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container" style="width: 44%"></div>
+</div>
+</div>
+<div class="flex justify-between items-center pt-4 border-t border-slate-50">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white overflow-hidden bg-blue-100 flex items-center justify-center">
+<span class="text-[10px] font-bold text-primary">AZ</span>
+</div>
+</div>
+<button class="text-primary font-label-lg text-label-lg hover:underline">Detail</button>
+</div>
+</div>
+</div>
+<!-- Empty State Variation (Hidden by default) -->
+<div class="hidden flex-col items-center justify-center py-24 text-center">
+<div class="w-64 h-64 mb-8">
+<img alt="Belum ada proyek" class="w-full h-full object-contain" data-alt="A friendly, modern flat illustration showing a clean workspace with an empty desk and a sky-blue calendar on the wall. The style is minimalist and approachable, using a palette of maritime blue and light grey to suggest a fresh start for a new project in a professional Indonesian office setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWCEnSiJND0uZ7UT3fqamvEfFwuE-8W8C78Ub1xc6H2Uue3-ts7ewytojsZR47zEZgzOxGZXsxhBuBZSOoF3fJYOv8bmrlddFdOBxEKE9IAXjX193G0NPWcBl435HY93t4xd7WnUBdVnvvb_H7kRzmQw6ARBMLsVNavte8UKLPX9dOz5H85uYzOVtdcLYMZ0480dX2jJeVrUXaqmgTsyBknHPJT47J-JSHOXbVs9ByKksPmJHeqAtKrgzFnOkRG2LhxB1oCIhA3iG1"/>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Belum ada proyek di sini</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8">Yuk bikin proyek pertama kamu dan mulai kelola tugas bareng tim!</p>
+<button class="bg-primary-container text-on-primary font-label-lg text-label-lg px-8 py-3 rounded-lg shadow-lg hover:scale-105 transition-all">
+                    Yuk bikin proyek pertama
+                </button>
+</div>
+</main>
+</div>
+<!-- Mobile Navigation -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-100 px-6 py-2 flex justify-between items-center z-50">
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px]">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-[#0060A0]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment</span>
+<span class="text-[10px] font-bold">Proyek</span>
+</button>
+<div class="relative -top-6">
+<button class="w-12 h-12 bg-primary-container text-white rounded-full shadow-lg flex items-center justify-center">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-[10px]">Kalender</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px]">Profil</span>
+</button>
+</nav>
+</body></html>

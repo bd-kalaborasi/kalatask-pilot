@@ -19,12 +19,13 @@ import { cn } from '@/lib/utils';
 import { useNotifications } from '@/hooks/useNotifications';
 import { formatRelativeTimeID } from '@/lib/formatRelativeTime';
 import { notifTier, type NotificationRow } from '@/lib/notifications';
+import { fetchTaskById } from '@/lib/tasks';
 
 const TIER_DOT_CLASS: Record<ReturnType<typeof notifTier>, string> = {
-  normal: 'bg-sky-500',
-  warning: 'bg-amber-500',
-  urgent: 'bg-orange-500',
-  critical: 'bg-red-600',
+  normal:   'bg-feedback-info',
+  warning:  'bg-feedback-warning',
+  urgent:   'bg-feedback-warning',
+  critical: 'bg-feedback-danger',
 };
 
 export function NotificationDropdown() {
@@ -64,9 +65,17 @@ export function NotificationDropdown() {
     }
     setOpen(false);
     if (notif.task_id) {
-      // Find project_id via task — fetch lazy via supabase. For pilot,
-      // simpler navigate ke /projects (user can navigate from there).
-      // TODO Sprint 4: deeplink ke /projects/<project_id>?task=<task_id>
+      // Sprint 6 patch r3: deeplink to task detail. Resolve project_id via
+      // task fetch (RLS-aware). Fallback to /projects if task not accessible.
+      try {
+        const task = await fetchTaskById(notif.task_id);
+        if (task && task.project_id) {
+          navigate(`/projects/${task.project_id}/tasks/${task.id}`);
+          return;
+        }
+      } catch {
+        // fall through
+      }
       navigate('/projects');
     }
   }
@@ -82,7 +91,7 @@ export function NotificationDropdown() {
         <Bell className="h-5 w-5" aria-hidden="true" />
         {unreadCount > 0 && (
           <span
-            className="absolute -top-0.5 -right-0.5 inline-flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white ring-2 ring-surface"
+            className="absolute -top-0.5 -right-0.5 inline-flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-feedback-danger text-[10px] font-medium text-white ring-2 ring-surface"
             aria-hidden="true"
           >
             {unreadCount > 9 ? '9+' : unreadCount}
@@ -94,7 +103,7 @@ export function NotificationDropdown() {
         <div
           role="dialog"
           aria-label="Notifikasi"
-          className="absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-md border bg-surface shadow-brand-md overflow-hidden z-50"
+          className="absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-md border bg-surface shadow-brand-md overflow-hidden z-50 kt-slide-up"
         >
           <div className="flex items-center justify-between px-3 py-2 border-b">
             <h3 className="text-sm font-medium">Notifikasi</h3>
@@ -129,7 +138,7 @@ export function NotificationDropdown() {
                 onClick={() => void handleClick(n)}
                 className={cn(
                   'w-full text-left px-3 py-2.5 flex gap-2.5 items-start hover:bg-accent/50 transition-colors border-b last:border-b-0',
-                  !n.is_read && 'bg-sky-50',
+                  !n.is_read && 'bg-feedback-info-bg',
                 )}
               >
                 <span

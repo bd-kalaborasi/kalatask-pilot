@@ -71,7 +71,7 @@ export function GanttView({ tasks, viewMode = 'Day' }: GanttViewProps) {
         <EmptyState
           icon="📅"
           title="Timeline-nya masih kosong"
-          body="Bikin task dengan deadline dulu, baru bar Gantt muncul di sini."
+          body="Buat task dengan deadline dulu, baru bar Gantt muncul di sini."
         />
       </div>
     );
@@ -89,9 +89,15 @@ export function GanttView({ tasks, viewMode = 'Day' }: GanttViewProps) {
     );
   }
 
+  // Sprint 6 patch r2 Phase E: Gantt scroll containment.
+  // - Outer: max-w-full + min-w-0 prevents flex parent expansion
+  // - Inner: overflow-x-auto so timeline scrolls, page does not
+  // - kt-gantt-wrapper isolates frappe-gantt CSS
   return (
-    <div className="border rounded-md bg-surface p-4 overflow-x-auto kt-gantt-wrapper">
-      <div ref={containerRef} />
+    <div className="kt-gantt-wrapper border border-outline-variant rounded-kt-md bg-surface-container-lowest p-4 max-w-full min-w-0 overflow-hidden">
+      <div className="overflow-x-auto -mx-4 px-4">
+        <div ref={containerRef} className="min-w-fit" />
+      </div>
     </div>
   );
 }

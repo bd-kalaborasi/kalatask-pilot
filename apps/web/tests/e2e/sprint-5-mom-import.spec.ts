@@ -29,14 +29,19 @@ async function login(page: Page, email: string, password: string) {
 }
 
 test.describe('Sprint 5 — F9 MoM Import access', () => {
-  test('Admin sees Import MoM nav link', async ({ page }) => {
+  test('Admin sees Import nav link (unified MoM + CSV)', async ({ page }) => {
+    // Sprint 6 patch r2 Phase B: nav unified to single "Import" link
     await login(page, ADMIN.email, ADMIN.password);
-    await expect(page.getByRole('link', { name: 'Import MoM' })).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: 'Import', exact: true }),
+    ).toBeVisible();
   });
 
-  test('Member doesnt see Import MoM nav link', async ({ page }) => {
+  test('Member doesnt see Import nav link', async ({ page }) => {
     await login(page, ANDI.email, ANDI.password);
-    await expect(page.getByRole('link', { name: 'Import MoM' })).toBeHidden();
+    await expect(
+      page.getByRole('link', { name: 'Import', exact: true }),
+    ).toBeHidden();
   });
 
   test('Member /admin/mom-import redirects to /', async ({ page }) => {
@@ -64,15 +69,16 @@ test.describe('Sprint 5 — F16 Usage dashboard access', () => {
   test('Admin /admin/usage renders 3 progress bar cards', async ({ page }) => {
     await login(page, ADMIN.email, ADMIN.password);
     await page.goto('/admin/usage');
-    await expect(page.getByRole('heading', { name: 'Usage Monitoring' })).toBeVisible({
-      timeout: 10000,
-    });
-    // 3 progress bar cards: Database, Storage, MAU
+    // Sprint 6 patch: heading "Usage Monitoring" → "Monitoring Penggunaan" (Stitch label)
+    await expect(
+      page.getByRole('heading', { name: 'Monitoring Penggunaan', exact: true }),
+    ).toBeVisible({ timeout: 10000 });
+    // 3 progress bar cards: Database, Penyimpanan (was Storage), MAU
     await expect(page.getByText('Database', { exact: true })).toBeVisible();
-    await expect(page.getByText('Storage', { exact: true })).toBeVisible();
+    await expect(page.getByText('Penyimpanan', { exact: true })).toBeVisible();
     await expect(page.getByText(/^MAU/i)).toBeVisible();
-    // Refresh button
-    await expect(page.getByRole('button', { name: /Refresh/ })).toBeVisible();
+    // Sprint 6 patch: Refresh button → "Segarkan"
+    await expect(page.getByRole('button', { name: /Segarkan|Refresh/ })).toBeVisible();
   });
 
   test('Member /admin/usage redirects to /', async ({ page }) => {

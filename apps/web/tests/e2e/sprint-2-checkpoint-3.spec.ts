@@ -136,8 +136,9 @@ test.describe('S1: Login + Dashboard navigate per role', () => {
         page.getByRole('link', { name: 'Projects', exact: true }),
       ).toBeVisible();
 
-      // Buka Projects CTA berfungsi
-      await page.getByRole('link', { name: 'Buka Projects' }).click();
+      // Sprint 6 patch (Stitch dashboard): "Buka Projects" → "Lihat semua proyek"
+      // (Stitch HTML pattern matches Bahasa Indonesia voice)
+      await page.getByRole('link', { name: /Lihat semua proyek/i }).click();
       await expect(page).toHaveURL(/\/projects$/);
     });
   }
@@ -153,8 +154,9 @@ test.describe('S2: F14 project list page render per role', () => {
     await login(page, ADMIN);
     await page.goto('/projects');
 
-    await expect(page.getByRole('heading', { name: 'Projects' })).toBeVisible();
-    for (const status of ['Planning', 'Active', 'On Hold', 'Completed', 'Archived']) {
+    // Sprint 6 patch: heading "Projects" → "Proyek" (Stitch Bahasa Indonesia)
+    await expect(page.getByRole('heading', { name: 'Proyek', exact: true })).toBeVisible();
+    for (const status of ['Perencanaan', 'Aktif', 'Ditahan', 'Selesai', 'Diarsipkan']) {
       await expect(page.getByRole('button', { name: status })).toBeVisible();
     }
   });
@@ -174,7 +176,7 @@ test.describe('S2: F14 project list page render per role', () => {
   test('member Andi: no Team filter, status chips visible', async ({ page }) => {
     await login(page, ANDI);
     await page.goto('/projects');
-    await expect(page.getByRole('button', { name: 'Active' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Aktif' })).toBeVisible();
     await expect(page.locator('#filter-team')).toBeHidden();
   });
 
@@ -194,7 +196,7 @@ test.describe('S3: Project status filter URL persistence', () => {
   test('click status chip update URL f.status', async ({ page }) => {
     await login(page, ADMIN);
     await page.goto('/projects');
-    await page.getByRole('button', { name: 'Active' }).click();
+    await page.getByRole('button', { name: 'Aktif' }).click();
     await expect(page).toHaveURL(/f\.status=active/);
   });
 
@@ -202,7 +204,7 @@ test.describe('S3: Project status filter URL persistence', () => {
     await login(page, ADMIN);
     await page.goto('/projects?f.status=active');
     await expect(
-      page.getByRole('button', { name: 'Active' }),
+      page.getByRole('button', { name: 'Aktif' }),
     ).toHaveAttribute('aria-pressed', 'true');
   });
 
@@ -219,7 +221,7 @@ test.describe('S3: Project status filter URL persistence', () => {
       `/projects?f.status=active&f.team=00000000-0000-0000-0000-00000000aaaa`,
     );
     await expect(
-      page.getByRole('button', { name: 'Active' }),
+      page.getByRole('button', { name: 'Aktif' }),
     ).toHaveAttribute('aria-pressed', 'true');
     await expect(page.locator('#filter-team')).toHaveValue(
       '00000000-0000-0000-0000-00000000aaaa',
@@ -339,7 +341,7 @@ test.describe('S5: F3 view toggle + URL persist', () => {
 // Scenario 6 — Kanban 5 columns + Blocked visual urgency (REQUIRES SEED)
 // ============================================================
 test.describe('S6: Kanban 5 kolom + Blocked red urgency (Q1)', () => {
-  test('5 column header visible: Todo / In Progress / Review / Done / Blocked', async ({
+  test('5 column header visible: refined Indonesian labels (Sprint 6)', async ({
     page,
   }) => {
     await login(page, ADMIN);
@@ -352,7 +354,7 @@ test.describe('S6: Kanban 5 kolom + Blocked red urgency (Q1)', () => {
     await page.waitForLoadState('networkidle');
 
     // Kanban column headers (uppercase di componentm but case-insensitive match)
-    const labels = ['Todo', 'In Progress', 'Review', 'Done', 'Blocked'];
+    const labels = ['Belum mulai', 'Sedang dikerjakan', 'Cek ulang', 'Selesai', 'Tertahan'];
     for (const label of labels) {
       // Each column has a header dengan label
       await expect(
@@ -374,9 +376,10 @@ test.describe('S6: Kanban 5 kolom + Blocked red urgency (Q1)', () => {
     const blockedColumn = page.locator('[data-status="blocked"]');
     await expect(blockedColumn).toBeVisible({ timeout: 10_000 });
 
-    // Header punya red bg class (bg-red-100)
+    // Header carries red urgency via brand-tinted token (post Sprint 6
+    // overhaul: bg-red-100 → bg-status-blocked-bg, text-feedback-danger).
     const header = blockedColumn.locator('header').first();
-    await expect(header).toHaveClass(/bg-red-100/);
+    await expect(header).toHaveClass(/bg-status-blocked-bg/);
   });
 });
 
@@ -482,8 +485,10 @@ test.describe('S9: Sprint 1 regression', () => {
   }) => {
     await login(page, ADMIN);
     await page.reload();
+    // Sprint 6 patch: dashboard heading "{fullName}" → "Selamat datang, {firstName}"
+    const firstName = ADMIN.fullName.split(' ')[0];
     await expect(
-      page.getByRole('heading', { name: new RegExp(ADMIN.fullName) }),
+      page.getByRole('heading', { name: new RegExp(`Selamat datang, ${firstName}`) }),
     ).toBeVisible({ timeout: 10_000 });
   });
 

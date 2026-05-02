@@ -8,21 +8,17 @@
  */
 import { cn } from '@/lib/utils';
 import type { TaskStatus } from '@/lib/tasks';
+import { TASK_STATUS_LABEL } from '@/lib/labels';
 
-const STATUS_LABEL: Record<TaskStatus, string> = {
-  todo: 'Todo',
-  in_progress: 'In Progress',
-  review: 'Review',
-  done: 'Done',
-  blocked: 'Blocked',
-};
+// Refined Asana/Monday-style Indonesian labels (Sprint 6)
+const STATUS_LABEL: Record<TaskStatus, string> = TASK_STATUS_LABEL;
 
 const STATUS_CLASS: Record<TaskStatus, string> = {
-  todo: 'bg-zinc-100 text-zinc-700 ring-1 ring-zinc-200',
-  in_progress: 'bg-sky-100 text-sky-800 ring-1 ring-sky-200',
-  review: 'bg-amber-100 text-amber-800 ring-1 ring-amber-200',
-  done: 'bg-emerald-100 text-emerald-800 ring-1 ring-emerald-200',
-  blocked: 'bg-red-100 text-red-700 ring-1 ring-red-200',
+  todo:        'bg-status-todo-bg text-foreground ring-1 ring-border',
+  in_progress: 'bg-status-progress-bg text-brand-deep-700 ring-1 ring-brand-sky-200',
+  review:      'bg-status-review-bg text-feedback-warning ring-1 ring-feedback-warning-border',
+  done:        'bg-status-done-bg text-feedback-success ring-1 ring-feedback-success-border',
+  blocked:     'bg-status-blocked-bg text-feedback-danger ring-1 ring-feedback-danger-border',
 };
 
 export function taskStatusLabel(status: TaskStatus): string {

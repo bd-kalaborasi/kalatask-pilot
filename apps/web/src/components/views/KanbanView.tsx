@@ -36,6 +36,7 @@ import {
 import { TaskPriorityBadge } from '@/components/task/TaskPriorityBadge';
 import { Tooltip } from '@/components/onboarding/Tooltip';
 import { formatDateID } from '@/lib/formatDate';
+import { TASK_STATUS_LABEL } from '@/lib/labels';
 import { useOptimisticMutation } from '@/hooks/useOptimisticMutation';
 
 interface KanbanViewProps {
@@ -46,20 +47,15 @@ interface KanbanViewProps {
   onRefetch: () => void;
 }
 
-const COLUMN_LABEL: Record<TaskStatus, string> = {
-  todo: 'Todo',
-  in_progress: 'In Progress',
-  review: 'Review',
-  done: 'Done',
-  blocked: 'Blocked',
-};
+// Refined Asana/Monday-style Indonesian labels (Sprint 6)
+const COLUMN_LABEL: Record<TaskStatus, string> = TASK_STATUS_LABEL;
 
 const COLUMN_HEADER_CLASS: Record<TaskStatus, string> = {
-  todo: 'bg-zinc-100 text-zinc-700 border-zinc-200',
-  in_progress: 'bg-sky-100 text-sky-800 border-sky-200',
-  review: 'bg-amber-100 text-amber-800 border-amber-200',
-  done: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-  blocked: 'bg-red-100 text-red-700 border-red-300', // Q1 visual urgency
+  todo:        'bg-surface-container-low text-foreground border-border',
+  in_progress: 'bg-status-progress-bg text-brand-deep-700 border-brand-sky-200',
+  review:      'bg-status-review-bg text-feedback-warning border-feedback-warning-border',
+  done:        'bg-status-done-bg text-feedback-success border-feedback-success-border',
+  blocked:     'bg-status-blocked-bg text-feedback-danger border-feedback-danger', // visual urgency
 };
 
 interface DragArgs {
@@ -205,7 +201,7 @@ function KanbanCard({ task }: KanbanCardProps) {
         e.preventDefault();
         navigate(`/projects/${task.project_id}/tasks/${task.id}`);
       }}
-      className="bg-background border rounded-md p-2 cursor-pointer hover:shadow-brand-sm shadow-sm space-y-1.5"
+      className="bg-surface-container-lowest border border-outline-variant rounded-kt-md p-2 cursor-pointer shadow-brand-sm hover:shadow-brand-md transition-shadow duration-base ease-brand space-y-1.5"
       role="button"
       aria-label={`Task ${task.title}. Click untuk buka detail; drag untuk pindah status.`}
     >

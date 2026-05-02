@@ -12,7 +12,6 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/contexts/ToastContext';
 import { AppHeader } from '@/components/layout/AppHeader';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
 import {
   fetchMoMImports,
@@ -32,13 +31,19 @@ const APPROVAL_LABEL: Record<string, string> = {
 };
 
 const APPROVAL_STYLE: Record<string, string> = {
-  pending_review: 'bg-amber-100 text-amber-800',
-  auto_approved: 'bg-emerald-100 text-emerald-800',
-  approved: 'bg-emerald-100 text-emerald-800',
-  rejected: 'bg-red-100 text-red-800',
+  pending_review: 'bg-feedback-warning-bg text-feedback-warning',
+  auto_approved:  'bg-feedback-success-bg text-feedback-success',
+  approved:       'bg-feedback-success-bg text-feedback-success',
+  rejected:       'bg-feedback-danger-bg text-feedback-danger',
 };
 
-export function AdminMoMImportPage() {
+interface AdminMoMImportPageProps {
+  /** Sprint 6 patch r2: when true, skip AppHeader + min-h-screen wrap.
+   *  Used by /admin/import wrapper page (Phase B). */
+  embedded?: boolean;
+}
+
+export function AdminMoMImportPage({ embedded = false }: AdminMoMImportPageProps = {}) {
   const { profile, loading: authLoading } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
@@ -121,28 +126,37 @@ export function AdminMoMImportPage() {
   }
   if (profile.role !== 'admin') return <Navigate to="/" replace />;
 
-  return (
-    <div className="min-h-screen bg-canvas">
-      <AppHeader />
-      <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
-        <div>
-          <h2 className="text-2xl font-semibold">Import MoM</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Upload notulensi rapat (Plaud Template v2 .md) — auto-parse action items, resolve PIC, review approval.
+  const body = (
+    <div className="space-y-6">
+      {!embedded && (
+        <header className="space-y-2">
+          <h1 className="font-display text-headline-md text-on-surface">
+            Import Notulensi (MoM)
+          </h1>
+          <p className="text-body-md text-on-surface-variant">
+            Convert action items rapat jadi tugas otomatis — upload <strong>.md</strong> hasil
+            Plaud Template v2, sistem parse PIC + deadline, kamu review &amp; approve sebelum jadi tugas.
           </p>
-        </div>
+          <p className="text-body-sm text-on-surface-variant/80">
+            <strong>Beda dengan Import Tugas (CSV)?</strong> CSV untuk bulk-create tugas terencana
+            dari spreadsheet (langsung jadi tugas). MoM untuk konversi rapat ad-hoc (review queue dulu).
+          </p>
+        </header>
+      )}
 
-        <Card>
-          <CardHeader>
-            <CardTitle>1. Upload MoM file</CardTitle>
-            <CardDescription>
+        <section className="bg-surface-container-lowest rounded-kt-lg shadow-brand-sm border border-outline-variant overflow-hidden">
+          <header className="px-6 py-4 border-b border-outline-variant bg-surface-container-low/50">
+            <h2 className="font-display text-title-md font-bold text-on-surface">
+              1. Upload MoM file
+            </h2>
+            <p className="text-body-sm text-on-surface-variant mt-1">
               Format Plaud Template v2 (.md). Maksimal 5 MB. Drop file atau klik untuk pilih.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+            </p>
+          </header>
+          <div className="p-6">
             <label
-              className={`block rounded-md border-2 border-dashed p-8 text-center cursor-pointer transition-colors ${
-                dragActive ? 'border-brand-deep bg-brand-deep/5' : 'border-input'
+              className={`block rounded-kt-lg border-2 border-dashed p-10 text-center cursor-pointer transition-colors ${
+                dragActive ? 'border-primary-container bg-primary-container/5' : 'border-outline-variant hover:border-primary-container/60'
               } ${uploading ? 'opacity-50 cursor-wait' : ''}`}
               onDragEnter={(e) => {
                 e.preventDefault();
@@ -168,26 +182,31 @@ export function AdminMoMImportPage() {
                 className="hidden"
               />
               {uploading ? (
-                <p className="text-sm text-muted-foreground">⏳ Parsing & uploading...</p>
+                <p className="text-body-md text-on-surface-variant">⏳ Parsing & uploading...</p>
               ) : (
                 <>
-                  <p className="text-sm font-medium">Tarik file ke sini atau klik untuk pilih</p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <div className="text-4xl mb-2" aria-hidden="true">📤</div>
+                  <p className="text-label-lg font-semibold text-on-surface">
+                    Tarik file ke sini atau klik untuk pilih
+                  </p>
+                  <p className="text-body-sm text-on-surface-variant mt-1">
                     .md (Plaud Template v2), max 5 MB
                   </p>
                 </>
               )}
             </label>
-          </CardContent>
-        </Card>
+          </div>
+        </section>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>2. Riwayat Import</CardTitle>
-            <CardDescription>50 import terakhir.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {loading && <p className="text-sm text-muted-foreground">Memuat...</p>}
+        <section className="bg-surface-container-lowest rounded-kt-lg shadow-brand-sm border border-outline-variant overflow-hidden">
+          <header className="px-6 py-4 border-b border-outline-variant bg-surface-container-low/50">
+            <h2 className="font-display text-title-md font-bold text-on-surface">
+              2. Riwayat Import
+            </h2>
+            <p className="text-body-sm text-on-surface-variant mt-1">50 import terakhir.</p>
+          </header>
+          <div className="p-6">
+            {loading && <p className="text-body-md text-on-surface-variant">Memuat...</p>}
 
             {!loading && imports.length === 0 && (
               <EmptyState
@@ -199,9 +218,9 @@ export function AdminMoMImportPage() {
             )}
 
             {!loading && imports.length > 0 && (
-              <div className="overflow-x-auto rounded-md border">
-                <table className="min-w-full text-sm">
-                  <thead className="bg-zinc-50 text-left text-xs uppercase tracking-wide text-zinc-600">
+              <div className="overflow-x-auto rounded-kt-md border border-outline-variant">
+                <table className="min-w-full text-body-md">
+                  <thead className="bg-surface-container-low text-left text-label-md uppercase tracking-wide text-on-surface-variant">
                     <tr>
                       <th className="px-3 py-2">Tanggal MoM</th>
                       <th className="px-3 py-2">File</th>
@@ -234,8 +253,7 @@ export function AdminMoMImportPage() {
                           <td className="px-3 py-2">
                             <Link
                               to={`/admin/mom-import/${m.id}`}
-                              className="text-sm font-medium underline-offset-2 hover:underline"
-                              style={{ color: 'var(--kt-sky-700)' }}
+                              className="text-label-md font-semibold text-primary-container hover:underline underline-offset-4"
                             >
                               Buka →
                             </Link>
@@ -247,8 +265,18 @@ export function AdminMoMImportPage() {
                 </table>
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </section>
+    </div>
+  );
+
+  if (embedded) return body;
+
+  return (
+    <div className="min-h-screen bg-canvas animate-fade-in">
+      <AppHeader />
+      <main className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-8">
+        {body}
       </main>
     </div>
   );

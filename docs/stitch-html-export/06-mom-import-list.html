@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Import Notulensi (MoM) - MoM Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Inter+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            background-color: #f9f9fc;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e2e2e5",
+                        "tertiary": "#6f3600",
+                        "on-surface": "#1a1c1e",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#001e2e",
+                        "on-background": "#1a1c1e",
+                        "surface-bright": "#f9f9fc",
+                        "error-container": "#ffdad6",
+                        "outline": "#717781",
+                        "on-tertiary-fixed-variant": "#713700",
+                        "on-primary-fixed": "#001d35",
+                        "secondary": "#00658f",
+                        "tertiary-container": "#924902",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#c7e7ff",
+                        "background": "#f9f9fc",
+                        "primary": "#00487a",
+                        "error": "#ba1a1a",
+                        "surface-container": "#eeeef0",
+                        "on-primary-fixed-variant": "#00497c",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#45beff",
+                        "on-tertiary-container": "#ffccaa",
+                        "tertiary-fixed-dim": "#ffb785",
+                        "surface-container-highest": "#e2e2e5",
+                        "inverse-surface": "#2f3133",
+                        "inverse-on-surface": "#f0f0f3",
+                        "surface-container-low": "#f3f3f6",
+                        "on-surface-variant": "#414750",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e8e8ea",
+                        "secondary-fixed-dim": "#86cfff",
+                        "primary-container": "#0060a0",
+                        "on-tertiary-fixed": "#301400",
+                        "primary-fixed-dim": "#9dcaff",
+                        "outline-variant": "#c1c7d2",
+                        "surface-tint": "#0461a2",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#004a6b",
+                        "inverse-primary": "#9dcaff",
+                        "surface": "#f9f9fc",
+                        "on-secondary-fixed-variant": "#004c6d",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffdcc6",
+                        "surface-dim": "#dadadc",
+                        "primary-fixed": "#d1e4ff",
+                        "on-primary-container": "#bbd9ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "margin-desktop": "32px",
+                        "base": "8px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter Display"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter Display"],
+                        "title-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.25px", "fontWeight": "400"}],
+                        "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0.5px", "fontWeight": "400"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-body-md text-on-background">
+<!-- Layout Container -->
+<div class="flex min-h-screen">
+<!-- SideNavBar (The Anchor) -->
+<aside class="fixed left-0 top-0 h-screen w-64 border-r border-slate-200 bg-white shadow-lg flex flex-col py-6 gap-2">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-white">
+<span class="material-symbols-outlined" data-icon="workspaces">workspaces</span>
+</div>
+<div>
+<h1 class="text-lg font-black text-[#0060A0]">MoM Manager</h1>
+<p class="text-xs text-slate-500">Halo, Admin!</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 transition-all rounded-lg font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 transition-all rounded-lg font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
+<span>Tasks</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 transition-all rounded-lg font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="folder">folder</span>
+<span>Projects</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center gap-3 px-4 py-3 bg-slate-50 text-[#0060A0] border-r-4 border-[#0060A0] rounded-r-lg font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span>Admin Panel</span>
+</a>
+</nav>
+<div class="mt-auto px-4 pt-4 border-t border-slate-100">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 transition-all rounded-lg font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>Bantuan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 transition-all rounded-lg font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Keluar</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 flex-1">
+<!-- TopAppBar -->
+<header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200 px-8 h-16 flex justify-between items-center shadow-[0_4px_12px_rgba(0,96,160,0.08)]">
+<div class="flex items-center gap-2">
+<span class="text-xl font-bold text-[#0060A0]">MoM Admin</span>
+<span class="text-slate-300 mx-2">/</span>
+<span class="text-slate-500 font-medium">Import Notulensi (MoM)</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 text-sm" data-icon="search">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-slate-100 border-none rounded-full text-sm focus:ring-2 focus:ring-[#0060A0] w-64" placeholder="Search..." type="text"/>
+</div>
+<button class="text-slate-500 p-2 hover:bg-slate-50 rounded-full transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-slate-500 p-2 hover:bg-slate-50 rounded-full transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-slate-200">
+<img alt="User avatar" data-alt="A professional headshot of a smiling administrator with short hair, wearing a casual navy blue polo shirt. The background is a clean, bright Indonesian office environment with soft natural light filtering through glass windows, creating a modern and trustworthy atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDm1HShKvvX7zTwla9FssGfPixNq8PztIRaorJiyR2ZW3L-2QQDD5OccpiQzd1TZoKHUHXnxBw4lrEJtV1DYLrWgGbrspwjmQl4_O9GhQ3-mvsaaf6No6Yd2rKnBfh9kuIp86oCLZgMufT6i5qc8qgrClXCYGMYIMl7sD-I0SHnvffjKnG9sfz1V917MqxUcPKcOzzjoqoQYm1mVpn5egY-K6so45SDNw8Y8NR1scGuDrhwyKe8q5kX9wpJ0SXCsBSFptKSiO0ccaud"/>
+</div>
+</div>
+</header>
+<div class="p-8 max-w-7xl mx-auto space-y-8">
+<!-- Page Header -->
+<div class="flex justify-between items-end">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Import Notulensi (MoM)</h2>
+<p class="font-body-lg text-body-lg text-slate-500">Convert action items rapat jadi tugas otomatis</p>
+</div>
+<button class="bg-[#0060A0] hover:bg-[#00487a] text-white px-6 py-3 rounded-lg font-label-lg flex items-center gap-2 transition-colors shadow-lg active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="upload">upload</span>
+<span>+ Upload MoM baru</span>
+</button>
+</div>
+<!-- Stats Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-[0_4px_12px_rgba(0,96,160,0.08)] flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="pending_actions">pending_actions</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-500">Review</p>
+<h3 class="text-xl font-bold text-orange-600">12 Menunggu</h3>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-[0_4px_12px_rgba(0,96,160,0.08)] flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-500">Bulan Ini</p>
+<h3 class="text-xl font-bold text-emerald-600">48 Tergenerate</h3>
+</div>
+</div>
+</div>
+<!-- Filter Bar -->
+<div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-wrap items-center gap-4">
+<div class="flex-1 min-w-[300px] relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400" data-icon="search">search</span>
+<input class="w-full pl-11 pr-4 py-2 bg-slate-50 border-slate-200 rounded-lg focus:ring-primary focus:border-primary" placeholder="Cari nama file..." type="text"/>
+</div>
+<select class="px-4 py-2 bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-primary focus:border-primary">
+<option>Semua Status</option>
+<option>Pending Review</option>
+<option>Approved</option>
+<option>Rejected</option>
+</select>
+<div class="flex items-center gap-2 px-4 py-2 bg-slate-50 border-slate-200 rounded-lg text-sm text-slate-600">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+<span>Date Range</span>
+</div>
+<button class="px-4 py-2 bg-slate-50 border-slate-200 rounded-lg text-sm text-slate-600 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
+<span>Filters</span>
+</button>
+</div>
+<!-- Table List -->
+<div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+<table class="w-full text-left">
+<thead class="bg-slate-50/50 border-b border-slate-200">
+<tr>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">File &amp; Pengunggah</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tanggal Rapat</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Action Items</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status Approval</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<tr class="hover:bg-slate-50/50 transition-colors h-16">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-slate-100 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+</div>
+<div>
+<div class="font-mono text-xs font-medium text-[#0060A0]">Meeting_Weekly_Sync.md</div>
+<div class="flex items-center gap-1.5 mt-1">
+<img alt="Budi Santoso" class="w-4 h-4 rounded-full" data-alt="Close-up portrait of Budi Santoso, a professional male coworker with a friendly expression. He is wearing a minimalist grey shirt. The lighting is bright and airy, reflecting a clean and collaborative Indonesian workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwCf7TaAxdMGxGnn1H5PQhApLEdShGipE5tvIswImyfOa1gCy3_05V-8p3RW2NpH4p19gMxt5_owOhoNnS4IL7AobAUHYGyG2H6BVTwgO1U4RshQHyIU2dDooKD_R6e_j4__WbMtirHGzgMSYiKjU4QkiUj-XRXyMb-DOLg1NaD28_tPlAsaf_KVRQNfWMBmrCj6nbXdYcv4omi8UmfPsk2iIce12KmM7oiCs4Ie64UynJceCtT6kYIs_w5ejBnpgUMSuADVb_loz3"/>
+<span class="text-xs text-slate-500">Budi Santoso</span>
+</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 font-medium">27 Apr 2026</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold text-slate-700">12</span>
+<div class="flex gap-1">
+<span class="px-2 py-0.5 rounded-full bg-red-50 text-red-600 text-[10px] font-bold">8 HIGH</span>
+<span class="px-2 py-0.5 rounded-full bg-orange-50 text-orange-600 text-[10px] font-bold">3 MEDIUM</span>
+<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold">1 UNRESOLVED</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 text-orange-600 text-xs font-bold border border-orange-100">
+<span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+                                        Pending Review
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<a class="text-[#0060A0] font-semibold text-sm hover:underline" href="#">Buka review</a>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors h-16">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-slate-100 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+</div>
+<div>
+<div class="font-mono text-xs font-medium text-[#0060A0]">Design_Critique_Sprint_2.md</div>
+<div class="flex items-center gap-1.5 mt-1">
+<img alt="Siti Aminah" class="w-4 h-4 rounded-full" data-alt="A portrait of a creative professional woman with a bright, welcoming smile. She is in a contemporary office setting with soft maritime blue and sky accents in the background. The lighting is professional and warm, conveying a sense of energy and competence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRRJKhOzuW57N4bD4FzkVCjaf3FOewvQrKlY2j1j5jNQwApw7BDAvLN_9oUkKKvk33B_xvmNTQdXJ9DjDgcd8NuFQzYRyk5TeOMXY2AWWdyw8jH4bxxYkp0nKPXgW9X1kBEv1lAGuRIGY4FzM-i2b2xXlx6yTp2vTqxD6OvTuf8Lo7MrtPtZ75n-rZYGdn3VhbGekKI2lQ4y6TY_VMjPiq1ndlMKqQvzRMat_i-OWbajnZKSPz65W3jfaT0jZPMx7V1Af0pbgObtVF"/>
+<span class="text-xs text-slate-500">Siti Aminah</span>
+</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 font-medium">25 Apr 2026</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold text-slate-700">5</span>
+<div class="flex gap-1">
+<span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-bold">5 RESOLVED</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-bold border border-emerald-100">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        Approved
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<a class="text-[#0060A0] font-semibold text-sm hover:underline" href="#">Lihat ringkasan</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Empty State Concept (Hidden/Placeholder logic for UI demo) -->
+<div class="bg-white rounded-xl border-2 border-dashed border-slate-200 p-12 text-center space-y-4">
+<div class="w-24 h-24 bg-sky-50 rounded-full flex items-center justify-center mx-auto mb-4">
+<span class="material-symbols-outlined text-4xl text-[#0060A0]" data-icon="upload_file">upload_file</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface">Belum ada notulensi</h3>
+<p class="text-slate-500 max-w-sm mx-auto">Upload .md hasil Plaud pertama kamu yuk untuk otomatis generate tugas.</p>
+<button class="bg-white border-2 border-[#0060A0] text-[#0060A0] hover:bg-[#0060A0] hover:text-white px-6 py-2 rounded-lg font-label-lg transition-all duration-300">
+                        Pilih file .md
+                    </button>
+</div>
+<!-- Cross-reference Card -->
+<div class="bg-[#0060A0] text-white p-6 rounded-xl shadow-lg flex items-center justify-between overflow-hidden relative">
+<div class="relative z-10 flex items-center gap-6">
+<div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="info">info</span>
+</div>
+<div>
+<h4 class="font-bold text-lg">Beda dengan Import Tugas (CSV)?</h4>
+<p class="text-sky-100 text-sm">CSV langsung jadi tugas. MoM lewat review queue dulu untuk ekstraksi AI yang presisi.</p>
+</div>
+</div>
+<a class="relative z-10 px-5 py-2 bg-white text-[#0060A0] rounded-lg text-sm font-bold hover:bg-sky-50 transition-colors" href="#">
+                        Pelajari lebih
+                    </a>
+<!-- Abstract Background Pattern -->
+<div class="absolute -right-4 -bottom-4 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
+<div class="absolute right-1/4 -top-8 w-32 h-32 bg-sky-400/10 rounded-full blur-xl"></div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

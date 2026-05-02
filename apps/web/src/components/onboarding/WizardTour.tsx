@@ -37,9 +37,9 @@ const STEPS: WizardStep[] = [
   },
   {
     emoji: '🎯',
-    title: 'Bikin task baru itu sederhana',
+    title: 'Buat task baru itu sederhana',
     body:
-      'Klik tombol "Bikin task" di project, isi judul, pilih status. Selesai. Task baru langsung muncul di view List, Kanban, atau Gantt.',
+      'Klik tombol "Buat task" di project, isi judul, pilih status. Selesai. Task baru langsung muncul di view List, Kanban, atau Gantt.',
     ctaLabel: 'Coba di Project Contoh',
     ctaHref: '/projects',
   },
@@ -123,13 +123,13 @@ export function WizardTour() {
     >
       {/* Backdrop dengan soft blur */}
       <div
-        className="absolute inset-0 bg-zinc-900/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-foreground/40 backdrop-blur-sm"
         aria-hidden="true"
       />
 
       {/* Modal card */}
       <div className="relative w-full max-w-md animate-wizard-in">
-        <div className="overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-zinc-200">
+        <div className="overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-border">
           {/* Header gradient brand */}
           <div
             className="h-2"
@@ -168,7 +168,7 @@ export function WizardTour() {
             </div>
 
             {/* Step counter */}
-            <p className="mb-3 text-center text-xs font-medium uppercase tracking-wide text-zinc-500">
+            <p className="mb-3 text-center text-xs font-medium uppercase tracking-wide text-muted-foreground">
               Langkah {stepIndex + 1} dari {STEPS.length}
             </p>
 
@@ -182,7 +182,7 @@ export function WizardTour() {
               </div>
               <h2
                 id="wizard-title"
-                className="text-xl font-semibold text-zinc-900"
+                className="text-xl font-semibold text-foreground"
                 style={{ color: 'var(--kt-deep-700)' }}
               >
                 {currentStep.title}
@@ -190,7 +190,7 @@ export function WizardTour() {
             </div>
 
             {/* Body */}
-            <p className="mb-6 text-center text-sm leading-relaxed text-zinc-600">
+            <p className="mb-6 text-center text-sm leading-relaxed text-muted-foreground">
               {currentStep.body}
             </p>
 
@@ -216,7 +216,7 @@ export function WizardTour() {
               <button
                 type="button"
                 onClick={() => void handleSkip()}
-                className="text-xs font-medium text-zinc-500 underline-offset-2 hover:text-zinc-700 hover:underline"
+                className="text-xs font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
               >
                 Skip tutorial
               </button>

@@ -59,12 +59,12 @@ export function CommentMarkdown({ body }: CommentMarkdownProps) {
           // Disable images (XSS guard), code blocks compact
           img: () => null,
           pre: ({ children }) => (
-            <pre className="rounded bg-zinc-100 px-2 py-1 text-xs overflow-x-auto">
+            <pre className="rounded bg-surface-container-low px-2 py-1 text-xs overflow-x-auto">
               {children}
             </pre>
           ),
           code: ({ children }) => (
-            <code className="rounded bg-zinc-100 px-1 py-0.5 text-xs">
+            <code className="rounded bg-surface-container-low px-1 py-0.5 text-xs">
               {children}
             </code>
           ),

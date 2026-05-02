@@ -2,18 +2,26 @@
  * CommentComposer — textarea + @mention autocomplete + submit.
  *
  * Sprint 4.5 Step 7 (Q2 owner override — UUID-based mention).
+ * Sprint 6 revision Issue 4: hide raw "@[Name](uuid)" tokens from user.
  *
- * Pattern:
- *   - Detect '@' character ke left of cursor → open MentionAutocomplete
- *   - Track query (text after '@' until space/EOL) → pass ke autocomplete
- *   - On user select → inject token @[Full Name](uuid) ke body, replace
- *     '@query' fragment dengan token
- *   - Submit via onSubmit prop (parent post via lib RPC)
+ * Display strategy (pragmatic, no contenteditable refactor):
+ *   - User picks mention → composer shows "@Full Name" plain text
+ *   - Sidecar state tracks { name, uuid } pairs of resolved mentions
+ *   - At submit: resolve each "@Full Name" occurrence to canonical
+ *     "@[Full Name](uuid)" token before sending to RPC
+ *   - Display layer (CommentMarkdown) renders chips after submit
+ *
+ * Limitation: editing chip mid-text breaks resolution. Acceptable for
+ * pilot scale (Asana/Monday do same with plain textarea).
  */
 import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { MentionAutocomplete } from './MentionAutocomplete';
-import { buildMentionToken, COMMENT_BODY_MAX, type MentionUser } from '@/lib/comments';
+import {
+  buildMentionToken,
+  COMMENT_BODY_MAX,
+  type MentionUser,
+} from '@/lib/comments';
 
 interface CommentComposerProps {
   onSubmit: (body: string) => Promise<void>;
@@ -24,6 +32,51 @@ interface CommentComposerProps {
   autoFocus?: boolean;
 }
 
+interface PendingMention {
+  fullName: string;
+  uuid: string;
+}
+
+/**
+ * Convert canonical body (with @[Name](uuid) tokens) to display body
+ * (with plain @Name) and extract sidecar mentions.
+ */
+function canonicalToDisplay(canonical: string): {
+  display: string;
+  mentions: PendingMention[];
+} {
+  const mentions: PendingMention[] = [];
+  const display = canonical.replace(
+    /@\[([^\]]+)\]\(([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\)/g,
+    (_, name: string, uuid: string) => {
+      mentions.push({ fullName: name, uuid });
+      return `@${name}`;
+    },
+  );
+  return { display, mentions };
+}
+
+/**
+ * Convert display body (with plain @Name) back to canonical (with tokens)
+ * by replacing each pending mention's "@Name" first occurrence.
+ */
+function displayToCanonical(
+  display: string,
+  mentions: PendingMention[],
+): string {
+  let result = display;
+  for (const m of mentions) {
+    const plain = `@${m.fullName}`;
+    const idx = result.indexOf(plain);
+    if (idx === -1) continue;
+    result =
+      result.slice(0, idx) +
+      buildMentionToken({ id: m.uuid, full_name: m.fullName }) +
+      result.slice(idx + plain.length);
+  }
+  return result;
+}
+
 export function CommentComposer({
   onSubmit,
   initialBody = '',
@@ -32,12 +85,16 @@ export function CommentComposer({
   onCancel,
   autoFocus = false,
 }: CommentComposerProps) {
-  const [body, setBody] = useState(initialBody);
+  const initial = canonicalToDisplay(initialBody);
+  const [body, setBody] = useState(initial.display);
+  const [pendingMentions, setPendingMentions] = useState<PendingMention[]>(
+    initial.mentions,
+  );
   const [submitting, setSubmitting] = useState(false);
   const [mentionState, setMentionState] = useState<{
     open: boolean;
     query: string;
-    triggerStart: number; // position of '@' in body
+    triggerStart: number; // position of '@' in display body
   }>({ open: false, query: '', triggerStart: -1 });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -74,15 +131,20 @@ export function CommentComposer({
     const cursor = textareaRef.current?.selectionStart ?? body.length;
     const before = body.slice(0, mentionState.triggerStart);
     const after = body.slice(cursor);
-    const token = buildMentionToken({ id: user.id, full_name: user.full_name });
-    const newBody = `${before}${token} ${after}`;
+    // Insert plain "@Full Name " — readable, not raw token
+    const display = `@${user.full_name}`;
+    const newBody = `${before}${display} ${after}`;
     setBody(newBody);
+    setPendingMentions((prev) => [
+      ...prev,
+      { fullName: user.full_name, uuid: user.id },
+    ]);
     setMentionState({ open: false, query: '', triggerStart: -1 });
     // Restore focus
     setTimeout(() => {
       const el = textareaRef.current;
       if (el) {
-        const pos = before.length + token.length + 1;
+        const pos = before.length + display.length + 1;
         el.focus();
         el.setSelectionRange(pos, pos);
       }
@@ -92,13 +154,16 @@ export function CommentComposer({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (submitting) return;
-    const trimmed = body.trim();
-    if (!trimmed) return;
-    if (trimmed.length > COMMENT_BODY_MAX) return;
+    const trimmedDisplay = body.trim();
+    if (!trimmedDisplay) return;
+    if (trimmedDisplay.length > COMMENT_BODY_MAX) return;
+    // Resolve display @Name back to canonical @[Name](uuid) tokens
+    const canonical = displayToCanonical(trimmedDisplay, pendingMentions);
     setSubmitting(true);
     try {
-      await onSubmit(trimmed);
+      await onSubmit(canonical);
       setBody('');
+      setPendingMentions([]);
     } finally {
       setSubmitting(false);
     }
@@ -127,6 +192,27 @@ export function CommentComposer({
           setMentionState({ open: false, query: '', triggerStart: -1 })
         }
       />
+      {pendingMentions.length > 0 && (
+        <div
+          className="flex flex-wrap items-center gap-1.5 text-xs"
+          aria-label="Mention pending di komen ini"
+          data-testid="pending-mentions"
+        >
+          <span className="text-muted-foreground">Mention:</span>
+          {pendingMentions.map((m, idx) => (
+            <span
+              key={`${m.uuid}-${idx}`}
+              className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-medium"
+              style={{
+                backgroundColor: 'var(--kt-deep-50)',
+                color: 'var(--kt-deep-700)',
+              }}
+            >
+              @{m.fullName}
+            </span>
+          ))}
+        </div>
+      )}
       <div className="flex items-center justify-between gap-3">
         <span
           className={`text-xs ${

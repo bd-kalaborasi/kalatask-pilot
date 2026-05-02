@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KalaTask Admin - Monitoring Penggunaan</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-container": "#45beff",
+                      "on-primary-fixed-variant": "#00497c",
+                      "surface": "#f9f9fc",
+                      "on-secondary-container": "#004a6b",
+                      "on-surface": "#1a1c1e",
+                      "on-surface-variant": "#414750",
+                      "tertiary": "#6f3600",
+                      "inverse-surface": "#2f3133",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-low": "#f3f3f6",
+                      "on-secondary-fixed-variant": "#004c6d",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#c1c7d2",
+                      "surface-dim": "#dadadc",
+                      "outline": "#717781",
+                      "error": "#ba1a1a",
+                      "secondary-fixed-dim": "#86cfff",
+                      "secondary": "#00658f",
+                      "on-primary-container": "#bbd9ff",
+                      "tertiary-fixed": "#ffdcc6",
+                      "tertiary-container": "#924902",
+                      "secondary-fixed": "#c7e7ff",
+                      "surface-tint": "#0461a2",
+                      "inverse-on-surface": "#f0f0f3",
+                      "surface-bright": "#f9f9fc",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed": "#301400",
+                      "on-tertiary-fixed-variant": "#713700",
+                      "tertiary-fixed-dim": "#ffb785",
+                      "on-background": "#1a1c1e",
+                      "primary-fixed-dim": "#9dcaff",
+                      "primary-container": "#0060a0",
+                      "primary": "#00487a",
+                      "on-error": "#ffffff",
+                      "inverse-primary": "#9dcaff",
+                      "background": "#f9f9fc",
+                      "primary-fixed": "#d1e4ff",
+                      "on-secondary-fixed": "#001e2e",
+                      "on-tertiary-container": "#ffccaa",
+                      "on-secondary": "#ffffff",
+                      "surface-container-high": "#e8e8ea",
+                      "on-primary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container": "#eeeef0",
+                      "surface-variant": "#e2e2e5",
+                      "on-primary-fixed": "#001d35",
+                      "surface-container-highest": "#e2e2e5"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "base": "8px",
+                      "margin-desktop": "32px",
+                      "margin-mobile": "16px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "title-lg": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "label-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                      "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                      "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.25px", "fontWeight": "400"}],
+                      "headline-md": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0.5px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-40 border-b bg-white/80 backdrop-blur-md border-slate-200 shadow-sm shadow-blue-900/5 flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black text-blue-700 tracking-tight">KalaTask Admin</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-500 hover:text-blue-600 font-medium font-inter text-sm transition-colors" href="#">Dashboard</a>
+<a class="text-blue-700 font-bold border-b-2 border-blue-700 font-inter text-sm py-5" href="#">Penggunaan</a>
+<a class="text-slate-500 hover:text-blue-600 font-medium font-inter text-sm transition-colors" href="#">Notifikasi</a>
+<a class="text-slate-500 hover:text-blue-600 font-medium font-inter text-sm transition-colors" href="#">Pengaturan</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-slate-50 transition-colors rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-50 transition-colors rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined">help</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-50 transition-colors rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 flex flex-col pt-20 pb-6 px-4 h-screen w-64 border-r border-slate-200 bg-slate-50 hidden lg:flex">
+<div class="mb-8 px-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-blue-700">admin_panel_settings</span>
+</div>
+<div>
+<p class="text-sm font-bold text-blue-900 leading-tight">Halo, Admin Kamu</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-widest">Status: Supabase Free Tier</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-white rounded-lg transition-all cursor-pointer hover:translate-x-1 duration-200">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium font-inter">Dashboard</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 bg-blue-100/50 text-blue-700 rounded-lg font-bold cursor-pointer hover:translate-x-1 duration-200">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-sm font-medium font-inter">Penggunaan</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-white rounded-lg transition-all cursor-pointer hover:translate-x-1 duration-200">
+<span class="material-symbols-outlined">notifications_active</span>
+<span class="text-sm font-medium font-inter">Notifikasi</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-white rounded-lg transition-all cursor-pointer hover:translate-x-1 duration-200">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium font-inter">Pengaturan</span>
+</div>
+</nav>
+<div class="mt-auto px-4">
+<button class="w-full py-3 bg-blue-700 text-white rounded-lg font-bold text-sm shadow-md shadow-blue-700/20 active:scale-95 transition-transform">
+                Upgrade Plan
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:pl-64 pt-16 min-h-screen">
+<div class="max-w-[1280px] mx-auto p-gutter space-y-6">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface">Monitoring Penggunaan</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Konsumsi resource Supabase free tier</p>
+</div>
+<div class="flex items-center gap-4 text-right">
+<span class="text-xs text-outline font-medium">Terakhir diperbarui: 2 menit yang lalu</span>
+<button class="flex items-center gap-2 px-4 py-2 border border-outline rounded-lg text-label-lg font-label-lg text-on-surface-variant hover:bg-surface-container transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+                        Segarkan
+                    </button>
+</div>
+</div>
+<!-- Health Banner -->
+<div class="w-full bg-orange-50 border-l-4 border-orange-500 p-4 flex items-start gap-3 rounded-r-lg">
+<span class="material-symbols-outlined text-orange-600 mt-0.5">warning</span>
+<p class="font-body-md text-body-md text-orange-800">
+<span class="font-bold">⚠️ DB size 75% — warning &gt;70%.</span> Segera lakukan optimasi tabel atau upgrade paket untuk menghindari read-only mode.
+                </p>
+</div>
+<!-- 3-Card Metric Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Database Card -->
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-[0_4px_12px_rgba(0,96,160,0.08)]">
+<div class="flex justify-between items-start mb-4">
+<span class="text-[11px] font-bold tracking-widest text-outline uppercase">DATABASE</span>
+<div class="bg-secondary-fixed text-on-secondary-fixed-variant px-2 py-0.5 rounded-full text-[10px] font-bold">
+                            +12 MB minggu ini
+                        </div>
+</div>
+<div class="font-mono text-2xl font-bold text-on-surface mb-2 tracking-tighter">375 MB / 500 MB</div>
+<div class="w-full bg-surface-container rounded-full h-2 mb-2 overflow-hidden">
+<div class="bg-amber-500 h-full w-[75%] rounded-full"></div>
+</div>
+<div class="flex justify-between text-xs font-medium">
+<span class="text-on-surface-variant">75% digunakan</span>
+<span class="text-amber-600">Ambang kritis</span>
+</div>
+</div>
+<!-- Storage Card -->
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-[0_4px_12px_rgba(0,96,160,0.08)] opacity-80">
+<div class="flex justify-between items-start mb-4">
+<span class="text-[11px] font-bold tracking-widest text-outline uppercase">PENYIMPANAN</span>
+<span class="material-symbols-outlined text-outline text-[18px]">lock</span>
+</div>
+<div class="text-xl font-medium text-outline italic mb-2 py-1">Segera tersedia</div>
+<div class="w-full bg-surface-container rounded-full h-2 mb-2"></div>
+<div class="text-xs text-outline">Modul object storage belum aktif</div>
+</div>
+<!-- MAU Card -->
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-[0_4px_12px_rgba(0,96,160,0.08)]">
+<div class="flex justify-between items-start mb-4">
+<span class="text-[11px] font-bold tracking-widest text-outline uppercase">MAU (30 HARI)</span>
+<div class="bg-secondary-fixed text-on-secondary-fixed-variant px-2 py-0.5 rounded-full text-[10px] font-bold">
+                            +150 bulan ini
+                        </div>
+</div>
+<div class="font-mono text-2xl font-bold text-on-surface mb-2 tracking-tighter">1.2k / 1.5k</div>
+<div class="w-full bg-surface-container rounded-full h-2 mb-2 overflow-hidden">
+<div class="bg-emerald-500 h-full w-[80%] rounded-full"></div>
+</div>
+<div class="flex justify-between text-xs font-medium">
+<span class="text-on-surface-variant">80% kuota</span>
+<span class="text-emerald-600 text-[10px]">Tingkat sehat</span>
+</div>
+</div>
+</div>
+<!-- 2-Column Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+<!-- Top Table List -->
+<div class="bg-white rounded-xl border border-slate-200 shadow-[0_4px_12px_rgba(0,96,160,0.08)] overflow-hidden">
+<div class="p-5 border-b border-slate-100 flex justify-between items-center">
+<h3 class="font-bold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-600">table_chart</span>
+                            Top tabel terbesar
+                        </h3>
+<span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">5 TOTAL</span>
+</div>
+<div class="p-5 space-y-5">
+<div class="space-y-1">
+<div class="flex justify-between text-sm">
+<code class="text-blue-700 font-semibold">public.task_attachments</code>
+<span class="font-bold">142.5 MB</span>
+</div>
+<div class="w-full bg-slate-50 h-1.5 rounded-full">
+<div class="bg-blue-600 h-full w-[45%] rounded-full"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-sm">
+<code class="text-blue-700 font-semibold">public.user_activity_logs</code>
+<span class="font-bold">88.2 MB</span>
+</div>
+<div class="w-full bg-slate-50 h-1.5 rounded-full">
+<div class="bg-blue-600 h-full w-[28%] rounded-full"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-sm">
+<code class="text-blue-700 font-semibold">public.notifications</code>
+<span class="font-bold">45.0 MB</span>
+</div>
+<div class="w-full bg-slate-50 h-1.5 rounded-full">
+<div class="bg-blue-600 h-full w-[15%] rounded-full"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-sm">
+<code class="text-blue-700 font-semibold">public.task_comments</code>
+<span class="font-bold">32.1 MB</span>
+</div>
+<div class="w-full bg-slate-50 h-1.5 rounded-full">
+<div class="bg-blue-400 h-full w-[10%] rounded-full"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-sm">
+<code class="text-blue-700 font-semibold">public.users</code>
+<span class="font-bold">12.4 MB</span>
+</div>
+<div class="w-full bg-slate-50 h-1.5 rounded-full">
+<div class="bg-blue-400 h-full w-[4%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Alerts Section -->
+<div class="bg-white rounded-xl border border-slate-200 shadow-[0_4px_12px_rgba(0,96,160,0.08)] flex flex-col">
+<div class="p-5 border-b border-slate-100">
+<h3 class="font-bold text-on-surface">Alerts aktif</h3>
+</div>
+<div class="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-4">
+<div class="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600">
+<span class="material-symbols-outlined text-4xl" data-weight="fill">check_circle</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface text-lg">Semua resource sehat ✅</h4>
+<p class="text-on-surface-variant font-body-md">Belum ada peringatan kritis saat ini</p>
+</div>
+<button class="text-blue-700 font-bold text-sm hover:underline">Lihat riwayat alert</button>
+</div>
+</div>
+</div>
+<!-- Optimization Tips Callout -->
+<div class="bg-primary p- gutter rounded-xl relative overflow-hidden text-white shadow-xl shadow-blue-900/20">
+<!-- Background visual texture prompt -->
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<img alt="" class="w-full h-full object-cover" data-alt="A clean, abstract background with sophisticated geometric data patterns and circuit lines, glowing subtly in deep blues and whites. The style is modern, professional, and corporate, representing a high-tech data environment with a minimalist, airy feel. The lighting is soft and even, emphasizing digital efficiency and maritime blue brand colors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbtrqdxV4a-qvPu5-1IZ8ojPrZIO5jgAgtaa8oXvUoNWQfUzYKaqTj43D0CoIJRr36ijTmPZCLvf9H9aC38oCHd8_TPweIGM_LRkdHLtd-XM2XqjEwly1R497t-Ntt79FmRh7tWMUd6lu6sh0ncmrGWeq23wKg3qoBb5QVrriD5g8Bs7tfGskZ_vauXaKQ8gz5ab9XpOcPgT0DIC31iyBUnbfsqfKTsBAlZfblUj_v0eYhpZQqTJU2SSm1EpxZKyhQGHzKbs7pu8WS"/>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white">lightbulb</span>
+</div>
+<h3 class="text-xl font-bold tracking-tight">Tips menjaga free tier kamu</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex items-start gap-4 p-4 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 hover:bg-white/15 transition-colors">
+<span class="material-symbols-outlined text-sky-300 mt-1">cleaning_services</span>
+<p class="text-sm font-medium">Bersihkan tabel logs secara rutin setiap 30 hari.</p>
+</div>
+<div class="flex items-start gap-4 p-4 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 hover:bg-white/15 transition-colors">
+<span class="material-symbols-outlined text-sky-300 mt-1">compress</span>
+<p class="text-sm font-medium">Gunakan kompresi gambar sebelum upload ke storage.</p>
+</div>
+<div class="flex items-start gap-4 p-4 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 hover:bg-white/15 transition-colors">
+<span class="material-symbols-outlined text-sky-300 mt-1">delete_sweep</span>
+<p class="text-sm font-medium">Hapus notifikasi lama yang sudah dibaca &gt; 6 bulan.</p>
+</div>
+<div class="flex items-start gap-4 p-4 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 hover:bg-white/15 transition-colors">
+<span class="material-symbols-outlined text-sky-300 mt-1">data_object</span>
+<p class="text-sm font-medium">Optimasi tipe data kolom (e.g. use timestamptz vs text).</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Spacing -->
+<div class="h-8"></div>
+</div>
+</main>
+<!-- BottomNavBar Shell (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-200 flex items-center justify-around z-40 px-2">
+<div class="flex flex-col items-center justify-center text-slate-500 gap-0.5">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-bold">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-blue-700 gap-0.5">
+<span class="material-symbols-outlined" data-weight="fill">bar_chart</span>
+<span class="text-[10px] font-bold">Penggunaan</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-500 gap-0.5">
+<span class="material-symbols-outlined">notifications_active</span>
+<span class="text-[10px] font-bold">Notifikasi</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-500 gap-0.5">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold">Setelan</span>
+</div>
+</nav>
+</body></html>

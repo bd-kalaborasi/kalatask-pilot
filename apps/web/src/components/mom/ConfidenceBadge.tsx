@@ -10,10 +10,10 @@ interface ConfidenceBadgeProps {
 }
 
 const STYLES: Record<Confidence, { bg: string; text: string; label: string }> = {
-  HIGH: { bg: 'bg-emerald-100', text: 'text-emerald-800', label: '✅ HIGH' },
-  MEDIUM: { bg: 'bg-amber-100', text: 'text-amber-800', label: '⚠️ MEDIUM' },
-  LOW: { bg: 'bg-orange-100', text: 'text-orange-800', label: '🔍 LOW' },
-  UNRESOLVED: { bg: 'bg-red-100', text: 'text-red-800', label: '❌ UNRESOLVED' },
+  HIGH:       { bg: 'bg-feedback-success-bg', text: 'text-feedback-success', label: '✅ HIGH' },
+  MEDIUM:     { bg: 'bg-feedback-warning-bg', text: 'text-feedback-warning', label: '⚠️ MEDIUM' },
+  LOW:        { bg: 'bg-feedback-warning-bg', text: 'text-feedback-warning', label: '🔍 LOW' },
+  UNRESOLVED: { bg: 'bg-feedback-danger-bg', text: 'text-feedback-danger',   label: '❌ UNRESOLVED' },
 };
 
 export function ConfidenceBadge({ confidence }: ConfidenceBadgeProps) {

@@ -47,7 +47,8 @@ test.describe('F3 Three Views — view toggle UI', () => {
     page,
   }) => {
     await login(page);
-    await page.getByRole('link', { name: 'Buka Projects' }).click();
+    // Sprint 6 patch: "Buka Projects" → "Lihat semua proyek" (Stitch label)
+    await page.getByRole('link', { name: /Lihat semua proyek/i }).click();
     await expect(page).toHaveURL(/\/projects$/);
   });
 });
@@ -87,7 +88,7 @@ test.describe('Projects filter URL state', () => {
     );
 
     // Status chip pre-pressed
-    const activeChip = page.getByRole('button', { name: 'Active' });
+    const activeChip = page.getByRole('button', { name: 'Aktif' });
     await expect(activeChip).toHaveAttribute('aria-pressed', 'true');
 
     // Team filter dropdown shows selected value (admin role visible)

@@ -29,6 +29,8 @@ import { Tooltip } from '@/components/onboarding/Tooltip';
 import { lazy, Suspense } from 'react';
 import { ListView } from '@/components/views/ListView';
 import { KanbanView } from '@/components/views/KanbanView';
+import { CreateTaskModal } from '@/components/task/CreateTaskModal';
+import { ACTION } from '@/lib/labels';
 // Lazy-load GanttView untuk code-split frappe-gantt + CSS. Initial bundle
 // stays slim; chunk loads saat user toggle ke Gantt view (R3 mitigation
 // per Sprint 2 plan).
@@ -58,6 +60,10 @@ export function ProjectDetailPage() {
   const [projectLoading, setProjectLoading] = useState(true);
   const [projectError, setProjectError] = useState<Error | null>(null);
   const [statusUpdating, setStatusUpdating] = useState(false);
+  const [createTaskOpen, setCreateTaskOpen] = useState(false);
+
+  const canCreateTask =
+    profile?.role === 'admin' || profile?.role === 'manager';
 
   const {
     tasks,
@@ -148,12 +154,21 @@ export function ProjectDetailPage() {
   if (!profile) return null;
 
   return (
-    <div className="min-h-screen bg-canvas">
+    <div className="min-h-screen bg-canvas animate-fade-in">
       <AppHeader />
-      <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
-        <Button asChild variant="ghost" size="sm">
-          <Link to="/projects">← Kembali ke Projects</Link>
-        </Button>
+      <main className="max-w-[1400px] mx-auto px-margin-mobile md:px-margin-desktop py-8 space-y-6">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-body-sm">
+          <Link
+            to="/projects"
+            className="text-on-surface-variant hover:text-primary-container transition-colors"
+          >
+            Proyek
+          </Link>
+          <span className="text-on-surface-variant" aria-hidden="true">/</span>
+          <span className="text-on-surface font-medium truncate max-w-md">
+            {project?.name ?? '...'}
+          </span>
+        </nav>
 
         {projectLoading && (
           <p className="text-sm text-muted-foreground">Memuat project...</p>
@@ -175,56 +190,104 @@ export function ProjectDetailPage() {
 
         {project && (
           <>
-            <div className="space-y-3">
-              <div className="flex flex-wrap items-center gap-3">
-                <h2 className="text-2xl font-semibold">{project.name}</h2>
-                <ProjectStatusBadge status={project.status} />
-              </div>
-              {project.description && (
-                <p className="text-sm text-muted-foreground">
-                  {project.description}
-                </p>
-              )}
-            </div>
+            <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+              {/* Sidebar context panel — Sprint 6-rev Stitch redesign */}
+              <aside
+                className="space-y-4 lg:sticky lg:top-6 lg:self-start"
+                aria-label="Konteks project"
+              >
+                <div className="space-y-2">
+                  <h1 className="font-display text-headline-md text-on-surface leading-tight">
+                    {project.name}
+                  </h1>
+                  <ProjectStatusBadge status={project.status} />
+                </div>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Status Project</CardTitle>
-                <CardDescription>
-                  {profile.role === 'admin' || profile.role === 'manager'
-                    ? 'Update lifecycle project — UI hint, DB lenient (Q2 design decision)'
-                    : 'Read-only — hanya admin & manager yang bisa update status'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex items-center gap-3">
-                <ProjectStatusSelect
-                  value={project.status}
-                  onChange={handleStatusChange}
-                  userRole={profile.role}
-                  disabled={statusUpdating}
-                  id="project-status-select"
-                />
-                {statusUpdating && (
-                  <span className="text-xs text-muted-foreground">
-                    Memuat...
-                  </span>
+                {project.description && (
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {project.description}
+                  </p>
                 )}
-              </CardContent>
-            </Card>
 
-            <div className="space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <h3 className="text-xl font-semibold">Tasks</h3>
-                <div className="relative">
-                  <Tooltip tooltipKey="view-toggle" anchor="below">
-                    Switch antara List / Kanban / Gantt — datanya sama, cuma cara lihatnya beda. 👀
-                  </Tooltip>
-                  <ViewToggle
-                    current={view}
-                    onChange={(v) =>
-                      setSearchParams(writeViewToUrl(v, searchParams))
-                    }
-                  />
+                <Card>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm">Status</CardTitle>
+                    <CardDescription className="text-xs">
+                      {profile.role === 'admin' || profile.role === 'manager'
+                        ? 'Atur lifecycle project'
+                        : 'Read-only'}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-0 space-y-2">
+                    <ProjectStatusSelect
+                      value={project.status}
+                      onChange={handleStatusChange}
+                      userRole={profile.role}
+                      disabled={statusUpdating}
+                      id="project-status-select"
+                    />
+                    {statusUpdating && (
+                      <span className="text-xs text-muted-foreground">
+                        Memuat...
+                      </span>
+                    )}
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm">Ringkasan tugas</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <ProjectTaskSummary tasks={tasks} />
+                  </CardContent>
+                </Card>
+
+                <div className="text-xs text-muted-foreground space-y-1 px-1">
+                  <p>
+                    Dibuat:{' '}
+                    {new Date(project.created_at).toLocaleDateString('id-ID')}
+                  </p>
+                  {project.completed_at && (
+                    <p>
+                      Selesai:{' '}
+                      {new Date(project.completed_at).toLocaleDateString(
+                        'id-ID',
+                      )}
+                    </p>
+                  )}
+                </div>
+              </aside>
+
+              {/* Main content — tasks views */}
+              {/* min-w-0 prevents Gantt timeline from expanding the grid column.
+                  Sprint 6 patch r2 Phase E. */}
+              <div className="space-y-4 min-w-0">
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-outline-variant">
+                <h2 className="font-display text-title-lg font-bold text-on-surface">
+                  Tasks
+                </h2>
+                <div className="flex items-center gap-2">
+                  {canCreateTask && (
+                    <Button
+                      variant="brand"
+                      onClick={() => setCreateTaskOpen(true)}
+                      data-testid="create-task-button"
+                    >
+                      + {ACTION.CREATE_TASK}
+                    </Button>
+                  )}
+                  <div className="relative">
+                    <Tooltip tooltipKey="view-toggle" anchor="below">
+                      Switch antara List / Kanban / Gantt — datanya sama, cuma cara lihatnya beda. 👀
+                    </Tooltip>
+                    <ViewToggle
+                      current={view}
+                      onChange={(v) =>
+                        setSearchParams(writeViewToUrl(v, searchParams))
+                      }
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -256,10 +319,91 @@ export function ProjectDetailPage() {
                   />
                 </>
               )}
+              </div>
             </div>
           </>
         )}
       </main>
+      {canCreateTask && project && (
+        <CreateTaskModal
+          open={createTaskOpen}
+          onClose={() => setCreateTaskOpen(false)}
+          projectId={project.id}
+          onCreated={() => void refetchTasks()}
+        />
+      )}
+    </div>
+  );
+}
+
+function ProjectTaskSummary({
+  tasks,
+}: {
+  tasks: import('@/lib/tasks').TaskWithAssignee[];
+}) {
+  const counts = tasks.reduce<Record<string, number>>(
+    (acc, t) => {
+      acc[t.status] = (acc[t.status] ?? 0) + 1;
+      return acc;
+    },
+    { todo: 0, in_progress: 0, review: 0, done: 0, blocked: 0 },
+  );
+  const total = tasks.length;
+  const donePct = total > 0 ? Math.round((counts.done / total) * 100) : 0;
+  return (
+    <div className="space-y-2">
+      <div className="flex items-baseline justify-between gap-2">
+        <span className="text-2xl font-semibold tabular-nums">{total}</span>
+        <span className="text-xs text-muted-foreground">total tugas</span>
+      </div>
+      {total > 0 && (
+        <>
+          <div
+            className="h-1.5 rounded-full bg-surface-container-low overflow-hidden"
+            role="progressbar"
+            aria-valuenow={donePct}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`${donePct} persen selesai`}
+          >
+            <div
+              className="h-full bg-feedback-success transition-all duration-base ease-brand"
+              style={{ width: `${donePct}%` }}
+            />
+          </div>
+          <p className="text-xs text-muted-foreground">{donePct}% selesai</p>
+          <ul className="text-xs space-y-0.5 pt-1 border-t mt-2">
+            {counts.in_progress > 0 && (
+              <li className="flex justify-between">
+                <span>Sedang dikerjakan</span>
+                <span className="font-mono tabular-nums">
+                  {counts.in_progress}
+                </span>
+              </li>
+            )}
+            {counts.review > 0 && (
+              <li className="flex justify-between">
+                <span>Cek ulang</span>
+                <span className="font-mono tabular-nums">{counts.review}</span>
+              </li>
+            )}
+            {counts.todo > 0 && (
+              <li className="flex justify-between">
+                <span>Belum mulai</span>
+                <span className="font-mono tabular-nums">{counts.todo}</span>
+              </li>
+            )}
+            {counts.blocked > 0 && (
+              <li className="flex justify-between text-feedback-danger">
+                <span>Tertahan</span>
+                <span className="font-mono tabular-nums">
+                  {counts.blocked}
+                </span>
+              </li>
+            )}
+          </ul>
+        </>
+      )}
     </div>
   );
 }
@@ -319,7 +463,14 @@ function ViewRenderer({
   onRefetch,
 }: ViewRendererProps) {
   if (view === 'list') {
-    return <ListView tasks={tasks} groupBy={groupBy} />;
+    return (
+      <ListView
+        tasks={tasks}
+        groupBy={groupBy}
+        onLocalUpdate={onLocalUpdate}
+        onRefetch={onRefetch}
+      />
+    );
   }
   if (view === 'kanban') {
     return (

@@ -37,6 +37,9 @@ export function AdminMoMReviewPage() {
   const [decisions, setDecisions] = useState<Record<string, Decision>>({});
   const [picOverrides, setPicOverrides] = useState<Record<string, string | null>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [activeTab, setActiveTab] = useState<
+    'all' | 'HIGH' | 'MEDIUM' | 'LOW' | 'UNRESOLVED'
+  >('all');
 
   const reload = useCallback(async () => {
     if (!id) return;
@@ -117,7 +120,7 @@ export function AdminMoMReviewPage() {
 
   if (!parent) {
     return (
-      <div className="min-h-screen bg-canvas">
+      <div className="min-h-screen bg-canvas animate-fade-in">
         <AppHeader />
         <main className="max-w-dashboard mx-auto px-6 py-8">
           <p className="text-sm text-destructive">MoM tidak ditemukan.</p>
@@ -134,29 +137,48 @@ export function AdminMoMReviewPage() {
     LOW: items.filter((i) => i.pic_confidence === 'LOW'),
     UNRESOLVED: items.filter((i) => i.pic_confidence === 'UNRESOLVED'),
   };
+  const visibleGroups = (
+    activeTab === 'all'
+      ? (['HIGH', 'MEDIUM', 'LOW', 'UNRESOLVED'] as const)
+      : ([activeTab] as const)
+  ).filter((conf) => groups[conf].length > 0);
 
   return (
-    <div className="min-h-screen bg-canvas">
+    <div className="min-h-screen bg-canvas animate-fade-in">
       <AppHeader />
-      <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
-        <div className="flex items-center gap-2">
-          <Button asChild variant="ghost" size="sm">
-            <Link to="/admin/mom-import">← Balik ke Import MoM</Link>
-          </Button>
-        </div>
+      <main className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-8 space-y-6">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-body-sm">
+          <Link
+            to="/admin/mom-import"
+            className="text-on-surface-variant hover:text-primary-container transition-colors"
+          >
+            Import MoM
+          </Link>
+          <span className="text-on-surface-variant" aria-hidden="true">/</span>
+          <span className="text-on-surface font-medium truncate">
+            {parent.title || parent.file_name}
+          </span>
+        </nav>
 
-        <div>
-          <h2 className="text-2xl font-semibold">{parent.title || parent.file_name}</h2>
-          <p className="text-sm text-muted-foreground mt-1 font-mono">
+        <header>
+          <h1 className="font-display text-headline-md text-on-surface">
+            {parent.title || parent.file_name}
+          </h1>
+          <p className="text-body-sm text-on-surface-variant mt-1 font-mono">
             {parent.file_name} · {parent.mom_date ?? '—'}
           </p>
-        </div>
+        </header>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Ringkasan Resolution</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <section className="bg-surface-container-lowest rounded-kt-lg shadow-brand-sm border border-outline-variant p-6">
+          <header className="mb-4">
+            <h2 className="font-display text-title-md font-bold text-on-surface">
+              Ringkasan resolusi
+            </h2>
+            <p className="text-body-sm text-on-surface-variant mt-1">
+              Confidence dari fuzzy match Plaud → user database.
+            </p>
+          </header>
+          <div className="space-y-4">
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
               <Stat label="Total" value={summary.total ?? 0} />
               <Stat label="HIGH" value={summary.high ?? 0} tone="success" />
@@ -164,11 +186,98 @@ export function AdminMoMReviewPage() {
               <Stat label="LOW" value={summary.low ?? 0} tone="orange" />
               <Stat label="UNRESOLVED" value={summary.unresolved ?? 0} tone="danger" />
             </div>
-          </CardContent>
-        </Card>
 
-        {(['HIGH', 'MEDIUM', 'LOW', 'UNRESOLVED'] as const).map((conf) =>
-          groups[conf].length > 0 ? (
+            {!isApproved && (summary.high ?? 0) > 0 && (
+              <div className="border-t border-outline-variant pt-4">
+                <Button
+                  size="lg"
+                  onClick={() => {
+                    // Approve only HIGH-confidence items (auto-default decision)
+                    const highOnly: Record<string, Decision> = {};
+                    for (const item of items) {
+                      if (item.pic_confidence === 'HIGH') {
+                        highOnly[item.id] = 'create';
+                      } else {
+                        highOnly[item.id] = 'skip';
+                      }
+                    }
+                    setDecisions(highOnly);
+                    void handleApprove();
+                  }}
+                  className="w-full"
+                  disabled={submitting}
+                >
+                  {submitting
+                    ? 'Memproses...'
+                    : `Approve HIGH saja (${summary.high} item) — auto-buat tugas`}
+                </Button>
+                <p className="text-xs text-muted-foreground mt-2 text-center">
+                  Item MEDIUM, LOW, UNRESOLVED akan di-skip. Edit per item dulu kalau mau dimasukkan.
+                </p>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Filter tabs — Sprint 6-rev redesign per Stitch principle */}
+        <div
+          role="tablist"
+          aria-label="Filter berdasarkan confidence"
+          className="flex flex-wrap gap-1 border-b"
+        >
+          {(
+            [
+              { key: 'all', label: 'Semua', count: items.length },
+              { key: 'HIGH', label: 'HIGH', count: groups.HIGH.length },
+              {
+                key: 'MEDIUM',
+                label: 'MEDIUM',
+                count: groups.MEDIUM.length,
+              },
+              { key: 'LOW', label: 'LOW', count: groups.LOW.length },
+              {
+                key: 'UNRESOLVED',
+                label: 'UNRESOLVED',
+                count: groups.UNRESOLVED.length,
+              },
+            ] as const
+          ).map((tab) => {
+            const active = activeTab === tab.key;
+            return (
+              <button
+                key={tab.key}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => setActiveTab(tab.key)}
+                className={`px-3 py-2 text-sm font-medium border-b-2 -mb-px transition-colors duration-fast ease-brand ${
+                  active
+                    ? 'border-brand-deep text-brand-deep'
+                    : 'border-transparent text-muted-foreground hover:text-foreground'
+                }`}
+                data-testid={`mom-tab-${tab.key}`}
+              >
+                {tab.label}
+                <span
+                  className={`ml-1.5 inline-flex items-center justify-center rounded-full px-1.5 text-[10px] font-mono ${
+                    active
+                      ? 'bg-brand-deep text-white'
+                      : 'bg-surface-container-low text-muted-foreground'
+                  }`}
+                >
+                  {tab.count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {visibleGroups.length === 0 ? (
+          <div className="rounded-md border bg-surface p-8 text-center text-sm text-muted-foreground">
+            Tidak ada item di kategori ini.
+          </div>
+        ) : (
+          visibleGroups.map((conf) => (
             <ItemGroup
               key={conf}
               confidence={conf}
@@ -179,21 +288,21 @@ export function AdminMoMReviewPage() {
               onPicChange={setItemPic}
               disabled={isApproved}
             />
-          ) : null,
+          ))
         )}
 
         {!isApproved && (
           <div className="sticky bottom-4 flex justify-end">
             <Button onClick={() => void handleApprove()} disabled={submitting}>
-              {submitting ? 'Memproses...' : 'Approve & Commit Tasks'}
+              {submitting ? 'Memproses...' : 'Approve & buat tugas'}
             </Button>
           </div>
         )}
 
         {isApproved && (
-          <div className="rounded-md border bg-emerald-50 p-4">
-            <p className="text-sm font-medium text-emerald-800">
-              ✅ Sudah di-approve. Task yang ter-create dapat di-track via Projects view.
+          <div className="rounded-md border border-feedback-success-border bg-feedback-success-bg p-4">
+            <p className="text-sm font-medium text-feedback-success">
+              ✅ Sudah ter-approve. Tugas yang dibuat bisa kamu lihat di halaman project.
             </p>
           </div>
         )}
@@ -308,10 +417,10 @@ function Stat({
   tone?: 'success' | 'warning' | 'orange' | 'danger';
 }) {
   const cls: Record<NonNullable<typeof tone>, string> = {
-    success: 'text-emerald-700',
-    warning: 'text-amber-700',
-    orange: 'text-orange-700',
-    danger: 'text-red-700',
+    success: 'text-feedback-success',
+    warning: 'text-feedback-warning',
+    orange:  'text-feedback-warning',
+    danger:  'text-feedback-danger',
   };
   return (
     <div className="rounded-md border bg-surface p-3">

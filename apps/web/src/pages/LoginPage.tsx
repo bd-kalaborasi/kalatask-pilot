@@ -50,7 +50,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-canvas px-4">
+    <main className="min-h-screen flex items-center justify-center bg-canvas px-4" role="main">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-3 text-center">
           <h1 className="kt-wordmark text-4xl">
@@ -103,6 +103,6 @@ export function LoginPage() {
           </form>
         </CardContent>
       </Card>
-    </div>
+    </main>
   );
 }

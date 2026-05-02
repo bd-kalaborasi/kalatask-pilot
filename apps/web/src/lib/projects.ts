@@ -74,6 +74,40 @@ export async function updateProjectStatus({
   if (error) throw error;
 }
 
+export interface CreateProjectArgs {
+  name: string;
+  description?: string;
+  status?: ProjectStatus;
+  /** Defaults ke auth.uid() di server kalau undefined (manager auto-self via RLS WITH CHECK). */
+  ownerId?: string;
+}
+
+export async function createProject(
+  args: CreateProjectArgs,
+): Promise<ProjectWithOwner> {
+  const { data: authData } = await supabase.auth.getUser();
+  const uid = authData.user?.id;
+  if (!uid) throw new Error('Tidak ada session aktif');
+
+  const payload = {
+    name: args.name.trim(),
+    description: args.description?.trim() || null,
+    status: args.status ?? 'planning',
+    owner_id: args.ownerId ?? uid,
+  };
+
+  const { data, error } = await supabase
+    .from('projects')
+    .insert(payload)
+    .select(
+      'id, name, description, owner_id, status, created_at, updated_at, completed_at, owner:users!projects_owner_id_fkey (id, full_name, team_id)',
+    )
+    .single();
+
+  if (error) throw error;
+  return data as unknown as ProjectWithOwner;
+}
+
 /**
  * Apply filter di client side. RLS sudah filter visibility — ini lapis
  * UX filter (status + team).

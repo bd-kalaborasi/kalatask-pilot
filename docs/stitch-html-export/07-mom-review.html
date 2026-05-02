@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Review MoM Import | KalaTask Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Inter+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#924902",
+                        "surface-bright": "#f9f9fc",
+                        "surface-tint": "#0461a2",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#1a1c1e",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#0060a0",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001d35",
+                        "on-secondary-fixed-variant": "#004c6d",
+                        "on-tertiary-container": "#ffccaa",
+                        "surface-dim": "#dadadc",
+                        "secondary-container": "#45beff",
+                        "surface-container-low": "#f3f3f6",
+                        "secondary": "#00658f",
+                        "outline": "#717781",
+                        "primary": "#00487a",
+                        "on-secondary-fixed": "#001e2e",
+                        "secondary-fixed": "#c7e7ff",
+                        "inverse-on-surface": "#f0f0f3",
+                        "tertiary-fixed-dim": "#ffb785",
+                        "inverse-primary": "#9dcaff",
+                        "secondary-fixed-dim": "#86cfff",
+                        "primary-fixed": "#d1e4ff",
+                        "surface": "#f9f9fc",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c1c7d2",
+                        "tertiary": "#6f3600",
+                        "on-primary-fixed-variant": "#00497c",
+                        "on-primary-container": "#bbd9ff",
+                        "background": "#f9f9fc",
+                        "surface-container-highest": "#e2e2e5",
+                        "tertiary-fixed": "#ffdcc6",
+                        "on-secondary-container": "#004a6b",
+                        "surface-container": "#eeeef0",
+                        "inverse-surface": "#2f3133",
+                        "on-tertiary-fixed-variant": "#713700",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#301400",
+                        "surface-variant": "#e2e2e5",
+                        "surface-container-high": "#e8e8ea",
+                        "on-surface-variant": "#414750",
+                        "on-surface": "#1a1c1e",
+                        "primary-fixed-dim": "#9dcaff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "base": "8px",
+                        "margin-desktop": "32px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "label-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "display-lg": ["Inter Display"],
+                        "headline-md": ["Inter Display"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.25px", "fontWeight": "400"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                        "headline-md": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0.5px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e2e5; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col fixed left-0 top-0 h-full p-4 z-40 bg-slate-50 dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 w-64">
+<div class="mb-8 px-4">
+<h1 class="text-lg font-black text-[#0060A0] dark:text-sky-500 mb-1">KalaTask</h1>
+<p class="text-[12px] text-slate-500">Santai-Profesional Admin</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="text-slate-600 dark:text-slate-400 flex items-center px-4 py-3 rounded-lg hover:bg-slate-200/50 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="font-label-lg text-label-lg">Beranda</span>
+</a>
+<a class="bg-blue-50 dark:bg-[#0060A0]/10 text-[#0060A0] dark:text-sky-300 font-bold rounded-lg px-4 py-3 flex items-center" href="#">
+<span class="material-symbols-outlined mr-3">fact_check</span>
+<span class="font-label-lg text-label-lg">Review Queue</span>
+</a>
+<a class="text-slate-600 dark:text-slate-400 flex items-center px-4 py-3 rounded-lg hover:bg-slate-200/50 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">history_edu</span>
+<span class="font-label-lg text-label-lg">Riwayat MoM</span>
+</a>
+<a class="text-slate-600 dark:text-slate-400 flex items-center px-4 py-3 rounded-lg hover:bg-slate-200/50 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">group</span>
+<span class="font-label-lg text-label-lg">Daftar Petugas</span>
+</a>
+<a class="text-slate-600 dark:text-slate-400 flex items-center px-4 py-3 rounded-lg hover:bg-slate-200/50 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">settings</span>
+<span class="font-label-lg text-label-lg">Pengaturan</span>
+</a>
+</nav>
+<div class="mt-auto space-y-1 border-t border-slate-200 dark:border-slate-800 pt-4">
+<a class="text-slate-600 dark:text-slate-400 flex items-center px-4 py-3 rounded-lg hover:bg-slate-200/50 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">help_outline</span>
+<span class="font-label-lg text-label-lg">Bantuan</span>
+</a>
+<a class="text-slate-600 dark:text-slate-400 flex items-center px-4 py-3 rounded-lg hover:bg-slate-200/50 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">logout</span>
+<span class="font-label-lg text-label-lg">Keluar</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 bg-surface min-h-screen">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-6 h-16 w-full sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm shadow-[#0060A0]/05">
+<div class="flex flex-col">
+<nav class="flex items-center text-[10px] text-outline uppercase tracking-widest font-semibold mb-0.5">
+<span>Admin</span>
+<span class="material-symbols-outlined text-[12px] mx-1">chevron_right</span>
+<span>Import MoM</span>
+<span class="material-symbols-outlined text-[12px] mx-1">chevron_right</span>
+<span class="text-primary truncate max-w-[150px]">Meeting_Notes_Project_X.docx</span>
+</nav>
+<div class="flex items-center gap-3">
+<h2 class="font-body-lg text-body-lg font-bold text-on-surface">Review MoM Import</h2>
+<span class="text-xs text-outline">MoM Date: 12 Okt 2023</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant text-[11px] font-bold rounded-full uppercase tracking-wider flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+                    Pending Review
+                </span>
+<button class="bg-primary-container text-white px-4 py-2 rounded-lg font-label-lg text-label-lg hover:opacity-90 active:scale-95 transition-all shadow-md shadow-primary/20">
+                    Approve &amp; buat tugas
+                </button>
+<button class="p-2 hover:bg-slate-100 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-outline">more_vert</span>
+</button>
+</div>
+</header>
+<div class="p-gutter container-max mx-auto space-y-8 pb-32">
+<!-- Stats Bar Section -->
+<section class="space-y-4 sticky top-[64px] z-30 bg-surface/90 backdrop-blur-md py-2">
+<div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+<!-- Stat Card: Total -->
+<div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition-shadow">
+<span class="text-[10px] uppercase font-black text-outline tracking-wider">Total</span>
+<div class="flex items-end justify-between">
+<span class="text-3xl font-display-lg text-on-surface">14</span>
+<span class="material-symbols-outlined text-slate-300">summarize</span>
+</div>
+</div>
+<!-- Stat Card: High -->
+<div class="bg-emerald-50 p-4 rounded-xl shadow-sm border border-emerald-100 flex flex-col justify-between">
+<span class="text-[10px] uppercase font-black text-emerald-600 tracking-wider">High Confidence</span>
+<div class="flex items-end justify-between">
+<span class="text-3xl font-display-lg text-emerald-700">8</span>
+<span class="material-symbols-outlined text-emerald-400">check_circle</span>
+</div>
+</div>
+<!-- Stat Card: Medium -->
+<div class="bg-amber-50 p-4 rounded-xl shadow-sm border border-amber-100 flex flex-col justify-between">
+<span class="text-[10px] uppercase font-black text-amber-600 tracking-wider">Medium</span>
+<div class="flex items-end justify-between">
+<span class="text-3xl font-display-lg text-amber-700">3</span>
+<span class="material-symbols-outlined text-amber-400">info</span>
+</div>
+</div>
+<!-- Stat Card: Low -->
+<div class="bg-orange-50 p-4 rounded-xl shadow-sm border border-orange-100 flex flex-col justify-between">
+<span class="text-[10px] uppercase font-black text-orange-600 tracking-wider">Low</span>
+<div class="flex items-end justify-between">
+<span class="text-3xl font-display-lg text-orange-700">2</span>
+<span class="material-symbols-outlined text-orange-400">warning</span>
+</div>
+</div>
+<!-- Stat Card: Unresolved -->
+<div class="bg-rose-50 p-4 rounded-xl shadow-sm border border-rose-100 flex flex-col justify-between">
+<span class="text-[10px] uppercase font-black text-rose-600 tracking-wider">Unresolved</span>
+<div class="flex items-end justify-between">
+<span class="text-3xl font-display-lg text-rose-700">1</span>
+<span class="material-symbols-outlined text-rose-400">help</span>
+</div>
+</div>
+</div>
+<div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex flex-wrap items-center justify-between gap-4">
+<div class="flex-1 min-w-[300px]">
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-medium text-on-surface">14% items decided</span>
+<span class="text-xs text-outline">2 dari 14 tugas telah di-review</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full" style="width: 14%"></div>
+</div>
+</div>
+<button class="bg-secondary-fixed text-on-secondary-fixed px-5 py-2.5 rounded-lg font-label-lg text-label-lg hover:brightness-95 flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-base">bolt</span>
+                        Approve HIGH saja (8 item) — auto-buat tugas
+                    </button>
+</div>
+</section>
+<!-- Tabs Section -->
+<div class="flex items-center gap-1 border-b border-slate-200">
+<button class="px-6 py-3 border-b-2 border-primary text-primary font-bold text-sm flex items-center gap-2">
+                    Semua
+                    <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[10px] font-bold">14</span>
+</button>
+<button class="px-6 py-3 text-outline font-medium text-sm flex items-center gap-2 hover:bg-slate-50 transition-colors">
+                    HIGH
+                    <span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-bold">8</span>
+</button>
+<button class="px-6 py-3 text-outline font-medium text-sm flex items-center gap-2 hover:bg-slate-50 transition-colors">
+                    MEDIUM
+                    <span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[10px] font-bold">3</span>
+</button>
+<button class="px-6 py-3 text-outline font-medium text-sm flex items-center gap-2 hover:bg-slate-50 transition-colors">
+                    LOW
+                    <span class="bg-orange-100 text-orange-700 px-2 py-0.5 rounded text-[10px] font-bold">2</span>
+</button>
+<button class="px-6 py-3 text-outline font-medium text-sm flex items-center gap-2 hover:bg-slate-50 transition-colors">
+                    UNRESOLVED
+                    <span class="bg-rose-100 text-rose-700 px-2 py-0.5 rounded text-[10px] font-bold">1</span>
+</button>
+</div>
+<!-- Two Column Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-10 gap-8">
+<!-- Left Column: Review Items -->
+<div class="lg:col-span-7 space-y-4">
+<!-- Item Card 1 (Expanded) -->
+<div class="bg-white rounded-xl border-l-4 border-l-emerald-500 shadow-md border-y border-r border-slate-200 overflow-hidden">
+<div class="p-5 flex items-center justify-between cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="text-xs font-mono font-bold text-outline">KT-001</span>
+<h3 class="font-title-lg text-sm font-bold text-on-surface">Finalisasi design system untuk modul admin</h3>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-black rounded uppercase">HIGH</span>
+<div class="flex items-center text-xs text-outline-variant italic">
+<span class="material-symbols-outlined text-[14px] mr-1">person</span>
+                                        Budi (Detected)
+                                    </div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-emerald-500 shadow-sm shadow-emerald-200"></div>
+<span class="material-symbols-outlined text-outline">expand_less</span>
+</div>
+</div>
+<div class="px-5 pb-6 pt-2 border-t border-slate-50 space-y-5">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-4">
+<div>
+<label class="block text-[11px] font-bold text-outline uppercase tracking-wider mb-2">Deskripsi Tugas</label>
+<p class="text-sm text-on-surface-variant leading-relaxed">Melakukan sinkronisasi antara Figma dan Tailwind Config. Pastikan semua token warna sudah sesuai dengan spesifikasi brand maritime blue terbaru.</p>
+</div>
+<div class="flex gap-4">
+<div class="flex-1">
+<label class="block text-[11px] font-bold text-outline uppercase tracking-wider mb-1">Deadline</label>
+<div class="relative">
+<input class="w-full text-sm border-slate-200 rounded-lg focus:ring-secondary focus:border-secondary" type="text" value="18 Okt 2023"/>
+<span class="material-symbols-outlined absolute right-3 top-2 text-slate-400 text-sm">calendar_today</span>
+</div>
+</div>
+<div class="flex-1">
+<label class="block text-[11px] font-bold text-outline uppercase tracking-wider mb-1">Prioritas</label>
+<select class="w-full text-sm border-slate-200 rounded-lg focus:ring-secondary focus:border-secondary">
+<option selected="">Mendesak</option>
+<option>Normal</option>
+<option>Rendah</option>
+</select>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block text-[11px] font-bold text-outline uppercase tracking-wider mb-2">Pilih PIC</label>
+<div class="space-y-2">
+<div class="flex items-center p-2 border border-secondary bg-blue-50 rounded-lg cursor-pointer">
+<img class="w-8 h-8 rounded-full mr-3 object-cover" data-alt="A professional headshot of a friendly Indonesian man in his 30s wearing a clean white shirt, posing against a soft blue studio background. The lighting is warm and natural, creating a welcoming and professional corporate vibe. The image is crisp and high-resolution, perfectly suited for a modern UI profile avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4ACnde8-vg682vtxItRg4l9gfgz2mRqayW54HU7miemaVrYfcGg46KC4TWRUweLlurxEynrSv7eHGdGD-HeORO7qi5ifb3zf6k83WNILGaHC6w4Gt36OM2LNB4qLZZEV9JSrz8JqfbxmpVZYI3FTkqs9GN1lT33bKragHiKe_IQDRNIU9jXL1iHGjH7BLW72VnWuDWTKDuakYgFFfjmIkjx-5jWr8sUa9s-8bGb_MDsjzimenNvQ5HDwOREz87dQSyqqIObiLojoN"/>
+<div class="flex-1">
+<p class="text-sm font-bold text-primary">Budi Santoso</p>
+<p class="text-[10px] text-on-secondary-fixed-variant">Rank #1 - AI Recommendation (98%)</p>
+</div>
+<span class="material-symbols-outlined text-primary" data-weight="fill">check_circle</span>
+</div>
+<div class="flex items-center p-2 border border-slate-200 hover:border-slate-300 rounded-lg cursor-pointer transition-colors">
+<img class="w-8 h-8 rounded-full mr-3 object-cover" data-alt="A professional corporate portrait of a confident Indonesian woman with a gentle smile, dressed in a stylish navy blue blazer. She is set against a bright, minimalist office background with soft bokeh. The lighting is bright and clear, reflecting a high-end light-mode aesthetic. Her expression conveys competence and approachability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuEJUuZEd1GrMNGJnP9CEcLTfvZ2pUdZIwfeUlEqcIqfOGkgHN1KvdXo_JW7fSDA5j9flfutqkRMEfWrzAr1aqW6uGv69Rdku2g-F_hKTMF1O10UYcw15UYf0Rv8fsQrVU5ATdJ5D8lLJYZCMC_Fh19DFVU5rDuA8fdPa8oXevKflQQvTUuhq1tQmAEJwVT0UniwfbneDbeE72mNecoGOJmtecA7F4H8ikOMvxMHq72Qgm-Btn1xQVQ0Z-0CXzsUKqYjfDpHtOOeop"/>
+<div class="flex-1">
+<p class="text-sm font-medium text-on-surface">Siti Aminah</p>
+<p class="text-[10px] text-outline">Relevant project history found</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-4 flex items-center justify-between border-t border-slate-100">
+<div class="flex items-center gap-3">
+<button class="bg-primary text-white px-6 py-2.5 rounded-lg font-bold text-sm shadow-md shadow-primary/20 hover:shadow-lg transition-all active:scale-95">Buat Tugas</button>
+<button class="text-outline font-semibold text-sm px-4 py-2.5 hover:bg-slate-50 rounded-lg transition-colors">Lewati</button>
+</div>
+<button class="text-error font-semibold text-sm px-4 py-2.5 hover:bg-rose-50 rounded-lg transition-colors">Tolak</button>
+</div>
+</div>
+</div>
+<!-- Item Card 2 (Collapsed) -->
+<div class="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden group">
+<div class="p-5 flex items-center justify-between cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="text-xs font-mono font-bold text-outline">KT-002</span>
+<h3 class="font-title-lg text-sm font-bold text-on-surface">Review performa server database kuartal 3</h3>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-black rounded uppercase">MEDIUM</span>
+<div class="flex items-center text-xs text-outline-variant italic">
+<span class="material-symbols-outlined text-[14px] mr-1">person</span>
+                                        Agus (Detected)
+                                    </div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Item Card 3 (Collapsed) -->
+<div class="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden group">
+<div class="p-5 flex items-center justify-between cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="text-xs font-mono font-bold text-outline">KT-003</span>
+<h3 class="font-title-lg text-sm font-bold text-on-surface">Update dokumentasi API untuk pihak ketiga</h3>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-rose-100 text-rose-700 text-[10px] font-black rounded uppercase">UNRESOLVED</span>
+<div class="flex items-center text-xs text-rose-400 italic">
+<span class="material-symbols-outlined text-[14px] mr-1">warning</span>
+                                        No PIC found
+                                    </div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Sidebar -->
+<aside class="lg:col-span-3 space-y-6">
+<!-- Ringkasan Panel -->
+<div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 space-y-6">
+<div>
+<h4 class="font-bold text-on-surface mb-4">Ringkasan keputusan</h4>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="text-sm text-outline">Buat Tugas</span>
+<span class="text-sm font-bold text-emerald-600">2</span>
+</div>
+<div class="w-full bg-slate-100 h-1.5 rounded-full">
+<div class="bg-emerald-500 h-full rounded-full" style="width: 14%"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm text-outline">Lewati</span>
+<span class="text-sm font-bold text-slate-500">0</span>
+</div>
+<div class="w-full bg-slate-100 h-1.5 rounded-full">
+<div class="bg-slate-400 h-full rounded-full" style="width: 0%"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm text-outline">Tolak</span>
+<span class="text-sm font-bold text-rose-600">0</span>
+</div>
+<div class="w-full bg-slate-100 h-1.5 rounded-full">
+<div class="bg-rose-500 h-full rounded-full" style="width: 0%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Hint Callout -->
+<div class="bg-[#0060A0]/5 border border-[#0060A0]/10 rounded-xl p-5">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-[#0060A0]" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+<div class="space-y-2">
+<p class="text-[13px] font-bold text-[#0060A0]">Pro-tip Kamu</p>
+<p class="text-[12px] text-[#0060A0]/80 leading-relaxed">
+<span class="font-bold">HIGH</span> = match tinggi, aman auto-create. <br/>
+<span class="font-bold">UNRESOLVED</span> butuh PIC manual sebelum dibuat tugasnya.
+                                </p>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Actions (Sidebar version) -->
+<div class="sticky top-[450px] space-y-3">
+<button class="w-full bg-primary-container text-white py-3 rounded-lg font-bold shadow-lg shadow-primary/20 hover:translate-y-[-1px] transition-all active:translate-y-[0px]">
+                            Approve &amp; buat tugas
+                        </button>
+<button class="w-full text-outline font-semibold py-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
+                            Batal
+                        </button>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<!-- Mobile Navigation Shell (Suppressed based on Transactional/Task-Focused Rule) -->
+</body></html>

@@ -123,19 +123,20 @@ test.describe('1. Login per role', () => {
     }) => {
       await login(page, user.email, user.password);
 
-      // Wait dashboard render — full_name muncul di heading
-      await expect(page.getByRole('heading', { name: new RegExp(user.fullName) })).toBeVisible({
-        timeout: 10_000,
-      });
+      // Sprint 6 patch (Stitch v1 dashboard): hero greeting uses
+      // firstName ("Selamat datang, {Admin}"). Full name still rendered
+      // by AppHeader as plain span — assert via getByText, not heading.
+      const firstName = user.fullName.split(' ')[0];
+      await expect(
+        page.getByRole('heading', { name: new RegExp(`Selamat datang, ${firstName}`) }),
+      ).toBeVisible({ timeout: 10_000 });
 
-      // Role badge match expected label
+      // AppHeader still shows full_name + role badge
+      await expect(page.getByText(user.fullName).first()).toBeVisible();
       await expect(page.getByText(user.badgeLabel, { exact: true }).first()).toBeVisible();
 
       // URL = / (dashboard)
       await expect(page).toHaveURL(/\/$/);
-
-      // Email user terpampang di footer profile
-      await expect(page.getByText(user.email)).toBeVisible();
 
       // "Keluar" button visible
       await expect(page.getByRole('button', { name: 'Keluar' })).toBeVisible();
@@ -214,17 +215,18 @@ test.describe('3. Session persist', () => {
     const user = USERS[0]!; // admin
     await login(page, user.email, user.password);
 
-    await expect(page.getByRole('heading', { name: new RegExp(user.fullName) })).toBeVisible({
-      timeout: 10_000,
-    });
+    const firstName = user.fullName.split(' ')[0];
+    await expect(
+      page.getByRole('heading', { name: new RegExp(`Selamat datang, ${firstName}`) }),
+    ).toBeVisible({ timeout: 10_000 });
 
     // Hard reload
     await page.reload();
 
     // After reload, expect dashboard re-render — bukan stuck "Memuat..." atau redirect ke /login
-    await expect(page.getByRole('heading', { name: new RegExp(user.fullName) })).toBeVisible({
-      timeout: 10_000,
-    });
+    await expect(
+      page.getByRole('heading', { name: new RegExp(`Selamat datang, ${firstName}`) }),
+    ).toBeVisible({ timeout: 10_000 });
     await expect(page).toHaveURL(/\/$/);
   });
 });

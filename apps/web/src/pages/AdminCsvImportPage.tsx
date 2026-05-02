@@ -62,7 +62,13 @@ interface ServerResponse {
   rows: ServerRowResult[];
 }
 
-export function AdminCsvImportPage() {
+interface AdminCsvImportPageProps {
+  /** Sprint 6 patch r2: when true, skip AppHeader + min-h-screen wrap.
+   *  Used by /admin/import wrapper page (Phase B). */
+  embedded?: boolean;
+}
+
+export function AdminCsvImportPage({ embedded = false }: AdminCsvImportPageProps = {}) {
   const { profile, loading: authLoading } = useAuth();
   const { showToast } = useToast();
   const [phase, setPhase] = useState<Phase>('idle');
@@ -198,17 +204,24 @@ export function AdminCsvImportPage() {
 
   const previewRows = validations.slice(0, 10);
 
-  return (
-    <div className="min-h-screen bg-canvas">
-      <AppHeader />
-      <main className="max-w-dashboard mx-auto px-6 py-8 space-y-6">
-        <div>
-          <h2 className="text-2xl font-semibold">Import CSV — Bulk Task</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Upload file CSV untuk bulk-create task. Maksimal 5 MB. Header
-            wajib: <code>{ALL_HEADERS.join(', ')}</code>.
+  const body = (
+    <div className="space-y-6">
+      {!embedded && (
+        <div className="space-y-2">
+          <h2 className="text-headline font-semibold">Import Tugas (CSV)</h2>
+          <p className="text-sm text-muted-foreground">
+            Bulk-create tugas dari spreadsheet — upload <strong>.csv</strong> dengan kolom standard,
+            sistem validate per row, kamu konfirmasi sebelum import. Maksimal 5 MB.
+          </p>
+          <p className="text-xs text-muted-foreground">
+            <strong>Beda dengan Import Notulensi (MoM)?</strong> CSV untuk bulk planned tasks
+            (langsung jadi tugas). MoM untuk konversi rapat ke action items (review queue dulu).
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Header wajib: <code className="text-xs">{ALL_HEADERS.join(', ')}</code>
           </p>
         </div>
+      )}
 
         {phase === 'idle' && (
           <Card>
@@ -270,7 +283,7 @@ export function AdminCsvImportPage() {
                 ) : (
                   <div className="overflow-x-auto rounded-md border">
                     <table className="min-w-full text-sm">
-                      <thead className="bg-zinc-50 text-left text-xs uppercase tracking-wide text-zinc-600">
+                      <thead className="bg-surface-container text-left text-xs uppercase tracking-wide text-muted-foreground">
                         <tr>
                           <th className="px-3 py-2">#</th>
                           <th className="px-3 py-2">Status</th>
@@ -289,12 +302,12 @@ export function AdminCsvImportPage() {
                               <StatusIcon status={v.status} />
                             </td>
                             <td className="px-3 py-2">
-                              {v.data.title ?? <em className="text-zinc-400">—</em>}
+                              {v.data.title ?? <em className="text-muted-foreground/70">—</em>}
                             </td>
                             <td className="px-3 py-2">
-                              {v.data.project_name ?? <em className="text-zinc-400">—</em>}
+                              {v.data.project_name ?? <em className="text-muted-foreground/70">—</em>}
                             </td>
-                            <td className="px-3 py-2 text-xs text-zinc-600">
+                            <td className="px-3 py-2 text-xs text-muted-foreground">
                               {v.issues.length === 0
                                 ? '—'
                                 : v.issues
@@ -369,6 +382,16 @@ export function AdminCsvImportPage() {
             </CardContent>
           </Card>
         )}
+    </div>
+  );
+
+  if (embedded) return body;
+
+  return (
+    <div className="min-h-screen bg-canvas animate-fade-in">
+      <AppHeader />
+      <main className="max-w-dashboard mx-auto px-6 py-8">
+        {body}
       </main>
     </div>
   );
@@ -376,9 +399,9 @@ export function AdminCsvImportPage() {
 
 function StatusIcon({ status }: { status: string }) {
   const map: Record<string, { emoji: string; color: string }> = {
-    valid: { emoji: '✅', color: 'text-emerald-600' },
-    warning: { emoji: '⚠️', color: 'text-amber-600' },
-    error: { emoji: '❌', color: 'text-red-600' },
+    valid:   { emoji: '✅', color: 'text-feedback-success' },
+    warning: { emoji: '⚠️', color: 'text-feedback-warning' },
+    error:   { emoji: '❌', color: 'text-feedback-danger' },
   };
   const m = map[status] ?? map.valid;
   return (
@@ -399,9 +422,9 @@ function Stat({
   tone?: 'success' | 'warning' | 'danger';
 }) {
   const toneClass: Record<NonNullable<typeof tone>, string> = {
-    success: 'text-emerald-700',
-    warning: 'text-amber-700',
-    danger: 'text-red-700',
+    success: 'text-feedback-success',
+    warning: 'text-feedback-warning',
+    danger:  'text-feedback-danger',
   };
   return (
     <div className="rounded-md border bg-surface p-3">

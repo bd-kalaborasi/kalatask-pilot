@@ -19,10 +19,10 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 function intensityClass(count: number): string {
-  if (count === 0) return 'bg-zinc-50 text-zinc-400';
-  if (count <= 2) return 'bg-amber-50 text-amber-700';
-  if (count <= 5) return 'bg-amber-200 text-amber-900';
-  return 'bg-red-200 text-red-900';
+  if (count === 0) return 'bg-surface-container text-muted-foreground';
+  if (count <= 2)  return 'bg-feedback-warning-bg text-feedback-warning';
+  if (count <= 5)  return 'bg-feedback-warning-border text-feedback-warning';
+  return 'bg-feedback-danger-border text-feedback-danger';
 }
 
 export function BottleneckHeatmap({ data }: Props) {

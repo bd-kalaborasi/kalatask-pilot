@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Inter+Display:wght@600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #f9f9fc;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface": "#f9f9fc",
+                      "on-secondary-fixed": "#001e2e",
+                      "secondary-container": "#45beff",
+                      "inverse-surface": "#2f3133",
+                      "on-surface": "#1a1c1e",
+                      "surface-dim": "#dadadc",
+                      "tertiary-fixed": "#ffdcc6",
+                      "inverse-primary": "#9dcaff",
+                      "on-secondary-container": "#004a6b",
+                      "tertiary-container": "#924902",
+                      "inverse-on-surface": "#f0f0f3",
+                      "surface-container-high": "#e8e8ea",
+                      "primary-container": "#0060a0",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-fixed": "#301400",
+                      "background": "#f9f9fc",
+                      "on-primary-container": "#bbd9ff",
+                      "surface-variant": "#e2e2e5",
+                      "on-primary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "surface-tint": "#0461a2",
+                      "on-secondary-fixed-variant": "#004c6d",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed-variant": "#713700",
+                      "tertiary-fixed-dim": "#ffb785",
+                      "tertiary": "#6f3600",
+                      "on-tertiary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "outline-variant": "#c1c7d2",
+                      "on-surface-variant": "#414750",
+                      "on-primary-fixed": "#001d35",
+                      "secondary": "#00658f",
+                      "surface-bright": "#f9f9fc",
+                      "primary-fixed-dim": "#9dcaff",
+                      "on-tertiary-container": "#ffccaa",
+                      "surface-container-low": "#f3f3f6",
+                      "surface-container-highest": "#e2e2e5",
+                      "surface-container": "#eeeef0",
+                      "primary": "#00487a",
+                      "on-secondary": "#ffffff",
+                      "on-background": "#1a1c1e",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed-dim": "#86cfff",
+                      "primary-fixed": "#d1e4ff",
+                      "on-primary-fixed-variant": "#00497c",
+                      "secondary-fixed": "#c7e7ff",
+                      "outline": "#717781"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "margin-desktop": "32px",
+                      "margin-mobile": "16px",
+                      "container-max": "1280px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "headline-md": ["Inter Display"],
+                      "label-lg": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "title-lg": ["Inter"],
+                      "display-lg": ["Inter Display"]
+              },
+              "fontSize": {
+                      "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.25px", "fontWeight": "400"}],
+                      "headline-md": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0.5px", "fontWeight": "400"}],
+                      "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                      "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="font-body-md text-on-surface flex min-h-screen">
+<!-- SideNavBar Component -->
+<aside class="w-[240px] h-screen sticky top-0 border-r border-slate-200 bg-white shadow-[4px_0_24px_-2px_rgba(0,96,160,0.08)] flex flex-col shrink-0 overflow-y-auto z-50">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-lg">task_alt</span>
+</div>
+<div>
+<h1 class="text-xl font-bold text-[#0060A0] tracking-tight leading-none">KalaTask Admin</h1>
+<p class="text-[10px] text-slate-500 mt-1 uppercase tracking-wider font-semibold">Manajemen workspace kamu</p>
+</div>
+</div>
+<nav class="space-y-6">
+<!-- Group: Akun Kamu -->
+<section>
+<p class="px-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Akun kamu</p>
+<div class="space-y-1">
+<a class="text-slate-600 px-4 py-2.5 flex items-center gap-3 hover:bg-slate-50 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">person</span>
+<span class="font-body-md">Profile</span>
+</a>
+<a class="text-slate-600 px-4 py-2.5 flex items-center gap-3 hover:bg-slate-50 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="font-body-md">Notifikasi</span>
+</a>
+<a class="text-slate-600 px-4 py-2.5 flex items-center gap-3 hover:bg-slate-50 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">security</span>
+<span class="font-body-md">Keamanan</span>
+</a>
+</div>
+</section>
+<!-- Group: Workspace -->
+<section>
+<p class="px-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Workspace</p>
+<div class="space-y-1">
+<a class="text-slate-600 px-4 py-2.5 flex items-center gap-3 hover:bg-slate-50 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-body-md">Umum</span>
+</a>
+<a class="bg-blue-50 text-[#0060A0] font-semibold border-r-4 border-[#0060A0] px-4 py-2.5 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="font-body-md">Anggota tim</span>
+</a>
+<a class="text-slate-600 px-4 py-2.5 flex items-center gap-3 hover:bg-slate-50 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+<span class="font-body-md">Roles &amp; permissions</span>
+</a>
+<a class="text-slate-600 px-4 py-2.5 flex items-center gap-3 hover:bg-slate-50 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">extension</span>
+<span class="font-body-md">Integrations</span>
+</a>
+</div>
+</section>
+<!-- Group: Admin -->
+<section>
+<p class="px-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Admin</p>
+<div class="space-y-1">
+<a class="text-slate-600 px-4 py-2.5 flex items-center gap-3 hover:bg-slate-50 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">bar_chart</span>
+<span class="font-body-md">Usage</span>
+</a>
+<a class="text-slate-600 px-4 py-2.5 flex items-center gap-3 hover:bg-slate-50 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">history_edu</span>
+<span class="font-body-md">Audit log</span>
+</a>
+<a class="text-slate-600 px-4 py-2.5 flex items-center gap-3 hover:bg-slate-50 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+<span class="font-body-md">App settings</span>
+</a>
+</div>
+</section>
+</nav>
+</div>
+<div class="mt-auto p-6 border-t border-slate-100">
+<button class="w-full bg-primary text-on-primary py-2.5 px-4 rounded-lg font-label-lg mb-4 hover:opacity-90 active:scale-[0.98] transition-all">
+                Upgrade Plan
+            </button>
+<a class="text-slate-600 px-4 py-2 flex items-center gap-3 hover:bg-slate-50 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="font-body-md">Keluar</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col min-h-screen relative overflow-hidden">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 h-16 px-8 flex justify-between items-center shrink-0">
+<div class="flex items-center gap-2">
+<span class="text-slate-400 font-body-md">Workspace</span>
+<span class="material-symbols-outlined text-slate-300 text-sm">chevron_right</span>
+<span class="font-semibold font-body-md">Anggota tim</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-sm w-64 focus:ring-2 focus:ring-primary-container transition-all" placeholder="Cari pengaturan..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="hover:bg-slate-100 rounded-full p-2 text-slate-600 transition-all">
+<span class="material-symbols-outlined">help</span>
+</button>
+<button class="hover:bg-slate-100 rounded-full p-2 text-slate-600 transition-all relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 mx-1"></div>
+<img alt="Foto profil kamu" class="w-8 h-8 rounded-full border border-slate-200 object-cover" data-alt="A professional headshot of a young Indonesian creative manager with a friendly expression. She is in a brightly lit modern office with soft blue and white decorative elements in the background. The lighting is soft and corporate, matching a clean light-mode UI aesthetic. The overall mood is approachable, professional, and efficient." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClrGj66PIW_yOHWPnTVmPv_yXNh8-Fmxik8TRICtdi2LYibwObjxpWvJZtAQEbw_gMu-P4jsS4N2Zc7f4EhQU0BYLf1Lgm-H2a6georoLQLWRqsjNrFJ66Qt7ak6ujKL0KnEhIL6xaevBK4sm_Eat8w7XjqAv-Jw60MPIiQVNJYIXzGG04o81jgj1dx4AFyyhMeoMG0ai2knmM_1uFayRbeA2jSNON9boYd6I84X1qAugZAa0GpiRJ2WF9MReneT3TBBXd7lHBaXQc"/>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="flex-1 p-8 overflow-y-auto">
+<div class="max-w-6xl mx-auto">
+<!-- Header & Hero -->
+<div class="mb-10">
+<h2 class="font-headline-md text-on-surface mb-2">Anggota Tim</h2>
+<div class="flex items-center gap-3">
+<span class="px-3 py-1 bg-blue-50 text-primary rounded-full text-xs font-bold border border-blue-100">12 anggota</span>
+<p class="text-slate-500 font-body-md">
+                            3 admin · 2 manager · 5 member · 2 viewer
+                        </p>
+</div>
+</div>
+<!-- Controls -->
+<div class="flex items-center justify-between mb-6 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm w-72 focus:border-primary-container focus:ring-0" placeholder="Cari nama atau email..." type="text"/>
+</div>
+<div class="relative group">
+<button class="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-all">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+<span>Filter Role</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-lg flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-lg">person_add</span>
+                        Undang anggota
+                    </button>
+</div>
+<!-- User Table -->
+<div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 border-b border-slate-100">
+<th class="p-4 w-12"><input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/></th>
+<th class="p-4 font-label-lg text-slate-500">PENGGUNA</th>
+<th class="p-4 font-label-lg text-slate-500">ROLE</th>
+<th class="p-4 font-label-lg text-slate-500">TIM</th>
+<th class="p-4 font-label-lg text-slate-500">STATUS</th>
+<th class="p-4 font-label-lg text-slate-500">BERGABUNG</th>
+<th class="p-4 font-label-lg text-slate-500 text-right">AKSI</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<!-- User Row 1 -->
+<tr class="hover:bg-slate-50/50 transition-colors group cursor-pointer">
+<td class="p-4"><input checked="" class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A close-up portrait of a professional male software engineer with short hair, wearing a clean charcoal grey sweater. He is sitting in a brightly lit, minimalist workspace with blurred green plants and soft natural light streaming from a large window. The aesthetic is modern corporate, calm, and high-quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD035zfPyc23UqhfCVuU2nfuISdOn0SqiJW7CXiHtEEFPQijnGCw9BW3aDHL83Oi1XATq2RaCGZRF3aLNBb4RF7e5F9i-_b5N_kY0EOvOOuv0uDZk4zbVgramgJwbgFDy30hAWh9dY5EAhbmbO8xAaRQYdGX0rWEZFGxx5_E0SYV_gHj_f3Y1UWmZPptMurrmQj0pwaZeM8FOy7DHWxw4zW1LAc56ibPJGeJhQWMD78D_t-PfFEXhrQRqCfAHRj7T1F7whQcmKBR17q"/>
+<div>
+<p class="font-semibold text-on-surface leading-tight">Andi Pratama</p>
+<p class="text-xs text-slate-500">andi.p@kalatask.com</p>
+</div>
+</div>
+</td>
+<td class="p-4">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container-high rounded-full text-xs font-semibold text-on-surface-variant">
+                                        Admin
+                                        <span class="material-symbols-outlined text-[14px]">expand_more</span>
+</div>
+</td>
+<td class="p-4">
+<span class="px-2 py-1 bg-secondary-fixed text-on-secondary-fixed rounded text-[10px] font-bold uppercase tracking-wide">Product</span>
+</td>
+<td class="p-4">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-100">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        Aktif
+                                    </div>
+</td>
+<td class="p-4 text-sm text-slate-500">12 Jan 2024</td>
+<td class="p-4 text-right">
+<button class="text-slate-400 hover:text-slate-900 transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- User Row 2 -->
+<tr class="hover:bg-slate-50/50 transition-colors group cursor-pointer">
+<td class="p-4"><input checked="" class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">SM</div>
+<div>
+<p class="font-semibold text-on-surface leading-tight">Siti Mariam</p>
+<p class="text-xs text-slate-500">siti.m@kalatask.com</p>
+</div>
+</div>
+</td>
+<td class="p-4">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container-high rounded-full text-xs font-semibold text-on-surface-variant">
+                                        Manager
+                                        <span class="material-symbols-outlined text-[14px]">expand_more</span>
+</div>
+</td>
+<td class="p-4">
+<span class="px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded text-[10px] font-bold uppercase tracking-wide">Marketing</span>
+</td>
+<td class="p-4">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-100">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        Aktif
+                                    </div>
+</td>
+<td class="p-4 text-sm text-slate-500">02 Feb 2024</td>
+<td class="p-4 text-right">
+<button class="text-slate-400 hover:text-slate-900 transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- User Row 3 (Inactive) -->
+<tr class="hover:bg-slate-50/50 transition-colors group cursor-pointer">
+<td class="p-4"><input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-4">
+<div class="flex items-center gap-3 opacity-60">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A portrait of a senior Indonesian analyst in a formal white shirt, leaning slightly forward with an attentive look. The background is a clean, glass-partitioned office space with soft ambient morning light. The visual style is crisp and professional, using a bright white and light blue color palette to match a corporate UI theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2-cSN_xQqf6cucTC-M-m5nGTLTFSrZe4v0KJLdKbez0oBOhz2wlQ3-Ud_bJ-H5H_hBZQDlkhiTUhOals3W9VdYziyzwaKyZ3zNvLVxUNTqqZgYVc8Ar7gbQF3DiuV4QwfB07ixOg2bSXPpkjFGGG7P2F_-RoLFrGEk2hFaNRmMsUj6fJMBLO8eD48NLPoF97Y6m13uydfDAOFUfRahfiwD_yVHRMXuf9IjIU74vVKqV0OD8RV-95_ELAZATrr7kBJjazZOvNFVPtK"/>
+<div>
+<p class="font-semibold text-on-surface leading-tight">Budi Santoso</p>
+<p class="text-xs text-slate-500">budi.s@kalatask.com</p>
+</div>
+</div>
+</td>
+<td class="p-4">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container-high rounded-full text-xs font-semibold text-on-surface-variant opacity-60">
+                                        Member
+                                        <span class="material-symbols-outlined text-[14px]">expand_more</span>
+</div>
+</td>
+<td class="p-4">
+<span class="px-2 py-1 bg-slate-100 text-slate-500 rounded text-[10px] font-bold uppercase tracking-wide">Design</span>
+</td>
+<td class="p-4">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-xs font-bold border border-slate-200">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                                        Tidak aktif
+                                    </div>
+</td>
+<td class="p-4 text-sm text-slate-500 opacity-60">15 Des 2023</td>
+<td class="p-4 text-right">
+<button class="text-slate-400 hover:text-slate-900 transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Bulk Action Bar (Sticky Bottom) -->
+<div class="fixed bottom-8 left-[calc(240px+50%)] -translate-x-1/2 bg-on-secondary-fixed text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-6 z-50 animate-in fade-in slide-in-from-bottom-4">
+<div class="flex items-center gap-2 pr-6 border-r border-slate-700">
+<span class="w-6 h-6 bg-primary rounded flex items-center justify-center text-xs font-bold">2</span>
+<span class="text-sm font-medium">anggota terpilih</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 hover:text-secondary-container transition-colors text-sm font-label-lg">
+<span class="material-symbols-outlined text-lg">edit_note</span>
+                    Ubah role
+                </button>
+<button class="flex items-center gap-2 hover:text-secondary-container transition-colors text-sm font-label-lg">
+<span class="material-symbols-outlined text-lg">block</span>
+                    Nonaktifkan
+                </button>
+<button class="flex items-center gap-2 text-error-container hover:text-error transition-colors text-sm font-label-lg">
+<span class="material-symbols-outlined text-lg">delete</span>
+                    Hapus
+                </button>
+</div>
+<button class="ml-4 hover:bg-slate-800 rounded-full p-1">
+<span class="material-symbols-outlined text-lg">close</span>
+</button>
+</div>
+<!-- Slide-in Right Panel (Edit User) -->
+<div class="fixed inset-y-0 right-0 w-[400px] bg-white shadow-[-12px_0_40px_rgba(0,0,0,0.1)] border-l border-slate-200 z-[60] flex flex-col translate-x-0 transition-transform">
+<div class="p-6 border-b border-slate-100 flex items-center justify-between">
+<h3 class="font-title-lg text-on-surface">Detail Anggota</h3>
+<button class="hover:bg-slate-100 p-2 rounded-full text-slate-500 transition-all">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto p-6 space-y-6">
+<!-- Profile Section -->
+<div class="flex flex-col items-center text-center pb-6 border-b border-slate-100">
+<div class="relative group cursor-pointer mb-4">
+<img class="w-24 h-24 rounded-full border-4 border-blue-50 object-cover shadow-sm" data-alt="A close-up professional profile image of a young male professional in a modern studio setting. He is wearing a clean grey polo shirt. The lighting is bright and soft, with a subtle blue gradient background reflecting a corporate tech identity. High clarity and modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_XXirD-3cdxM006ANRBmY2H1XODpC4wmtiIWvz2Ss5J1kQpaqfKoRqfttWpSJQKE3Z2WiUgX2SRziZH6mCa0xksSvWA6RmSdN6WsLgUyGDo59sS3JzfGxBeg2dXdQGxKudSpqU4Wue6SxiLl-RlP2UpcY0yq-ejt7KMBAOZJQVqspBJzwlNOtaHqFTWxFE5WBOjyOKNp-1g4AbQa87fFHBI17T5VVvL_RkQkwcvIv8T1g7TP_COqbySjpPhgmwKGsyLhmXCxnbWvk"/>
+<div class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white">photo_camera</span>
+</div>
+</div>
+<h4 class="font-title-lg mb-1">Andi Pratama</h4>
+<span class="px-3 py-1 bg-blue-50 text-primary rounded-full text-[10px] font-bold uppercase tracking-wider">Admin Workspace</span>
+</div>
+<!-- Form Fields -->
+<div class="space-y-4">
+<div>
+<label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Nama Lengkap</label>
+<input class="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-primary transition-all font-body-md" type="text" value="Andi Pratama"/>
+</div>
+<div>
+<label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Email Kerja</label>
+<input class="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-primary transition-all font-body-md" type="email" value="andi.p@kalatask.com"/>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Role</label>
+<select class="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-primary transition-all font-body-md">
+<option selected="">Admin</option>
+<option>Manager</option>
+<option>Member</option>
+<option>Viewer</option>
+</select>
+</div>
+<div>
+<label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Tim</label>
+<select class="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-primary transition-all font-body-md">
+<option selected="">Product</option>
+<option>Engineering</option>
+<option>Marketing</option>
+<option>Design</option>
+</select>
+</div>
+</div>
+<div>
+<label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Bio Singkat</label>
+<textarea class="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-primary transition-all font-body-md" placeholder="Tuliskan bio anggota kamu di sini..." rows="3">Lead Product Manager dengan fokus pada efisiensi alur kerja tim.</textarea>
+</div>
+</div>
+<!-- Danger Zone -->
+<div class="pt-6 border-t border-slate-100">
+<button class="w-full text-left flex items-center justify-between text-error hover:bg-error-container/10 p-3 rounded-lg transition-colors">
+<div>
+<p class="font-bold text-sm">Berhentikan Akses</p>
+<p class="text-[11px] opacity-80">Anggota ini tidak akan bisa login lagi.</p>
+</div>
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="p-6 border-t border-slate-100 bg-slate-50 flex gap-3">
+<button class="flex-1 bg-primary text-on-primary py-3 rounded-lg font-label-lg shadow-lg shadow-blue-900/10 active:scale-[0.98] transition-all">Simpan Perubahan</button>
+<button class="px-6 py-3 border border-slate-200 rounded-lg font-label-lg text-slate-600 hover:bg-white transition-all">Batal</button>
+</div>
+</div>
+</main>
+</body></html>

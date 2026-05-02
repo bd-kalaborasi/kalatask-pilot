@@ -88,6 +88,37 @@
   --kt-border-strong: #D4D4D8; /* zinc-300 — focus ring, divider */
 
   /* ============================================================
+   * 8b. SURFACE TONAL SCALE (v2.1 — Sprint 6 holistic overhaul)
+   * 5-level depth scale, M3-inspired, replaces raw bg-zinc-* refs.
+   * ============================================================ */
+  --kt-surface-bright:           #FFFFFF; /* lifted: modal, dialog, popover */
+  --kt-surface-container:        #FAFAFA; /* zinc-50 — subtle container */
+  --kt-surface-container-low:    #F4F4F5; /* zinc-100 — recessed track, tab strip bg */
+  --kt-surface-container-high:   #E4E4E7; /* zinc-200 — card hover, divider zone */
+  --kt-surface-dim:              #D4D4D8; /* zinc-300 — disabled, placeholder zones */
+
+  /* ============================================================
+   * 8c. SEMANTIC FEEDBACK COLORS (v2.1)
+   * Used by: health banners, toasts, alerts, system messaging.
+   * Aligned with status palette but separated for semantic clarity.
+   * ============================================================ */
+  --kt-success:        #16A34A; /* green-600 — also used as status-done */
+  --kt-success-bg:     #DCFCE7; /* green-100 */
+  --kt-success-border: #86EFAC; /* green-300 — for border-l-4 hint */
+
+  --kt-warning:        #F59E0B; /* amber-500 — also used as status-review */
+  --kt-warning-bg:     #FEF3C7; /* amber-100 */
+  --kt-warning-border: #FCD34D; /* amber-300 */
+
+  --kt-danger:         #DC2626; /* red-600 */
+  --kt-danger-bg:      #FEE2E2; /* red-100 */
+  --kt-danger-border:  #FCA5A5; /* red-300 */
+
+  --kt-info:           #00A0E0; /* brand sky alias */
+  --kt-info-bg:        #D6F0FA; /* sky-100 */
+  --kt-info-border:    #7AD1F0; /* sky-300 */
+
+  /* ============================================================
    * 9. TYPOGRAPHY (BRAND.md §3)
    * ============================================================ */
   --kt-font-sans: 'Inter', 'Helvetica Neue', Arial, system-ui, sans-serif;
@@ -105,6 +136,22 @@
   --kt-text-4xl:  36px;
 
   /* ============================================================
+   * 9b. M3-INSPIRED SEMANTIC TYPE SCALE (v2.1)
+   * Use semantic names (display/headline/title/body/label) over raw
+   * Tailwind text-* sizes for consistency across the product.
+   * ============================================================ */
+  --kt-text-display:        36px;  /* hero numbers (rare in product) */
+  --kt-text-display-lh:     44px;
+  --kt-text-headline:       28px;  /* page <h1> */
+  --kt-text-headline-lh:    36px;
+  --kt-text-title:          20px;  /* card titles, section <h2> */
+  --kt-text-title-lh:       28px;
+  --kt-text-body:           14px;  /* default paragraph */
+  --kt-text-body-lh:        22px;
+  --kt-text-label:          12px;  /* caption, chip, metadata */
+  --kt-text-label-lh:       16px;
+
+  /* ============================================================
    * 10. SPACING SCALE (BRAND.md §8.1, 4px-based)
    * ============================================================ */
   --kt-space-1:  4px;
@@ -117,11 +164,22 @@
   --kt-space-16: 64px;
 
   /* ============================================================
-   * 11. BORDER RADIUS (BRAND.md §8.2)
+   * 10b. SEMANTIC SPACING (v2.1)
+   * Layout-level decisions, paired with raw scale for fine-grain.
+   * ============================================================ */
+  --kt-gap-card:     12px; /* inner card content gap */
+  --kt-gap-section:  24px; /* between sections within a page */
+  --kt-gap-page:     40px; /* major page-level rhythm */
+  --kt-pad-card:     16px; /* card body padding */
+  --kt-pad-page:     24px; /* page main padding */
+
+  /* ============================================================
+   * 11. BORDER RADIUS (BRAND.md §8.2 — v2.2 modal bump per D2)
    * ============================================================ */
   --kt-radius-sm:   4px;
   --kt-radius-md:   8px;   /* button, input, card */
-  --kt-radius-lg:   12px;  /* modal, dialog */
+  --kt-radius-lg:   16px;  /* modal, dialog (v2.2: bumped 12px → 16px per D2) */
+  --kt-radius-xl:   20px;  /* v2.2 — extra for hero cards */
   --kt-radius-full: 9999px; /* badge, pill, avatar */
 
   /* ============================================================
@@ -137,6 +195,208 @@
   --kt-shadow-sm: 0 1px 2px 0 rgba(0, 96, 160, 0.05);
   --kt-shadow-md: 0 4px 6px -1px rgba(0, 96, 160, 0.10), 0 2px 4px -2px rgba(0, 96, 160, 0.05);
   --kt-shadow-lg: 0 10px 15px -3px rgba(0, 96, 160, 0.10), 0 4px 6px -4px rgba(0, 96, 160, 0.05);
+
+  /* ============================================================
+   * 14. MOTION TOKENS (v2.1 — Emil Kowalski-aligned)
+   * Purposeful, ≤ 300ms, eased. Anti-decorative.
+   * ============================================================ */
+  --kt-motion-fast:   150ms;
+  --kt-motion-base:   200ms;
+  --kt-motion-slow:   300ms;
+  --kt-ease-brand:    cubic-bezier(0.16, 1, 0.3, 1); /* ease-out-expo soft */
+
+  /* ============================================================
+   * 15. v2.2 STITCH v1 + RESEARCH FOUNDATION (Sprint 6 final)
+   * Source: docs/design-system-final-spec.md (2026-04-30).
+   * Owner decisions: D1=tertiary orange, D2=modal 16px,
+   * D3=Inter Display, D4=primary split, D5=source-csv kept.
+   * Additive on top of v2.1: new names = pure additions; shared
+   * names (surface-*, shadow-*, status-*-bg) are redefined to
+   * Stitch values. Old components keep working — the cascade
+   * resolves new colors automatically.
+   * ============================================================ */
+
+  /* 15.1 Surface tonal scale — 9 levels (replaces v2.1 5-level) */
+  --kt-surface-container-lowest:  #FFFFFF; /* deepest white — modal bg */
+  --kt-surface-container-low:     #F3F3F6; /* page section, recessed */
+  --kt-surface-container:         #EEEEF0; /* default container */
+  --kt-surface-container-high:    #E8E8EA; /* hover, lifted */
+  --kt-surface-container-highest: #E2E2E5; /* most prominent */
+  --kt-surface:                   #F9F9FC; /* default page bg */
+  --kt-surface-bright:            #F9F9FC; /* alias for accessibility */
+  --kt-surface-dim:               #DADADC; /* disabled/placeholder */
+  --kt-surface-variant:           #E2E2E5; /* card hover variant */
+
+  /* 15.2 Foreground for surfaces */
+  --kt-on-surface:          #1A1C1E;
+  --kt-on-surface-variant:  #414750;
+  --kt-inverse-surface:     #2F3133;
+  --kt-inverse-on-surface:  #F0F0F3;
+
+  /* 15.3 Outline tokens (border colors) */
+  --kt-outline:          #717781;
+  --kt-outline-variant:  #C1C7D2;
+  --kt-surface-tint:     #0461A2; /* tint for elevation overlay */
+
+  /* 15.4 Primary triad — D4 split */
+  --kt-primary:                    #00487A; /* darker for AA on white */
+  --kt-on-primary:                 #FFFFFF;
+  --kt-primary-container:          #0060A0; /* current --kt-deep equivalent */
+  --kt-on-primary-container:       #BBD9FF;
+  --kt-inverse-primary:            #9DCAFF;
+  --kt-primary-fixed:              #D1E4FF;
+  --kt-primary-fixed-dim:          #9DCAFF;
+  --kt-on-primary-fixed:           #001D35;
+  --kt-on-primary-fixed-variant:   #00487C;
+
+  /* 15.5 Secondary triad */
+  --kt-secondary:                  #00658F;
+  --kt-on-secondary:               #FFFFFF;
+  --kt-secondary-container:        #45BEFF; /* current --kt-sky-ish */
+  --kt-on-secondary-container:     #004A6B;
+  --kt-secondary-fixed:            #C7E7FF;
+  --kt-secondary-fixed-dim:        #86CFFF;
+  --kt-on-secondary-fixed:         #001E2E;
+  --kt-on-secondary-fixed-variant: #004C6D;
+
+  /* 15.6 Tertiary — D1 net-new warm orange */
+  --kt-tertiary:                   #6F3600;
+  --kt-on-tertiary:                #FFFFFF;
+  --kt-tertiary-container:         #FFCCAA;
+  --kt-on-tertiary-container:      #2A1700;
+  --kt-tertiary-fixed:             #FFDCC6;
+  --kt-tertiary-fixed-dim:         #FFB785;
+  --kt-on-tertiary-fixed:          #301400;
+  --kt-on-tertiary-fixed-variant:  #471F00;
+
+  /* 15.7 Error triad (M3) */
+  --kt-error:                      #BA1A1A;
+  --kt-on-error:                   #FFFFFF;
+  --kt-error-container:            #FFDAD6;
+  --kt-on-error-container:         #93000A;
+
+  /* 15.8 Status badge fg+bg (Monday-inspired)
+     bg = rgb(R G B / 0.1) — 10% alpha of fg hue for cleaner blends. */
+  --kt-status-todo-fg:        var(--kt-on-surface);
+  --kt-status-in-progress-fg: #92400E; /* amber-800 */
+  --kt-status-in-progress-bg: rgb(146 64 14 / 0.1);    /* 10% alpha amber-800 */
+  --kt-status-review-fg:      #5B21B6; /* violet-800 */
+  --kt-status-review-bg:      rgb(91 33 182 / 0.1);    /* 10% alpha violet-800 */
+  --kt-status-done-fg:        #065F46; /* emerald-800 */
+  --kt-status-done-bg:        rgb(6 95 70 / 0.1);      /* 10% alpha emerald-800 */
+  --kt-status-blocked-fg:     #93000A;
+  --kt-status-blocked-bg:     rgb(147 0 10 / 0.1);     /* 10% alpha error-fg */
+
+  /* 15.9 Source attribution (D5: keep csv violet legacy) */
+  --kt-source-mom:    #8B5CF6; /* alias of csv for MoM source */
+
+  /* 15.10 Typography token scale (Stitch + research) */
+  --kt-font-display: 'Inter Display', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+
+  /* Display tier — Inter Display (editorial feel) */
+  --kt-text-display-lg-size:     57px;
+  --kt-text-display-lg-line:     64px;
+  --kt-text-display-lg-tracking: -0.25px;
+  --kt-text-display-lg-weight:   700;
+  --kt-text-display-lg-family:   var(--kt-font-display);
+  --kt-text-display-md-size:     45px;
+  --kt-text-display-md-line:     52px;
+  --kt-text-display-md-tracking: -0.20px;
+  --kt-text-display-md-weight:   700;
+  --kt-text-display-md-family:   var(--kt-font-display);
+  --kt-text-display-sm-size:     36px;
+  --kt-text-display-sm-line:     44px;
+  --kt-text-display-sm-tracking: -0.15px;
+  --kt-text-display-sm-weight:   700;
+  --kt-text-display-sm-family:   var(--kt-font-display);
+
+  /* Headline tier */
+  --kt-text-headline-lg-size:    32px;
+  --kt-text-headline-lg-line:    40px;
+  --kt-text-headline-lg-weight:  600;
+  --kt-text-headline-lg-family:  var(--kt-font-display);
+  --kt-text-headline-md-size:    28px;
+  --kt-text-headline-md-line:    36px;
+  --kt-text-headline-md-weight:  600;
+  --kt-text-headline-md-family:  var(--kt-font-display);
+  --kt-text-headline-sm-size:    24px;
+  --kt-text-headline-sm-line:    32px;
+  --kt-text-headline-sm-weight:  600;
+  --kt-text-headline-sm-family:  var(--kt-font-display);
+
+  /* Title tier — Inter (UI feel) */
+  --kt-text-title-lg-size:       22px;
+  --kt-text-title-lg-line:       28px;
+  --kt-text-title-lg-weight:     500;
+  --kt-text-title-lg-family:     var(--kt-font-sans);
+  --kt-text-title-md-size:       16px;
+  --kt-text-title-md-line:       24px;
+  --kt-text-title-md-weight:     500;
+  --kt-text-title-md-family:     var(--kt-font-sans);
+  --kt-text-title-sm-size:       14px;
+  --kt-text-title-sm-line:       20px;
+  --kt-text-title-sm-weight:     500;
+  --kt-text-title-sm-family:     var(--kt-font-sans);
+
+  /* Body tier */
+  --kt-text-body-lg-size:        16px;
+  --kt-text-body-lg-line:        24px;
+  --kt-text-body-lg-tracking:    0.5px;
+  --kt-text-body-lg-weight:      400;
+  --kt-text-body-md-size:        14px;
+  --kt-text-body-md-line:        20px;
+  --kt-text-body-md-tracking:    0.25px;
+  --kt-text-body-md-weight:      400;
+  --kt-text-body-sm-size:        12px;
+  --kt-text-body-sm-line:        16px;
+  --kt-text-body-sm-tracking:    0.4px;
+  --kt-text-body-sm-weight:      400;
+
+  /* Label tier — button/badge */
+  --kt-text-label-lg-size:       14px;
+  --kt-text-label-lg-line:       20px;
+  --kt-text-label-lg-tracking:   0.1px;
+  --kt-text-label-lg-weight:     500;
+  --kt-text-label-md-size:       12px;
+  --kt-text-label-md-line:       16px;
+  --kt-text-label-md-tracking:   0.5px;
+  --kt-text-label-md-weight:     500;
+  --kt-text-label-sm-size:       11px;
+  --kt-text-label-sm-line:       16px;
+  --kt-text-label-sm-tracking:   0.5px;
+  --kt-text-label-sm-weight:     500;
+
+  /* Caption (metadata, timestamp) */
+  --kt-text-caption-size:        12px;
+  --kt-text-caption-line:        16px;
+  --kt-text-caption-weight:      400;
+  --kt-text-caption-tracking:    0.4px;
+
+  /* 15.11 Stitch spacing tokens */
+  --kt-space-base:      8px;    /* atomic unit */
+  --kt-space-gutter:    24px;   /* between major sections */
+  --kt-space-container: 1280px; /* max content width */
+  --kt-margin-desktop:  32px;
+  --kt-margin-mobile:   16px;
+
+  /* 15.12 Brand-tinted elevation (5-level, deeper alpha 0.08) */
+  --kt-shadow-sm: 0 1px 2px 0 rgba(0, 96, 160, 0.08);
+  --kt-shadow-md: 0 4px 8px -2px rgba(0, 96, 160, 0.10), 0 2px 4px -1px rgba(0, 96, 160, 0.06);
+  --kt-shadow-lg: 0 10px 15px -3px rgba(0, 96, 160, 0.10), 0 4px 6px -2px rgba(0, 96, 160, 0.05);
+  --kt-shadow-xl: 0 20px 25px -5px rgba(0, 96, 160, 0.10), 0 10px 10px -5px rgba(0, 96, 160, 0.04);
+
+  /* 15.13 Animation tokens (granular per Section 6.1 spec) */
+  --kt-duration-instant: 0ms;
+  --kt-duration-fast:    100ms; /* button press, hover color */
+  --kt-duration-base:    200ms; /* most transitions */
+  --kt-duration-medium:  300ms; /* modal, toast */
+  --kt-duration-slow:    500ms; /* page transition */
+
+  --kt-ease-linear: linear;
+  --kt-ease-in:     cubic-bezier(0.4, 0, 1, 1);
+  --kt-ease-out:    cubic-bezier(0, 0, 0.2, 1);
+  --kt-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --kt-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ============================================================
@@ -158,12 +418,45 @@
   --kt-border:    #3F3F46; /* zinc-700 */
   --kt-border-strong: #52525B; /* zinc-600 */
 
+  /* v2.1 surface tonal scale — dark mode */
+  --kt-surface-bright:           #3F3F46; /* zinc-700 */
+  --kt-surface-container:        #27272A; /* zinc-800 (= --kt-surface) */
+  --kt-surface-container-low:    #1F1F23; /* between zinc-800 and zinc-900 */
+  --kt-surface-container-high:   #3F3F46; /* zinc-700 */
+  --kt-surface-dim:              #52525B; /* zinc-600 */
+
+  /* v2.1 feedback bg shifted darker for dark mode */
+  --kt-success-bg:     #052E16; /* green-950 */
+  --kt-warning-bg:     #451A03; /* amber-950 */
+  --kt-danger-bg:      #450A0A; /* red-950 */
+  --kt-info-bg:        #082F49; /* sky-950 */
+
   /* Status bg jadi lebih gelap di dark mode supaya tidak terlalu mencolok */
   --kt-status-todo-bg:     #27272A;
   --kt-status-progress-bg: #0E2A3A;
   --kt-status-review-bg:   #3D2D0A;
   --kt-status-done-bg:     #0F2E1B;
   --kt-status-blocked-bg:  #3D1414;
+
+  /* v2.2 Stitch tokens — dark mode overrides */
+  --kt-surface:                   #1A1C1E;
+  --kt-surface-bright:            #2F3133;
+  --kt-surface-container-lowest:  #121316;
+  --kt-surface-container-low:     #1E2022;
+  --kt-surface-container:         #232527;
+  --kt-surface-container-high:    #2D2F31;
+  --kt-surface-container-highest: #38393B;
+  --kt-surface-dim:               #121316;
+  --kt-surface-variant:           #2D2F31;
+  --kt-on-surface:                #E2E2E5;
+  --kt-on-surface-variant:        #C1C7D2;
+  --kt-inverse-surface:           #E2E2E5;
+  --kt-inverse-on-surface:        #2F3133;
+  --kt-outline:                   #8B919B;
+  --kt-outline-variant:           #414750;
+
+  /* v2.2 status bg dark mode (in-progress namespace, alongside v2.1 progress) */
+  --kt-status-in-progress-bg: #3D2D0A;
 }
 
 /* ============================================================

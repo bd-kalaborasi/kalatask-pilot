@@ -30,6 +30,15 @@ const TaskDetailPage = lazy(() =>
     default: m.TaskDetailPage,
   })),
 );
+const TasksPage = lazy(() =>
+  import('@/pages/TasksPage').then((m) => ({ default: m.TasksPage })),
+);
+const SettingsPage = lazy(() =>
+  import('@/pages/SettingsPage').then((m) => ({ default: m.SettingsPage })),
+);
+const ImportPage = lazy(() =>
+  import('@/pages/ImportPage').then((m) => ({ default: m.ImportPage })),
+);
 const AdminMoMImportPage = lazy(() =>
   import('@/pages/AdminMoMImportPage').then((m) => ({
     default: m.AdminMoMImportPage,
@@ -205,6 +214,54 @@ function App() {
                   }
                 >
                   <AdminUsagePage />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tasks"
+            element={
+              <ProtectedRoute>
+                <Suspense
+                  fallback={
+                    <div className="min-h-screen flex items-center justify-center bg-canvas">
+                      <p className="text-sm text-muted-foreground">Memuat...</p>
+                    </div>
+                  }
+                >
+                  <TasksPage />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Suspense
+                  fallback={
+                    <div className="min-h-screen flex items-center justify-center bg-canvas">
+                      <p className="text-sm text-muted-foreground">Memuat...</p>
+                    </div>
+                  }
+                >
+                  <SettingsPage />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/import"
+            element={
+              <ProtectedRoute>
+                <Suspense
+                  fallback={
+                    <div className="min-h-screen flex items-center justify-center bg-canvas">
+                      <p className="text-sm text-muted-foreground">Memuat...</p>
+                    </div>
+                  }
+                >
+                  <ImportPage />
                 </Suspense>
               </ProtectedRoute>
             }

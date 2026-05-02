@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Inter+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e2e2e5",
+                        "surface-container-high": "#e8e8ea",
+                        "secondary": "#00658f",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#d1e4ff",
+                        "on-secondary-container": "#004a6b",
+                        "on-background": "#1a1c1e",
+                        "secondary-fixed": "#c7e7ff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e2e2e5",
+                        "surface-bright": "#f9f9fc",
+                        "on-tertiary-fixed-variant": "#713700",
+                        "tertiary-fixed-dim": "#ffb785",
+                        "background": "#f9f9fc",
+                        "surface-dim": "#dadadc",
+                        "surface-container": "#eeeef0",
+                        "outline-variant": "#c1c7d2",
+                        "on-tertiary-container": "#ffccaa",
+                        "primary-fixed-dim": "#9dcaff",
+                        "surface-container-low": "#f3f3f6",
+                        "inverse-on-surface": "#f0f0f3",
+                        "on-primary-fixed": "#001d35",
+                        "tertiary-container": "#924902",
+                        "secondary-fixed-dim": "#86cfff",
+                        "tertiary-fixed": "#ffdcc6",
+                        "primary-container": "#0060a0",
+                        "on-surface": "#1a1c1e",
+                        "inverse-surface": "#2f3133",
+                        "on-error-container": "#93000a",
+                        "surface": "#f9f9fc",
+                        "on-primary-fixed-variant": "#00497c",
+                        "tertiary": "#6f3600",
+                        "outline": "#717781",
+                        "on-surface-variant": "#414750",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#bbd9ff",
+                        "error-container": "#ffdad6",
+                        "primary": "#00487a",
+                        "on-tertiary-fixed": "#301400",
+                        "inverse-primary": "#9dcaff",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#0461a2",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#004c6d",
+                        "secondary-container": "#45beff",
+                        "on-secondary-fixed": "#001e2e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "margin-desktop": "32px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "label-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Inter Display"],
+                        "body-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "headline-md": ["Inter Display"]
+                    },
+                    "fontSize": {
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0.5px", "fontWeight": "400"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.25px", "fontWeight": "400"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "headline-md": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .shadow-lifted {
+            box-shadow: 0 10px 25px -5px rgba(0, 96, 160, 0.08), 0 8px 10px -6px rgba(0, 96, 160, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-slate-200 flex items-center justify-center min-h-screen p-4 font-body-md text-on-surface">
+<!-- Modal Backdrop Overlay -->
+<div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-0"></div>
+<!-- Main Onboarding Modal -->
+<div class="relative z-10 w-full max-w-lg bg-surface-bright rounded-[16px] shadow-lifted overflow-hidden flex flex-col">
+<!-- Header: Progress Navigation -->
+<div class="px-8 pt-8 flex flex-col items-center">
+<div class="flex gap-2 mb-3">
+<!-- 3 Active Dots -->
+<div class="w-2.5 h-2.5 rounded-full bg-primary-container"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-primary-container"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-primary-container"></div>
+<!-- 2 Inactive Dots -->
+<div class="w-2.5 h-2.5 rounded-full border-2 border-outline-variant bg-transparent"></div>
+<div class="w-2.5 h-2.5 rounded-full border-2 border-outline-variant bg-transparent"></div>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface-variant">Langkah 3 dari 5</span>
+</div>
+<!-- Hero Illustration Area -->
+<div class="flex justify-center py-6 px-8">
+<div class="relative w-full h-[140px] flex items-center justify-center bg-blue-50/50 rounded-xl overflow-hidden border border-blue-100">
+<img alt="Team Collaboration Illustration" class="h-full w-full object-cover opacity-80 mix-blend-multiply" data-alt="A modern vector-style digital illustration showing a group of diverse professionals collaborating around a floating orbital interface with task icons. The art style is clean and professional, featuring the KalaTask brand colors of deep maritime blue and sky blue accents. The background is a soft sky-blue gradient with subtle geometric patterns suggesting an organized workplace environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDldKrbxCZtnQBhFKU6m40WPnyFq4XtwSLDXnX5GxM_4bPtBD3NpYLtLGx4dSFuNTEaaCg1vzTZxr83Jr9SoUjNx5EePCEPcaAQP0JYBBayz0OeivuQEDJ_o2m7BlwxEQqp49TDNXUN_ZPcdImwFwq1sH07oNJtJ4paStByBMqntLwg5NDMtximhT38V8axZ_shxJqHoPJ7TCZjWEamDj9YtPvaWOyhCg-sbIva7qn0-dihpqgLi7_JNVNm5PQedEh2WIPO8TGSXNVd"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-white/90 backdrop-blur-md p-4 rounded-full shadow-lg border border-primary-container/20">
+<span class="material-symbols-outlined text-primary-container text-4xl" data-weight="fill">diversity_2</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Content Area -->
+<div class="px-8 pb-4 text-center">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-3 tracking-tight">Tiga cara lihat tugas — pilih yang nyaman</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed px-2">
+                Atur tampilan sesuai selera kerja kamu. Mulai dari daftar rapi, papan visual, hingga lini masa proyek.
+            </p>
+</div>
+<!-- Visual Demo: View Toggle -->
+<div class="px-8 pb-10">
+<div class="bg-surface-container-low p-1.5 rounded-xl flex items-center gap-1">
+<button class="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 bg-surface-container-lowest text-primary shadow-sm rounded-lg font-label-lg text-label-lg transition-all">
+<span class="material-symbols-outlined text-lg">format_list_bulleted</span>
+                    Daftar
+                </button>
+<button class="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 text-on-surface-variant hover:bg-white/50 rounded-lg font-label-lg text-label-lg transition-all">
+<span class="material-symbols-outlined text-lg">view_kanban</span>
+                    Kanban
+                </button>
+<button class="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 text-on-surface-variant hover:bg-white/50 rounded-lg font-label-lg text-label-lg transition-all">
+<span class="material-symbols-outlined text-lg">reorder</span>
+                    Gantt
+                </button>
+</div>
+</div>
+<!-- Action Row -->
+<div class="mt-auto px-8 py-6 bg-white border-t border-surface-container flex items-center justify-between">
+<button class="text-on-surface-variant hover:text-primary font-label-lg text-label-lg px-2 py-1 transition-colors">
+                Lewati tutorial
+            </button>
+<div class="flex items-center gap-3">
+<button class="px-6 py-2.5 rounded-lg border border-outline-variant text-on-surface font-label-lg text-label-lg hover:bg-surface-container transition-colors">
+                    Mundur
+                </button>
+<button class="px-8 py-2.5 rounded-lg bg-primary-container text-white font-label-lg text-label-lg shadow-md hover:bg-primary transition-all active:scale-95">
+                    Lanjut
+                </button>
+</div>
+</div>
+</div>
+<!-- ESC Keyboard Hint -->
+<div class="fixed bottom-6 right-8 text-on-surface-variant/60 font-label-lg text-xs flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/20">
+<span class="px-1.5 py-0.5 rounded border border-on-surface-variant/40 text-[10px] uppercase">Esc</span>
+<span>Tekan Esc untuk tutup</span>
+</div>
+</body></html>

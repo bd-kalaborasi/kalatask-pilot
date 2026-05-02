@@ -32,10 +32,10 @@ const ROLE_LABEL: Record<MentionUser['role'], string> = {
 };
 
 const ROLE_BADGE: Record<MentionUser['role'], string> = {
-  admin: 'bg-red-100 text-red-700',
-  manager: 'bg-blue-100 text-blue-700',
-  member: 'bg-green-100 text-green-700',
-  viewer: 'bg-zinc-100 text-zinc-700',
+  admin:   'bg-feedback-danger-bg text-feedback-danger',
+  manager: 'bg-brand-deep-100 text-brand-deep-700',
+  member:  'bg-feedback-success-bg text-feedback-success',
+  viewer:  'bg-surface-container-low text-foreground',
 };
 
 export function MentionAutocomplete({
@@ -97,7 +97,7 @@ export function MentionAutocomplete({
     <div
       role="listbox"
       aria-label="Mention user autocomplete"
-      className="absolute z-40 mt-1 w-72 max-h-64 overflow-auto rounded-md border bg-white shadow-lg"
+      className="absolute z-40 mt-1 w-72 max-h-64 overflow-auto rounded-kt-md border border-outline-variant bg-surface-container-lowest shadow-brand-lg animate-fade-up"
     >
       {loading && (
         <p className="p-3 text-xs text-muted-foreground">Mencari user...</p>

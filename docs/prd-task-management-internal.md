@@ -1088,6 +1088,18 @@ jobs:
 
 ## Changelog
 
+- **v0.4 (2026-04-29)** — Sprint 6 UI/UX polish + Stitch MCP collab:
+  - **UX polish komprehensif** ke 13 routes per audit (`docs/sprint-6-ux-audit.md`). Top 3 high-severity routes (`/admin/mom-import/:id`, `/admin/usage`, `/projects/:projectId`) redesigned via Stitch inspiration → re-implemented React+Tailwind dengan BRAND.md tokens.
+  - **Microcopy refinement Asana/Monday-style**: centralized `apps/web/src/lib/labels.ts` enforces verb-led action labels, friendly empty states, specific recovery error messages. BRAND.md v2 §13 "Microcopy Guidelines" locks 5 prinsip + tone Indonesia santai-profesional.
+  - **Refined Indonesian status labels locked**: task status `Belum mulai/Sedang dikerjakan/Cek ulang/Selesai/Tertahan`, priority `Rendah/Sedang/Tinggi/Sangat penting`, project status `Perencanaan/Aktif/Ditahan/Selesai/Diarsipkan`.
+  - **MoM Review Queue bulk action** "Approve HIGH saja (X item) — auto-buat tugas" surface prominently di summary card. Cognitive load relief untuk MoM dengan 40+ actions.
+  - **Usage Dashboard friendly Storage placeholder** "Segera tersedia" replace broken-feel "n/a". Helper text explains owner config Storage API.
+  - **A11y target ≥90 achieved** — Lighthouse 88→93 via `<main role="main">` LoginPage landmark + color-contrast text-zinc-500 → text-zinc-600.
+  - **BRAND.md v2** additive update — surface tonal scale + M3-inspired typography documented as OPTIONAL adoption Sprint 7+.
+  - **Stitch project setup persistent** — Project ID `10753861108950066040`, design system asset `421534752530272247`. 6 screens generated (3 desktop + 3 mobile) untuk top 3 routes, owner approved Checkpoint 1.
+  - **ADR-009** "UX Polish Strategy + Stitch MCP Collaboration" — locks Option B (Stitch inspiration, BRAND.md tokens source of truth).
+  - Defer Sprint 6.5+: per-route Lighthouse auth-injection, visual regression baseline.
+  - Defer Sprint 7+: F9 UPDATE/SKIP semantics (original Sprint 6 scope), pg_cron schedule, Drive folder watch, Storage API probe.
 - **v0.3 (2026-04-29)** — Sprint 5 execution + naming refresh:
   - **F9 renamed**: "Cowork integration" → "MoM Import". Sprint 5 ships manual admin upload UI + RPC backend. Post-launch automation = Claude Code scheduled task (deferred, reuses RPC). Naming locked: skill `cowork-prompt-tuning` → `plaud-prompt-tuning`; ADR-007 v2 supersedes v1.
   - **F9 confidence threshold ketat**: HIGH=exact alias, MEDIUM=fuzzy Levenshtein ≤1 single, LOW=multi-candidate atau distance 2, UNRESOLVED=no match. Exception-only auto-approve flow (semua HIGH → auto; ada MEDIUM/LOW → admin queue).
