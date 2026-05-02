@@ -456,6 +456,7 @@ function NotificationsSection() {
   const [prefs, setPrefs] = useState<NotifPref[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<string | null>(null);
+  const [savedFlash, setSavedFlash] = useState<Record<string, number>>({});
   const [unavailable, setUnavailable] = useState(false);
 
   useEffect(() => {
@@ -489,6 +490,7 @@ function NotificationsSection() {
     setPrefs((prev) =>
       prev.map((p) => (p.event_type === event_type ? { ...p, enabled: !current } : p)),
     );
+    let ok = true;
     if (!unavailable) {
       const { error } = await supabase.rpc('update_notif_pref', {
         p_event_type: event_type,
@@ -496,13 +498,24 @@ function NotificationsSection() {
         p_channel: 'in_app',
       });
       if (error) {
-        // Rollback optimistic update on error.
+        ok = false;
         setPrefs((prev) =>
           prev.map((p) => (p.event_type === event_type ? { ...p, enabled: current } : p)),
         );
       }
     }
     setSaving(null);
+    if (ok) {
+      const stamp = Date.now();
+      setSavedFlash((prev) => ({ ...prev, [event_type]: stamp }));
+      setTimeout(() => {
+        setSavedFlash((prev) => {
+          if (prev[event_type] !== stamp) return prev;
+          const { [event_type]: _drop, ...rest } = prev;
+          return rest;
+        });
+      }, 1800);
+    }
   }
 
   // Fill in any missing events from canonical order so UI is stable.
@@ -530,6 +543,10 @@ function NotificationsSection() {
         </div>
       )}
 
+      <p className="text-body-sm text-on-surface-variant -mt-2">
+        Perubahan tersimpan otomatis saat kamu toggle.
+      </p>
+
       <div className="bg-surface-container-lowest rounded-kt-lg shadow-brand-sm border border-outline-variant divide-y divide-outline-variant/60">
         {loading ? (
           <div className="p-6">
@@ -541,6 +558,8 @@ function NotificationsSection() {
               title: p.event_type,
               desc: '',
             };
+            const isSaving = saving === p.event_type;
+            const justSaved = !!savedFlash[p.event_type];
             return (
               <div
                 key={p.event_type}
@@ -550,27 +569,43 @@ function NotificationsSection() {
                   <p className="text-body-md font-semibold text-on-surface">{meta.title}</p>
                   <p className="text-body-sm text-on-surface-variant mt-0.5">{meta.desc}</p>
                 </div>
-                <button
-                  type="button"
-                  role="switch"
-                  aria-checked={p.enabled}
-                  aria-label={`Toggle ${meta.title}`}
-                  disabled={saving === p.event_type}
-                  onClick={() => toggle(p.event_type, p.enabled)}
-                  className={
-                    p.enabled
-                      ? 'relative inline-flex h-6 w-11 items-center rounded-full bg-primary-container transition-colors disabled:opacity-50'
-                      : 'relative inline-flex h-6 w-11 items-center rounded-full bg-surface-container transition-colors disabled:opacity-50 ring-1 ring-outline-variant'
-                  }
-                >
+                <div className="flex items-center gap-3 shrink-0">
                   <span
+                    aria-live="polite"
+                    className={
+                      'text-body-sm transition-opacity duration-200 ' +
+                      (isSaving
+                        ? 'text-on-surface-variant opacity-100'
+                        : justSaved
+                          ? 'text-feedback-success opacity-100'
+                          : 'opacity-0')
+                    }
+                  >
+                    {isSaving ? 'Menyimpan…' : justSaved ? '✓ Tersimpan' : ''}
+                  </span>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={p.enabled}
+                    aria-label={`Toggle ${meta.title}`}
+                    data-event={p.event_type}
+                    disabled={isSaving}
+                    onClick={() => toggle(p.event_type, p.enabled)}
                     className={
                       p.enabled
-                        ? 'inline-block h-5 w-5 transform rounded-full bg-on-primary-container shadow translate-x-5 transition-transform'
-                        : 'inline-block h-5 w-5 transform rounded-full bg-on-surface-variant shadow translate-x-1 transition-transform'
+                        ? 'relative inline-flex h-6 w-11 items-center rounded-full bg-primary-container transition-colors disabled:opacity-50'
+                        : 'relative inline-flex h-6 w-11 items-center rounded-full bg-surface-container transition-colors disabled:opacity-50 ring-1 ring-outline-variant'
                     }
-                  />
-                </button>
+                  >
+                    <span
+                      className={
+                        p.enabled
+                          ? 'inline-block h-5 w-5 transform rounded-full bg-on-primary-container shadow translate-x-5 transition-transform'
+                          : 'inline-block h-5 w-5 transform rounded-full bg-on-surface-variant shadow translate-x-1 transition-transform'
+                      }
+                    />
+                  </button>
+                </div>
               </div>
             );
           })
@@ -694,12 +729,120 @@ function InviteButton({ onInvited }: { onInvited: () => void }) {
   );
 }
 
+interface PendingInvite {
+  id: string;
+  email: string;
+  role: UserRole;
+  team_name: string | null;
+  invited_by_name: string | null;
+  status: 'pending' | 'accepted' | 'revoked' | 'expired';
+  expires_at: string;
+  created_at: string;
+}
+
+function PendingInvitesPanel({ refreshKey }: { refreshKey: number }) {
+  const [invites, setInvites] = useState<PendingInvite[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [revoking, setRevoking] = useState<string | null>(null);
+
+  async function load() {
+    setLoading(true);
+    setError(null);
+    const { data, error: err } = await supabase.rpc('list_user_invites');
+    if (err) {
+      // Migration not yet applied — render quietly empty (banner already shown elsewhere)
+      if (err.code === '42883' || err.message.includes('not found')) {
+        setInvites([]);
+        setLoading(false);
+        return;
+      }
+      setError(err.message);
+      setLoading(false);
+      return;
+    }
+    setInvites(((data ?? []) as PendingInvite[]).filter((i) => i.status === 'pending'));
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    void load();
+  }, [refreshKey]);
+
+  async function revoke(id: string) {
+    setRevoking(id);
+    const { error: err } = await supabase.rpc('revoke_user_invite', { p_invite_id: id });
+    setRevoking(null);
+    if (err) {
+      setError(err.message);
+      return;
+    }
+    setInvites((prev) => prev.filter((i) => i.id !== id));
+  }
+
+  if (loading && invites.length === 0) return null;
+  if (!loading && invites.length === 0 && !error) return null;
+
+  return (
+    <div
+      className="bg-surface-container-lowest rounded-kt-lg shadow-brand-sm border border-outline-variant overflow-hidden"
+      data-testid="pending-invites-panel"
+    >
+      <header className="px-4 py-3 border-b border-outline-variant flex items-center justify-between">
+        <div>
+          <p className="text-title-sm font-semibold text-on-surface">Undangan tertunda</p>
+          <p className="text-body-sm text-on-surface-variant">
+            Anggota di sini sudah diundang tapi belum daftar. Hilang otomatis setelah mereka bergabung.
+          </p>
+        </div>
+        <span className="px-3 py-1 bg-feedback-warning-bg text-feedback-warning rounded-full text-label-md font-bold ring-1 ring-feedback-warning-border">
+          {invites.length} pending
+        </span>
+      </header>
+      {error && (
+        <div className="px-4 py-3 bg-feedback-danger-bg border-b border-feedback-danger-border">
+          <p className="text-body-sm text-feedback-danger">{error}</p>
+        </div>
+      )}
+      <ul className="divide-y divide-outline-variant/60">
+        {invites.map((inv) => (
+          <li
+            key={inv.id}
+            className="flex items-center justify-between gap-4 px-4 py-3"
+            data-testid="pending-invite-row"
+            data-email={inv.email}
+          >
+            <div className="min-w-0 flex-1">
+              <p className="text-body-md font-semibold text-on-surface truncate font-mono">
+                {inv.email}
+              </p>
+              <p className="text-body-sm text-on-surface-variant">
+                Role: {ROLE_LABEL[inv.role]} · diundang {formatDateID(inv.created_at)} ·
+                kadaluarsa {formatDateID(inv.expires_at)}
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={revoking === inv.id}
+              onClick={() => revoke(inv.id)}
+            >
+              {revoking === inv.id ? 'Membatalkan…' : 'Batalkan'}
+            </Button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function MembersSection({ currentUserId }: MembersSectionProps) {
   const [users, setUsers] = useState<SettingsUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState<UserRole | 'all'>('all');
+  const [invitesRefreshKey, setInvitesRefreshKey] = useState(0);
 
   useEffect(() => {
     let mounted = true;
@@ -791,8 +934,10 @@ function MembersSection({ currentUserId }: MembersSectionProps) {
             <option value="viewer">Viewer</option>
           </select>
         </div>
-        <InviteButton onInvited={() => { /* Sprint 7+: refresh invite list */ }} />
+        <InviteButton onInvited={() => setInvitesRefreshKey((k) => k + 1)} />
       </div>
+
+      <PendingInvitesPanel refreshKey={invitesRefreshKey} />
 
       {loading && <p className="text-body-md text-on-surface-variant">Memuat anggota...</p>}
 

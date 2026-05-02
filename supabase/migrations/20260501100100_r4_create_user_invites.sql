@@ -55,7 +55,7 @@ BEGIN
     RAISE EXCEPTION 'not authenticated';
   END IF;
 
-  SELECT role INTO caller_role FROM public.users WHERE id = uid;
+  SELECT u.role INTO caller_role FROM public.users u WHERE u.id = uid;
   IF caller_role IS DISTINCT FROM 'admin' THEN
     RAISE EXCEPTION 'admin role required';
   END IF;
@@ -104,7 +104,7 @@ BEGIN
     RAISE EXCEPTION 'not authenticated';
   END IF;
 
-  SELECT role INTO caller_role FROM public.users WHERE id = uid;
+  SELECT u.role INTO caller_role FROM public.users u WHERE u.id = uid;
   IF caller_role IS DISTINCT FROM 'admin' THEN
     RAISE EXCEPTION 'admin role required';
   END IF;
@@ -138,7 +138,7 @@ BEGIN
     RAISE EXCEPTION 'not authenticated';
   END IF;
 
-  SELECT role INTO caller_role FROM public.users WHERE id = uid;
+  SELECT u.role INTO caller_role FROM public.users u WHERE u.id = uid;
   IF caller_role IS DISTINCT FROM 'admin' THEN
     RAISE EXCEPTION 'admin role required';
   END IF;
